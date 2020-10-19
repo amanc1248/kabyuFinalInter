@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ChatPage extends StatefulWidget {
@@ -17,90 +18,26 @@ class _ChatPageState extends State<ChatPage> {
       body: Container(
         child: Column(
           children: [
-            Expanded(
-              flex: 3,
-              child: Container(
-                decoration: BoxDecoration(color: Colors.white),
-                child: Padding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Container(
+              decoration: BoxDecoration(color: Colors.white),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  TopNavigationBar(),
+                  Row(
                     children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Icon(Icons.bubble_chart),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.only(left: 19),
-                              child: Container(
-                                height: 37,
-                                decoration: BoxDecoration(
-                                    color: Color(0xffEDEDED),
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(25))),
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Expanded(
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 15),
-                                        child: TextField(
-                                          onChanged: (value) {
-                                            // password = value;
-                                          },
-                                          decoration: InputDecoration(
-                                            hintText: "Search",
-                                            hintStyle: TextStyle(
-                                                fontSize: 18,
-                                                color: Color(0xff939393)),
-                                            // fillColor: Colors.white,
-                                            border: InputBorder.none,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(right: 15),
-                                      child: Icon(
-                                        Icons.search,
-                                        size: 30,
-                                        color: Color(0xff30009C),
-                                      ),
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(left: 8),
-                            child: Icon(
-                              Icons.notifications,
-                              color: Color(0xff30009C),
-                              size: 30,
-                            ),
-                          )
-                        ],
+                      Icon(
+                        Icons.keyboard_arrow_left,
+                        size: 30,
                       ),
-                      Row(
-                        children: [
-                          Icon(
-                            Icons.keyboard_arrow_left,
-                            size: 30,
-                          ),
-                          Text(
-                            "Back to all books",
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.w500),
-                          )
-                        ],
+                      Text(
+                        "Back to all books",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.w500),
                       )
                     ],
-                  ),
-                ),
+                  )
+                ],
               ),
             ),
             Expanded(

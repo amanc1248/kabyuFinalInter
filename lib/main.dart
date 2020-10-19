@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
-import 'Screens/1. WishlistPage/Wishlist.dart';
-import 'Screens/2. ExplorePage/Explore.dart';
-import 'Screens/3. ChatPage/Chat.dart';
+import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
+import 'package:kabyu_feather_webs/views/2.%20ExplorePage/Explore.dart';
+import 'package:kabyu_feather_webs/views/3.%20ChatPage/Chat.dart';
+import 'package:kabyu_feather_webs/views/product_individual.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,7 +27,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0;
   final List<Widget> _widgetOptions = [
     WishListPage(),
-    ExplorePage(),
+    ProductIndividual(),
     ChatPage(),
   ];
 

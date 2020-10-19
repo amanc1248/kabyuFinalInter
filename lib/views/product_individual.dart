@@ -1,6 +1,6 @@
-
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Model/product_individual_carousel.dart';
+import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class ProductIndividual extends StatefulWidget {
@@ -16,6 +16,7 @@ class _ProductIndividualState extends State<ProductIndividual> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+              TopNavigationBar(),
               InkWell(
                 onTap: () {},
                 child: Container(
