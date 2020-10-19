@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "960643805754",
+    "firebase_url": "https://kabyu-feather-webs.firebaseio.com",
+    "project_id": "kabyu-feather-webs",
+    "storage_bucket": "kabyu-feather-webs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:960643805754:android:8cf71dcc3d5fa7273b7b03",
+        "android_client_info": {
+          "package_name": "com.example.kabyu_feather_webs"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "960643805754-nqunlp8s60bfdjqv080trrmivu65i1db.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTrBU_U7VFUKyRsFum1pWphq3B8YyPvn0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "960643805754-nqunlp8s60bfdjqv080trrmivu65i1db.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
