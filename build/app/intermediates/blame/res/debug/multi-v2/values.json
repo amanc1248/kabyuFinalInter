@@ -1,27 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Internship2020\\kabyu-feather-webs\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
+            "outputFile": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values\\values.xml",
             "map": [
                 {
-                    "source": "D:\\Internship2020\\kabyu-feather-webs\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
-                    "from": {
-                        "startLines": "2,3,4,5,6,7,8,9",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "55,199,312,394,498,607,727,829",
-                        "endColumns": "143,112,81,103,108,119,101,78",
-                        "endOffsets": "194,307,389,493,602,722,824,903"
-                    },
-                    "to": {
-                        "startLines": "79,80,81,82,83,84,85,86",
-                        "startColumns": "4,4,4,4,4,4,4,4",
-                        "startOffsets": "4893,5037,5150,5232,5336,5445,5565,5667",
-                        "endColumns": "143,112,81,103,108,119,101,78",
-                        "endOffsets": "5032,5145,5227,5331,5440,5560,5662,5741"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\saman\\.gradle\\caches\\transforms-2\\files-2.1\\c82bf40584b9a53c31dba07a8a48f301\\core-1.1.0\\res\\values\\values.xml",
+                    "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\c82bf40584b9a53c31dba07a8a48f301\\core-1.1.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,83,84,88,89,90,91,98,141,173,210",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
@@ -40,7 +23,41 @@
                     }
                 },
                 {
-                    "source": "D:\\Internship2020\\kabyu-feather-webs\\android\\app\\src\\main\\res\\values\\styles.xml",
+                    "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\19f5d88f854b3ffb59906ef97f8c2c37\\jetified-play-services-basement-17.0.0\\res\\values\\values.xml",
+                    "from": {
+                        "startLines": "4,7",
+                        "startColumns": "0,0",
+                        "startOffsets": "238,401",
+                        "endColumns": "63,166",
+                        "endOffsets": "301,567"
+                    },
+                    "to": {
+                        "startLines": "76,78",
+                        "startColumns": "4,4",
+                        "startOffsets": "4588,4726",
+                        "endColumns": "67,166",
+                        "endOffsets": "4651,4888"
+                    }
+                },
+                {
+                    "source": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\generated\\res\\google-services\\debug\\values\\values.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6,7,8,9",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "55,199,312,394,498,607,727,829",
+                        "endColumns": "143,112,81,103,108,119,101,78",
+                        "endOffsets": "194,307,389,493,602,722,824,903"
+                    },
+                    "to": {
+                        "startLines": "79,80,81,82,83,84,85,86",
+                        "startColumns": "4,4,4,4,4,4,4,4",
+                        "startOffsets": "4893,5037,5150,5232,5336,5445,5565,5667",
+                        "endColumns": "143,112,81,103,108,119,101,78",
+                        "endOffsets": "5032,5145,5227,5331,5440,5560,5662,5741"
+                    }
+                },
+                {
+                    "source": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\android\\app\\src\\main\\res\\values\\styles.xml",
                     "from": {
                         "startLines": "3,14",
                         "startColumns": "4,4",
@@ -56,23 +73,6 @@
                         "endLines": "92,95",
                         "endColumns": "12,12",
                         "endOffsets": "6109,6274"
-                    }
-                },
-                {
-                    "source": "C:\\Users\\saman\\.gradle\\caches\\transforms-2\\files-2.1\\82873f6fda1e782daad6afedc80603f7\\jetified-play-services-basement-17.0.0\\res\\values\\values.xml",
-                    "from": {
-                        "startLines": "4,7",
-                        "startColumns": "0,0",
-                        "startOffsets": "238,401",
-                        "endColumns": "63,166",
-                        "endOffsets": "301,567"
-                    },
-                    "to": {
-                        "startLines": "76,78",
-                        "startColumns": "4,4",
-                        "startOffsets": "4588,4726",
-                        "endColumns": "67,166",
-                        "endOffsets": "4651,4888"
                     }
                 }
             ]

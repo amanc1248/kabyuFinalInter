@@ -12,7 +12,13 @@ class TopNavigationBar extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Icon(Icons.bubble_chart),
+          GestureDetector(
+            onTap: () {},
+            child: Icon(
+              Icons.menu,
+              color: Color.fromRGBO(35, 3, 106, 1),
+            ),
+          ),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.only(left: 19),
@@ -33,8 +39,8 @@ class TopNavigationBar extends StatelessWidget {
                           },
                           decoration: InputDecoration(
                             hintText: "Search",
-                            hintStyle:
-                                TextStyle(fontSize: 18, color: Color(0xff939393)),
+                            hintStyle: TextStyle(
+                                fontSize: 18, color: Color(0xff939393)),
                             // fillColor: Colors.white,
                             border: InputBorder.none,
                           ),

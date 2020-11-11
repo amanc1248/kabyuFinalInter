@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "D:\\Internship2020\\kabyu-feather-webs\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-bn\\values-bn.xml",
+            "outputFile": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\incremental\\mergeDebugResources\\merged.dir\\values-bn\\values-bn.xml",
             "map": [
                 {
-                    "source": "C:\\Users\\saman\\.gradle\\caches\\transforms-2\\files-2.1\\82873f6fda1e782daad6afedc80603f7\\jetified-play-services-basement-17.0.0\\res\\values-bn\\values.xml",
+                    "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\19f5d88f854b3ffb59906ef97f8c2c37\\jetified-play-services-basement-17.0.0\\res\\values-bn\\values.xml",
                     "from": {
                         "startLines": "4",
                         "startColumns": "0",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "C:\\Users\\saman\\.gradle\\caches\\transforms-2\\files-2.1\\c82bf40584b9a53c31dba07a8a48f301\\core-1.1.0\\res\\values-bn\\values-bn.xml",
+                    "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\c82bf40584b9a53c31dba07a8a48f301\\core-1.1.0\\res\\values-bn\\values-bn.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",

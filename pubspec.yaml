@@ -30,6 +30,8 @@ dependencies:
   smooth_star_rating: ^1.1.1
   flutter_svg: ^0.19.0
   carousel_slider: ^2.3.1
+  font_awesome_flutter: ^8.10.0
+  image_picker: ^0.6.7+12
 
 dev_dependencies:
   flutter_test:
@@ -48,8 +50,8 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - profileimage.jpg
-    - assets/images/booklist.svg
-    - assets/images/google.svg
+    - howinnovationworks.jpg
+    - assets/WishlistBooks/
 
   fonts:
     - family: Abril FatFace
