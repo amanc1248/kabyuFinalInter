@@ -40,17 +40,20 @@ class BookOverview extends StatelessWidget {
       child: ListView.builder(
         itemCount: theWishListsBooks.length,
         itemBuilder: (context, index) => Container(
+          height: 92,
           margin: EdgeInsets.only(bottom: 8),
           decoration: BoxDecoration(
               borderRadius: BorderRadius.all(Radius.circular(4)),
               boxShadow: [
                 BoxShadow(
-                  color: Color.fromRGBO(0, 0, 0, 0.05),
-                ),
+                    color: Color.fromRGBO(0, 0, 0, 0.05),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 0)),
               ],
               color: Color.fromRGBO(244, 244, 244, 1)),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(10, 10, 10, 9),
+            padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
             child: Row(
               children: [
                 Expanded(

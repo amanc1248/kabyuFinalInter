@@ -5,7 +5,7 @@ class MainTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: Padding(
-        padding: const EdgeInsets.only(bottom: 15),
+        padding: const EdgeInsets.only(bottom: 21),
         child: Text(
           "Kitab",
           style: TextStyle(

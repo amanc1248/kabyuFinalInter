@@ -1,29 +1,67 @@
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/views/Hamburger/MyProducts/MyProducts.dart';
 import 'package:kabyu_feather_webs/views/Hamburger/hamburgerOptions/Change%20Password/ChangePassword.dart';
 import 'package:kabyu_feather_webs/views/Hamburger/hamburgerOptions/SettingOpen/SettingOpenclass.dart';
+import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 
 final List<SettingOpenClass> theSettingOpenClassList = [
-  SettingOpenClass(iconName: "Change Password", iconSymbol: Icons.settings),
-  SettingOpenClass(iconName: "Delete Account", iconSymbol: Icons.person),
+  SettingOpenClass(
+      iconName: "Change Password",
+      iconSymbol: Icons.settings,
+      theRoute: ChangePassword()),
+  SettingOpenClass(
+      iconName: "Delete Account",
+      iconSymbol: Icons.person,
+      theRoute: MyProducts()),
 ];
+// final List<Widget> theRoutes = [
+//   ProfileTab(),
+//   MyProducts(),
+//   ChangePassword()
+// ];
 
 class SettingOpen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          leading: GestureDetector(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Icon(
+              Icons.chevron_left,
+            ),
+          ),
+          title: TopNavigationBar(),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(left: 13, right: 13),
+              child: Icon(
+                Icons.notifications,
+                color: Color(0xff30009C),
+                size: 30,
+              ),
+            )
+          ],
+          elevation: 0.0,
+          titleSpacing: 0.0,
+          centerTitle: false,
+          backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+          iconTheme: IconThemeData(
+            color: Color.fromRGBO(0, 0, 0, 0.87),
+          ),
+        ),
         backgroundColor: Colors.white,
         body: Container(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 22, 0, 22),
-                child: Icon(Icons.arrow_back),
-              ),
               Expanded(
                 child: Padding(
-                  padding: const EdgeInsets.fromLTRB(18, 0, 18, 0),
+                  padding: const EdgeInsets.fromLTRB(18, 10, 18, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -48,7 +86,8 @@ class SettingOpen extends StatelessWidget {
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  ChangePassword()),
+                                                  theSettingOpenClassList[index]
+                                                      .theRoute),
                                         );
                                       },
                                       child: Row(

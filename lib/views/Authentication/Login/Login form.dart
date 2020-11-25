@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
 import 'package:kabyu_feather_webs/views/Authentication/KitabTitle/maintitle.dart';
+import 'package:kabyu_feather_webs/views/Authentication/contants.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -13,11 +15,11 @@ class _LoginState extends State<Login> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
-        body: Padding(
-          padding:
-              const EdgeInsets.only(left: 16, right: 16, top: 50, bottom: 55),
-          child: Container(
-            child: SingleChildScrollView(
+        body: SingleChildScrollView(
+          child: Padding(
+            padding:
+                const EdgeInsets.only(left: 16, right: 16, top: 50, bottom: 55),
+            child: Container(
               child: Column(
                 children: [
                   MainTitle(),
@@ -26,7 +28,7 @@ class _LoginState extends State<Login> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.all(Radius.circular(5)),
                       border: Border.all(
-                        color: Color(0xff000000),
+                        color: Color.fromRGBO(0, 0, 0, 0.12),
                       ),
                     ),
                     child: Row(
@@ -65,8 +67,8 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.only(bottom: 26),
                     child: TextField(
                       decoration: InputDecoration(
-                        border: new OutlineInputBorder(
-                            borderSide: new BorderSide(color: Colors.teal)),
+                        border: kTextFieldBorder,
+                        enabledBorder: kTextFieldEnabledBorder,
                         hintText: 'E-mail',
                         labelText: "E-mail",
                       ),
@@ -76,8 +78,8 @@ class _LoginState extends State<Login> {
                     padding: EdgeInsets.only(bottom: 26),
                     child: TextField(
                         decoration: InputDecoration(
-                      border: new OutlineInputBorder(
-                          borderSide: new BorderSide(color: Colors.teal)),
+                      border: kTextFieldBorder,
+                      enabledBorder: kTextFieldEnabledBorder,
                       hintText: 'Input-text',
                       labelText: "Password",
                       suffixIcon: Icon(
@@ -98,10 +100,11 @@ class _LoginState extends State<Login> {
                         width: double.infinity,
                         child: FlatButton(
                           onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => Login()),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => WishListPage()),
+                            );
                           },
                           child: Center(
                             child: Text(
@@ -119,8 +122,12 @@ class _LoginState extends State<Login> {
                   Text(
                     "Forgot Password?",
                     style: TextStyle(
-                      color: Color(0xff23036A),
-                    ),
+                        color: Color(0xff23036A),
+                        fontSize: 12,
+                        fontWeight: FontWeight.w400),
+                  ),
+                  SizedBox(
+                    height: 8,
                   ),
                   Container(
                     child: Column(
@@ -128,13 +135,17 @@ class _LoginState extends State<Login> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Text("No Account ? "),
+                            Text(
+                              "No Account ? ",
+                              style: TextStyle(
+                                  fontSize: 12, fontWeight: FontWeight.w400),
+                            ),
                             GestureDetector(
                               child: Text(
                                 "Sign up",
                                 style: TextStyle(
                                     color: Color(0xff23036A),
-                                    fontWeight: FontWeight.w600,
+                                    fontWeight: FontWeight.w400,
                                     fontSize: 16),
                               ),
                             )
