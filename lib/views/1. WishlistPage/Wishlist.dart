@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Widgets/BookOverview.dart';
-import 'package:kabyu_feather_webs/views/Hamburger/MyProducts/MyProducts.dart';
-import 'package:kabyu_feather_webs/views/Hamburger/hamburgerOptions/HamburgerOptionsClass.dart';
-import 'package:kabyu_feather_webs/views/Hamburger/hamburgerOptions/SettingOpen/SettingOpen.dart';
+import 'package:kabyu_feather_webs/Widgets/BookOverview.dart';
+import 'package:kabyu_feather_webs/Model/Hamburger%20Model/HamburgerOptionsClass.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
+import 'package:kabyu_feather_webs/views/ProductsSale/MyProducts/MyProducts.dart';
+import 'package:kabyu_feather_webs/views/Profile/SettingOpen/SettingOpen.dart';
 
 final List<HamburgerOptions> theHamburgerOptionsList = [
   HamburgerOptions(

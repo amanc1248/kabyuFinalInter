@@ -1,11 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/Model/Provider/provider.dart';
 import 'package:kabyu_feather_webs/Navigator/buttons.dart';
 // import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
 // import 'package:kabyu_feather_webs/views/3.%20ChatPage/Chat.dart';
 // import 'package:kabyu_feather_webs/views/product_individual.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kabyu_feather_webs/views/Provider/provider.dart';
 import 'package:provider/provider.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;

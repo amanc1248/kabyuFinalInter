@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kabyu_feather_webs/views/3.%20ChatPage/ChatListBookStore/Model/BookStoresClass.dart';
-import 'package:kabyu_feather_webs/views/3.%20ChatPage/ChatListBookStore/Widgets/BookStoreLists.dart';
+import 'package:kabyu_feather_webs/Model/Chat%20Model/BookStoresClass.dart';
+import 'package:kabyu_feather_webs/Widgets/BookStoreLists.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 
 final List<BookStoresClass> bookStoresDetails = [

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart';
-import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/sign%20up%20form.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
 import 'package:kabyu_feather_webs/views/Navigation/buttomNavigationBar.dart';
 
 class Buttons extends StatelessWidget {

@@ -35,11 +35,10 @@ class _MyHomePageState extends State<MyHomePage> {
           backgroundColor: Colors.white,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
-                icon: Icon(Icons.favorite), title: Text("Wishlist")),
+                icon: Icon(Icons.favorite), label: "Wishlist"),
             BottomNavigationBarItem(
-                icon: Icon(Icons.explore), title: Text("Explore")),
-            BottomNavigationBarItem(
-                icon: Icon(Icons.message), title: Text("Chat")),
+                icon: Icon(Icons.explore), label: "Explore"),
+            BottomNavigationBarItem(icon: Icon(Icons.message), label: "Chat"),
           ],
           currentIndex: _selectedIndex,
           selectedItemColor: Color(0xff23036A),
