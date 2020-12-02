@@ -120,14 +120,6 @@
         "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\35da7476aaaf662927a14fd09bea2173\\play-services-base-17.1.0\\res\\drawable-mdpi-v4\\common_google_signin_btn_text_light_normal_background.9.png"
     },
     {
-        "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\layout_notification_action_tombstone.xml.flat",
-        "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\cb9cbeeac3f4e3559e53feca07868c5f\\core-1.1.0\\res\\layout\\notification_action_tombstone.xml"
-    },
-    {
-        "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\layout_notification_action.xml.flat",
-        "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\cb9cbeeac3f4e3559e53feca07868c5f\\core-1.1.0\\res\\layout\\notification_action.xml"
-    },
-    {
         "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_notification_bg_low_pressed.9.png.flat",
         "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\cb9cbeeac3f4e3559e53feca07868c5f\\core-1.1.0\\res\\drawable-xhdpi-v4\\notification_bg_low_pressed.9.png"
     },
@@ -164,6 +156,10 @@
         "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\35da7476aaaf662927a14fd09bea2173\\play-services-base-17.1.0\\res\\drawable-xhdpi-v4\\googleg_disabled_color_18.png"
     },
     {
+        "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\drawable-watch-v20_common_google_signin_btn_text_disabled.xml.flat",
+        "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\1af51e00164238af0fa2aaf3be7927ea\\jetified-play-services-auth-16.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_disabled.xml"
+    },
+    {
         "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\drawable_notification_bg_low.xml.flat",
         "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\cb9cbeeac3f4e3559e53feca07868c5f\\core-1.1.0\\res\\drawable\\notification_bg_low.xml"
     },
@@ -190,10 +186,6 @@
     {
         "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\drawable-xhdpi-v4_common_google_signin_btn_icon_dark_normal_background.9.png.flat",
         "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\35da7476aaaf662927a14fd09bea2173\\play-services-base-17.1.0\\res\\drawable-xhdpi-v4\\common_google_signin_btn_icon_dark_normal_background.9.png"
-    },
-    {
-        "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\layout-v16_notification_template_custom_big.xml.flat",
-        "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\cb9cbeeac3f4e3559e53feca07868c5f\\core-1.1.0\\res\\layout-v16\\notification_template_custom_big.xml"
     },
     {
         "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\drawable_common_google_signin_btn_icon_dark_focused.xml.flat",
@@ -236,6 +228,10 @@
         "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\cb9cbeeac3f4e3559e53feca07868c5f\\core-1.1.0\\res\\drawable-xhdpi-v4\\notification_bg_low_normal.9.png"
     },
     {
+        "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\drawable-watch-v20_common_google_signin_btn_text_dark_normal.xml.flat",
+        "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\1af51e00164238af0fa2aaf3be7927ea\\jetified-play-services-auth-16.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_dark_normal.xml"
+    },
+    {
         "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\drawable-mdpi-v4_notification_bg_low_normal.9.png.flat",
         "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\cb9cbeeac3f4e3559e53feca07868c5f\\core-1.1.0\\res\\drawable-mdpi-v4\\notification_bg_low_normal.9.png"
     },
@@ -252,10 +248,6 @@
         "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\cb9cbeeac3f4e3559e53feca07868c5f\\core-1.1.0\\res\\drawable-hdpi-v4\\notify_panel_notification_icon_bg.png"
     },
     {
-        "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\layout_notification_template_icon_group.xml.flat",
-        "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\cb9cbeeac3f4e3559e53feca07868c5f\\core-1.1.0\\res\\layout\\notification_template_icon_group.xml"
-    },
-    {
         "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\drawable-hdpi-v4_common_google_signin_btn_icon_dark_normal_background.9.png.flat",
         "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\35da7476aaaf662927a14fd09bea2173\\play-services-base-17.1.0\\res\\drawable-hdpi-v4\\common_google_signin_btn_icon_dark_normal_background.9.png"
     },
@@ -266,6 +258,10 @@
     {
         "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\layout-v21_notification_action.xml.flat",
         "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\cb9cbeeac3f4e3559e53feca07868c5f\\core-1.1.0\\res\\layout-v21\\notification_action.xml"
+    },
+    {
+        "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\drawable-watch-v20_common_google_signin_btn_text_light_normal.xml.flat",
+        "source": "C:\\Users\\Aman chy\\.gradle\\caches\\transforms-2\\files-2.1\\1af51e00164238af0fa2aaf3be7927ea\\jetified-play-services-auth-16.0.1\\res\\drawable-watch-v20\\common_google_signin_btn_text_light_normal.xml"
     },
     {
         "merged": "F:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\res\\merged\\debug\\color_common_google_signin_btn_tint.xml.flat",

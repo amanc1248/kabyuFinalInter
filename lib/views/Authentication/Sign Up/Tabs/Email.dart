@@ -59,7 +59,7 @@ class _EmailTabState extends State<EmailTab> {
             Padding(
               padding: kSignUpFormTextFieldPadding,
               child: TextFormField(
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.phone,
                 onChanged: (value) {
                   _form.currentState.validate();
                 },
@@ -83,7 +83,7 @@ class _EmailTabState extends State<EmailTab> {
             Padding(
               padding: kSignUpFormTextFieldPadding,
               child: TextFormField(
-                keyboardType: TextInputType.emailAddress,
+                keyboardType: TextInputType.streetAddress,
                 onChanged: (value) {
                   _form.currentState.validate();
                 },

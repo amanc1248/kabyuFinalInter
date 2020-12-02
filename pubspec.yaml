@@ -38,8 +38,8 @@ dependencies:
   firebase_storage: ^5.1.0
   cloud_firestore: ^0.14.0+2
   get: ^3.17.1
+  google_sign_in: ^4.5.6
   flutter_tags: ^0.4.9
-
   firebase_core: ^0.5.2
 
 dev_dependencies:

@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kabyu_feather_webs/Model/Provider/provider.dart';
+import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
 import 'package:kabyu_feather_webs/views/Authentication/KitabTitle/maintitle.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/LowerPart/AlreadyHaveAnAccount.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kabyu_feather_webs/Widgets/EmailPasswordConfim.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/auth.dart';
 import 'package:provider/provider.dart';
-
-//this is simply to use the firebase
-FirebaseAuth auth = FirebaseAuth.instance;
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -19,16 +17,23 @@ class SignUpForm extends StatefulWidget {
 var theProvider;
 
 class _SignUpFormState extends State<SignUpForm> {
+  User user;
+  void initState() {
+    super.initState();
+    signOutGoogle();
+  }
+
+  void click() {
+    signInWithGoogle().then((user) => {
+          this.user = user,
+          Navigator.push(
+              context, MaterialPageRoute(builder: (context) => WishListPage()))
+        });
+  }
+
   String email;
   String password;
   String confirmPassword;
-  void initState() {
-    super.initState();
-    Firebase.initializeApp().whenComplete(() {
-      print("completed");
-      setState(() {});
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,33 +51,38 @@ class _SignUpFormState extends State<SignUpForm> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     MainTitle(),
-                    Container(
-                      height: 56,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                        border: Border.all(
-                          color: Color.fromRGBO(0, 0, 0, 0.12),
+                    GestureDetector(
+                      onTap: () async {
+                        click();
+                      },
+                      child: Container(
+                        height: 56,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(5)),
+                          border: Border.all(
+                            color: Color.fromRGBO(0, 0, 0, 0.12),
+                          ),
                         ),
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            FontAwesomeIcons.google,
-                            color: Colors.orangeAccent,
-                          ),
-                          SizedBox(
-                            width: 20,
-                          ),
-                          Text(
-                            "SIGNUP WITH GOOGLE",
-                            style: TextStyle(
-                                fontSize: 14,
-                                fontWeight: FontWeight.w500,
-                                fontFamily: "Roboto",
-                                color: Color(0xff6200EE)),
-                          )
-                        ],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              FontAwesomeIcons.google,
+                              color: Colors.orangeAccent,
+                            ),
+                            SizedBox(
+                              width: 20,
+                            ),
+                            Text(
+                              "SIGNUP WITH GOOGLE",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: "Roboto",
+                                  color: Color(0xff6200EE)),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     Padding(
