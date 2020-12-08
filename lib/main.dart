@@ -1,16 +1,18 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:kabyu_feather_webs/Model/Provider/provider.dart';
-import 'package:kabyu_feather_webs/Navigator/buttons.dart';
-// import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
-// import 'package:kabyu_feather_webs/views/3.%20ChatPage/Chat.dart';
-// import 'package:kabyu_feather_webs/views/product_individual.dart';
+import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
+import 'package:kabyu_feather_webs/Provider/CompleteProvider/CompleteProvider.dart';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart';
 import 'package:provider/provider.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(MyApp());
 }
 
@@ -61,11 +63,27 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider<ProviderClass>(
             create: (context) => ProviderClass()),
+        ChangeNotifierProvider<GoogleSignInProvider>(
+            create: (context) => GoogleSignInProvider()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
-        home: Buttons(),
+        home: MainScreen(),
       ),
     );
+  }
+}
+
+class MainScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder<User>(
+        stream: FirebaseAuth.instance.authStateChanges(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData && snapshot.data != null) {
+            return WishListPage();
+          }
+          return Login();
+        });
   }
 }

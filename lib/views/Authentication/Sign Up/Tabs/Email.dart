@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:kabyu_feather_webs/Model/Provider/provider.dart';
+import 'package:flutter/services.dart';
+import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/LowerPart/AlreadyHaveAnAccount.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/LowerPart/Button.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,7 @@ class EmailTab extends StatefulWidget {
   _EmailTabState createState() => _EmailTabState();
 }
 
-var theProvider;
+var googleSignInProvider;
 
 class _EmailTabState extends State<EmailTab> {
   final GlobalKey<FormState> _form = GlobalKey<FormState>();
@@ -23,7 +24,8 @@ class _EmailTabState extends State<EmailTab> {
   final TextEditingController _address = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    theProvider = Provider.of<ProviderClass>(context, listen: false);
+    googleSignInProvider =
+        Provider.of<GoogleSignInProvider>(context, listen: false);
 
     return Form(
         key: _form,
@@ -35,10 +37,15 @@ class _EmailTabState extends State<EmailTab> {
             Padding(
               padding: kSignUpFormTextFieldPadding,
               child: TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                maxLength: 30,
                 keyboardType: TextInputType.emailAddress,
                 onChanged: (value) {
                   _form.currentState.validate();
                 },
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z ]')),
+                ],
                 decoration: InputDecoration(
                   border: kTextFieldBorder,
                   enabledBorder: kTextFieldEnabledBorder,
@@ -47,9 +54,6 @@ class _EmailTabState extends State<EmailTab> {
                 ),
                 controller: _name,
                 validator: (val) {
-                  if (val.isEmpty) {
-                    return 'Empty';
-                  }
                   return null;
                 },
               ),
@@ -59,6 +63,10 @@ class _EmailTabState extends State<EmailTab> {
             Padding(
               padding: kSignUpFormTextFieldPadding,
               child: TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[0-9+]')),
+                ],
                 keyboardType: TextInputType.phone,
                 onChanged: (value) {
                   _form.currentState.validate();
@@ -71,9 +79,6 @@ class _EmailTabState extends State<EmailTab> {
                 ),
                 controller: _contact,
                 validator: (val) {
-                  if (val.isEmpty) {
-                    return 'Empty';
-                  }
                   return null;
                 },
               ),
@@ -83,7 +88,11 @@ class _EmailTabState extends State<EmailTab> {
             Padding(
               padding: kSignUpFormTextFieldPadding,
               child: TextFormField(
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: TextInputType.streetAddress,
+                inputFormatters: [
+                  FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9 ,]')),
+                ],
                 onChanged: (value) {
                   _form.currentState.validate();
                 },
@@ -95,9 +104,6 @@ class _EmailTabState extends State<EmailTab> {
                 ),
                 controller: _address,
                 validator: (val) {
-                  if (val.isEmpty) {
-                    return 'Empty';
-                  }
                   return null;
                 },
               ),
@@ -106,20 +112,20 @@ class _EmailTabState extends State<EmailTab> {
                 onTap: () {
                   if (_form.currentState.validate()) {
                     //saving the name, contact, and address to the provider
-                    theProvider.userDetails[2] = _name.text;
-                    theProvider.userDetails[3] = _contact.text;
-                    theProvider.userDetails[4] = _address.text;
+                    googleSignInProvider.userDetails[2] = _name.text;
+                    googleSignInProvider.userDetails[3] = _contact.text;
+                    googleSignInProvider.userDetails[4] = _address.text;
 
                     //showing the data into console
                     print("Name: " +
-                        theProvider.userDetails[2] +
+                        googleSignInProvider.userDetails[2] +
                         "\n" +
                         "Contact: " +
-                        theProvider.userDetails[3] +
+                        googleSignInProvider.userDetails[3] +
                         "\n" +
                         "Address" +
-                        theProvider.userDetails[4]);
-                    print(theProvider.userDetails);
+                        googleSignInProvider.userDetails[4]);
+                    print(googleSignInProvider.userDetails);
                     //Going to the Profile Tab ⏭
                     widget.theTabController
                         .animateTo((widget.theTabController.index + 1));

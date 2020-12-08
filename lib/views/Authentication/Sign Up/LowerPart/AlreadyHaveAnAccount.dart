@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart';
 
 class AlreadyHaveAnAccount extends StatelessWidget {
   @override
@@ -13,6 +14,10 @@ class AlreadyHaveAnAccount extends StatelessWidget {
               children: [
                 Text("Have an account ? "),
                 GestureDetector(
+                  onTap: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Login()));
+                  },
                   child: Text(
                     "Sign in",
                     style: TextStyle(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Widgets/BookOverview.dart';
 import 'package:kabyu_feather_webs/Model/Hamburger%20Model/HamburgerOptionsClass.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 import 'package:kabyu_feather_webs/views/ProductsSale/MyProducts/MyProducts.dart';
 import 'package:kabyu_feather_webs/views/Profile/SettingOpen/SettingOpen.dart';
@@ -15,9 +16,10 @@ final List<HamburgerOptions> theHamburgerOptionsList = [
       iconSymbol: Icons.card_travel,
       theRoute: MyProducts()),
   HamburgerOptions(
-      iconName: "Logout",
-      iconSymbol: Icons.arrow_forward,
-      theRoute: MyProducts())
+    iconName: "Logout",
+    iconSymbol: Icons.arrow_forward,
+    theRoute: SignUpForm(),
+  )
 ];
 
 // class MainWishListPage extends StatefulWidget {

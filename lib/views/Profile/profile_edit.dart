@@ -3,7 +3,6 @@ import 'package:kabyu_feather_webs/Widgets/commonbuttons.dart';
 import 'package:kabyu_feather_webs/Widgets/text_field.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 
-import 'package:kabyu_feather_webs/widgets/imagepick.dart';
 import 'package:kabyu_feather_webs/widgets/tags.dart';
 
 class ProfileEdit extends StatefulWidget {
@@ -28,7 +27,7 @@ class _ProfileEditState extends State<ProfileEdit> {
                   SizedBox(
                     height: 10,
                   ),
-                  ImagePick(),
+                  // ImagePick(),
                   SizedBox(
                     height: 20,
                   ),

@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:kabyu_feather_webs/Model/Provider/provider.dart';
-import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/LowerPart/AlreadyHaveAnAccount.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
-import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/imagepick.dart';
-import 'package:flutter/scheduler.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart';
+import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 final firestoreSave = FirebaseFirestore.instance;
@@ -20,63 +19,27 @@ class ProfileTab extends StatefulWidget {
   _ProfileTabState createState() => _ProfileTabState();
 }
 
-final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
-var theProvider;
+// GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+var googleSignInProvider;
 
 class _ProfileTabState extends State<ProfileTab> {
-  File _image;
-  _imgFromCamera() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.camera, imageQuality: 50);
-
-    setState(() {
-      _image = image;
-    });
-  }
-
-  _imgFromGallery() async {
-    File image = await ImagePicker.pickImage(
-        source: ImageSource.gallery, imageQuality: 50);
-
-    setState(() {
-      _image = image;
-    });
-  }
-
-  //Creating user in firebase👇
-  Future<void> _createUser() async {
-    try {
-      final UserCredential userCredential =
-          await auth.createUserWithEmailAndPassword(
-              email: theProvider.userDetails[0],
-              password: theProvider.userDetails[1]);
-    } catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
-
-  //Saving to firebase database 👇
-  storeUserData() async{
-    await firestoreSave.collection('users').doc(auth.currentUser.uid).set({
-      'email': theProvider.userDetails[0],
-      'password': theProvider.userDetails[1],
-      'name': theProvider.userDetails[2],
-      'phone_number': theProvider.userDetails[3],
-      'address': theProvider.userDetails[4],
-    }).then((_) {
-      print("success!");
+  uploadImageToFirebase() {
+    String fileName = basename(_imageFile.path);
+    print("I am inside the upload image to firebae");
+    final Reference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child('uploads/$fileName');
+    final UploadTask task = firebaseStorageRef.putFile(_imageFile);
+    task.whenComplete(() async {
+      String imageurl = await firebaseStorageRef.getDownloadURL();
+      print("this is the url" + imageurl);
+      googleSignInProvider.userDetails[5] = imageurl;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    theProvider = Provider.of<ProviderClass>(context, listen: false);
+    googleSignInProvider =
+        Provider.of<GoogleSignInProvider>(context, listen: false);
 
     return Container(
       child: Column(
@@ -111,25 +74,13 @@ class _ProfileTabState extends State<ProfileTab> {
                       color: Color.fromRGBO(98, 0, 238, 1),
                       borderRadius: BorderRadius.all(Radius.circular(4))),
                   child: FlatButton(
-                    onPressed: () {
-                      //Going to another tab👇
+                    onPressed: () async {
+                      // Going to another tab👇
                       widget.theTabController.animateTo(
                         (widget.theTabController.index + 1),
                       );
-                      theProvider.showSpinner = true;
-                      _createUser();
-                      storeUserData();
-
-                      theProvider.showSpinner = false;
-                      // SchedulerBinding.instance.addPostFrameCallback((_) {
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (context) => Login()));
-                      // });
-                      // theProvider.showSpinner = false;
-
-                      // if () {
-
-                      // }
+                      googleSignInProvider.showSpinner = true;
+                      await uploadImageToFirebase();
                     },
                     child: Text("DONE",
                         style: TextStyle(
@@ -144,6 +95,122 @@ class _ProfileTabState extends State<ProfileTab> {
           ),
           AlreadyHaveAnAccount()
         ],
+      ),
+    );
+  }
+}
+
+File _imageFile;
+final picker = ImagePicker();
+
+class ImagePick extends StatefulWidget {
+  @override
+  _ImagePickState createState() => _ImagePickState();
+}
+
+class _ImagePickState extends State<ImagePick> {
+  Future pickImage() async {
+    var pickedFile = await picker.getImage(source: ImageSource.camera);
+
+    setState(() {
+      _imageFile = File(pickedFile.path);
+    });
+  }
+
+  void _showPicker(context) {
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: new Wrap(
+                children: <Widget>[
+                  new ListTile(
+                      leading: new Icon(Icons.photo_library),
+                      title: new Text('Photo Library'),
+                      onTap: () {
+                        pickImage();
+                        Navigator.of(context).pop();
+                      }),
+                  new ListTile(
+                    leading: new Icon(Icons.photo_camera),
+                    title: new Text('Camera'),
+                    onTap: () {
+                      pickImage();
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        _showPicker(context);
+      },
+      child: Container(
+        decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
+        child: _imageFile != null
+            ? ClipRRect(
+                borderRadius: BorderRadius.circular(75),
+                child: Image.file(
+                  _imageFile,
+                  width: 150,
+                  height: 150,
+                  fit: BoxFit.fitHeight,
+                ),
+              )
+            : Container(
+                decoration: BoxDecoration(
+                    color: Colors.black38,
+                    borderRadius: BorderRadius.circular(75)),
+                width: 150,
+                height: 150,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Container(
+                      height: 75,
+                      child: Text("A",
+                          style: TextStyle(
+                            color: Colors.black38,
+                            fontSize: 72,
+                            fontWeight: FontWeight.w500,
+                          )),
+                    ),
+                    Container(
+                      width: 150,
+                      height: 75,
+                      decoration: BoxDecoration(
+                          color: Colors.black38,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(150),
+                            bottomRight: Radius.circular(150),
+                          )),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          Icon(
+                            Icons.camera_alt,
+                            color: Colors.black38,
+                            size: 16,
+                          ),
+                          Text("Upload photo",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 12,
+                              )),
+                          SizedBox(height: 15)
+                        ],
+                      ),
+                    )
+                  ],
+                )),
       ),
     );
   }

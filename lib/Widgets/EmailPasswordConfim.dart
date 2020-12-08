@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:kabyu_feather_webs/Model/Provider/provider.dart';
+import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/LowerPart/Button.dart';
 import 'package:provider/provider.dart';
 import '../views/Authentication/contants.dart';
 import '../views/Authentication/Sign Up/Signup Form/SignupSteps.dart';
+import 'package:email_validator/email_validator.dart';
 
 class EmailPasswordConfirmPassword extends StatefulWidget {
   @override
@@ -11,7 +12,21 @@ class EmailPasswordConfirmPassword extends StatefulWidget {
       _EmailPasswordConfirmPasswordState();
 }
 
-var theProvider;
+// String validateEmail(String value) {
+//   Pattern pattern =
+//       r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+//       r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
+//       r"{0,253}[a-zA-Z0-9])?)*$";
+//   RegExp regex = new RegExp(pattern);
+//   if (!regex.hasMatch(value) || value == null)
+//     return 'Enter a valid email address';
+//   else
+//     return null;
+// }
+
+var googleSignInProvider;
+bool passwordEye = true;
+bool confirmPasswordEye = true;
 
 class _EmailPasswordConfirmPasswordState
     extends State<EmailPasswordConfirmPassword> {
@@ -23,7 +38,8 @@ class _EmailPasswordConfirmPasswordState
 
   @override
   Widget build(BuildContext context) {
-    theProvider = Provider.of<ProviderClass>(context, listen: false);
+    googleSignInProvider =
+        Provider.of<GoogleSignInProvider>(context, listen: false);
 
     return Form(
         key: _form,
@@ -32,40 +48,42 @@ class _EmailPasswordConfirmPasswordState
           Padding(
             padding: kSignUpFormTextFieldPadding,
             child: TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                onChanged: (value) {
-                  _form.currentState.validate();
-                },
-                decoration: InputDecoration(
-                  border: kTextFieldBorder,
-                  enabledBorder: kTextFieldEnabledBorder,
-                  hintText: "Email",
-                  labelText: "Email",
-                ),
-                controller: _email,
-                validator: (value) {
-                  if (value.isEmpty) {
-                    return 'Empty';
-                  }
-
-                  return null;
-                }),
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+              keyboardType: TextInputType.emailAddress,
+              onChanged: (value) {
+                _form.currentState.validate();
+              },
+              decoration: InputDecoration(
+                border: kTextFieldBorder,
+                enabledBorder: kTextFieldEnabledBorder,
+                hintText: "Email",
+                labelText: "Email",
+              ),
+              controller: _email,
+              validator: (value) => EmailValidator.validate(value)
+                  ? null
+                  : "Please enter a valid email",
+            ),
           ),
 
           //Password TextFormField 👇
           Padding(
             padding: kSignUpFormTextFieldPadding,
             child: TextFormField(
-                onChanged: (value) {
-                  _form.currentState.validate();
-                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 keyboardType: TextInputType.emailAddress,
+                obscureText: passwordEye,
                 decoration: InputDecoration(
                   border: kTextFieldBorder,
                   enabledBorder: kTextFieldEnabledBorder,
                   hintText: "Password",
                   labelText: "Password",
                   suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        passwordEye = !passwordEye;
+                      });
+                    },
                     child: Icon(
                       Icons.remove_red_eye,
                       color: Color(0xff000000),
@@ -74,9 +92,9 @@ class _EmailPasswordConfirmPasswordState
                 ),
                 controller: _pass,
                 validator: (val) {
-                  if (val.isEmpty) {
-                    return 'Empty';
-                  }
+                  // if (val.isEmpty) {
+                  //   return 'Empty';
+                  // }
                   return null;
                 }),
           ),
@@ -85,26 +103,31 @@ class _EmailPasswordConfirmPasswordState
           Padding(
             padding: kSignUpFormTextFieldPadding,
             child: TextFormField(
-                obscureText: true,
+                obscureText: confirmPasswordEye,
                 keyboardType: TextInputType.emailAddress,
-                onChanged: (value) {
-                  _form.currentState.validate();
-                },
+                autovalidateMode: AutovalidateMode.onUserInteraction,
                 decoration: InputDecoration(
                   border: kTextFieldBorder,
                   enabledBorder: kTextFieldEnabledBorder,
                   hintText: "Confirm Password",
                   labelText: "Confirm Password",
-                  suffixIcon: Icon(
-                    Icons.remove_red_eye,
-                    color: Color(0xff000000),
+                  suffixIcon: GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        confirmPasswordEye = !confirmPasswordEye;
+                      });
+                    },
+                    child: Icon(
+                      Icons.remove_red_eye,
+                      color: Color(0xff000000),
+                    ),
                   ),
                 ),
                 controller: _confirmPass,
                 validator: (val) {
-                  if (val.isEmpty) {
-                    return "Empty";
-                  }
+                  // if (val.isEmpty) {
+                  //   return "Empty";
+                  // }
                   if (val != _pass.text) {
                     return 'Not Match';
                   }
@@ -115,16 +138,16 @@ class _EmailPasswordConfirmPasswordState
               onTap: () {
                 //Confirming the password
                 if (_form.currentState.validate()) {
-                  print(theProvider.userDetails);
+                  print(googleSignInProvider.userDetails);
                   //storing the email and the password
 
-                  theProvider.userDetails[0] = _email.text;
-                  theProvider.userDetails[1] = _pass.text;
+                  googleSignInProvider.userDetails[0] = _email.text;
+                  googleSignInProvider.userDetails[1] = _pass.text;
                   print("Email: " +
-                      theProvider.userDetails[0] +
+                      googleSignInProvider.userDetails[0] +
                       "\n" +
                       "Password: " +
-                      theProvider.userDetails[1]);
+                      googleSignInProvider.userDetails[1]);
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SignupEmail()));
                 } else {

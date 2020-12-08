@@ -1,21 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:kabyu_feather_webs/Model/Provider/provider.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart';
 import 'package:provider/provider.dart';
-// import 'package:modal_progress_hud/modal_progress_hud.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
+
+FirebaseAuth auth = FirebaseAuth.instance;
+final firestoreSave = FirebaseFirestore.instance;
 
 class CompleteEmail extends StatefulWidget {
   @override
   _CompleteEmailState createState() => _CompleteEmailState();
 }
 
-var theProvider;
+var googleSignInProvider;
 
 class _CompleteEmailState extends State<CompleteEmail> {
   @override
   Widget build(BuildContext context) {
-    theProvider = Provider.of<ProviderClass>(context, listen: false);
-
+    googleSignInProvider =
+        Provider.of<GoogleSignInProvider>(context, listen: false);
+    googleSignInProvider.createUser();
+    googleSignInProvider.storeUserData();
+    googleSignInProvider.showSpinner = false;
     return Padding(
       padding: const EdgeInsets.only(bottom: 91),
       child: Container(
@@ -42,40 +50,13 @@ class _CompleteEmailState extends State<CompleteEmail> {
               style:
                   TextStyle(fontSize: 13, color: Color.fromRGBO(0, 0, 0, 0.6)),
             ),
-            theProvider.showSpinner ? CircularProgressIndicator() : SizedBox()
+            googleSignInProvider.showSpinner
+                ? CircularProgressIndicator()
+                : Navigator.push(
+                    context, MaterialPageRoute(builder: (context) => Login()))
           ],
         ),
       ),
     );
   }
 }
-// //Creating user in firebase👇
-//                       try {
-//                         UserCredential userCredential =
-//                             await auth.createUserWithEmailAndPassword(
-//                                 email: theProvider.userDetails[0],
-//                                 password: theProvider.userDetails[1]);
-//                       } on FirebaseAuthException catch (e) {
-//                         if (e.code == 'weak-password') {
-//                           print('The password provided is too weak.');
-//                         } else if (e.code == 'email-already-in-use') {
-//                           print('The account already exists for that email.');
-//                         }
-//                       } catch (e) {
-//                         print(e);
-//                       }
-
-//                       //Saving to firebase database 👇
-//                       firestoreSave.collection('users').add({
-//                         'email': theProvider.userDetails[0],
-//                         'password': theProvider.userDetails[1],
-//                         'name': theProvider.userDetails[2],
-//                         'phone_number': theProvider.userDetails[3],
-//                         'address': theProvider.userDetails[4],
-//                       }).then((value) {
-//                         print(value.id);
-//                       });
-
-//                       //going to login page👇
-//                       Navigator.push(context,
-//                           MaterialPageRoute(builder: (context) => Login()));

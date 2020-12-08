@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
 import 'package:kabyu_feather_webs/views/Authentication/KitabTitle/maintitle.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Authentication/auth.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
 import 'package:kabyu_feather_webs/views/Authentication/contants.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
-final GlobalKey<FormState> _form = GlobalKey<FormState>();
+import 'package:provider/provider.dart';
+import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 
 final TextEditingController _email = TextEditingController();
 final TextEditingController _password = TextEditingController();
@@ -21,8 +21,14 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  GlobalKey<FormState> _form = GlobalKey<FormState>();
+  var googleLogInProvider;
+
   @override
   Widget build(BuildContext context) {
+    googleLogInProvider =
+        Provider.of<GoogleSignInProvider>(context, listen: false);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -34,33 +40,38 @@ class _LoginState extends State<Login> {
               child: Column(
                 children: [
                   MainTitle(),
-                  Container(
-                    height: 56,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                      border: Border.all(
-                        color: Color.fromRGBO(0, 0, 0, 0.12),
+                  GestureDetector(
+                    onTap: () {
+                      googleLogInProvider.signInWithGoogle();
+                    },
+                    child: Container(
+                      height: 56,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(
+                          color: Color.fromRGBO(0, 0, 0, 0.12),
+                        ),
                       ),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          FontAwesomeIcons.google,
-                          color: Colors.orangeAccent,
-                        ),
-                        SizedBox(
-                          width: 20,
-                        ),
-                        Text(
-                          "LOGIN WITH GOOGLE",
-                          style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              fontFamily: "Roboto",
-                              color: Colors.black),
-                        )
-                      ],
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(
+                            FontAwesomeIcons.google,
+                            color: Colors.orangeAccent,
+                          ),
+                          SizedBox(
+                            width: 20,
+                          ),
+                          Text(
+                            "LOGIN WITH GOOGLE",
+                            style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w500,
+                                fontFamily: "Roboto",
+                                color: Colors.black),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                   Padding(
@@ -74,7 +85,54 @@ class _LoginState extends State<Login> {
                           fontWeight: FontWeight.w500),
                     ),
                   ),
-                  LoginTextForm(),
+                  Form(
+                    key: _form,
+                    child: Column(
+                      children: [
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 26),
+                          child: TextFormField(
+                            maxLength: 20,
+                            decoration: InputDecoration(
+                              border: kTextFieldBorder,
+                              enabledBorder: kTextFieldEnabledBorder,
+                              hintText: 'E-mail',
+                              labelText: "E-mail",
+                            ),
+                            controller: _email,
+                            validator: (val) {
+                              if (val.isEmpty) {
+                                return 'Empty';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(bottom: 26),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              border: kTextFieldBorder,
+                              enabledBorder: kTextFieldEnabledBorder,
+                              hintText: 'Input-text',
+                              labelText: "Password",
+                              suffixIcon: Icon(
+                                Icons.remove_red_eye,
+                                color: Color(0xff000000),
+                              ),
+                            ),
+                            controller: _password,
+                            validator: (val) {
+                              if (val.isEmpty) {
+                                return 'Empty';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                   Container(
                     child: Padding(
                       padding: const EdgeInsets.only(bottom: 16),
@@ -89,25 +147,19 @@ class _LoginState extends State<Login> {
                           onPressed: () async {
                             if (_form.currentState.validate()) {
                               try {
-                                UserCredential userCredential =
-                                    await FirebaseAuth.instance
-                                        .signInWithEmailAndPassword(
-                                            email: _email.text,
-                                            password: _password.text);
-                                if (userCredential.user != null) {
+                                final user = await AuthHelper.signInWithEmail(
+                                    email: _email.text,
+                                    password: _password.text);
+                                if (user != null) {
                                   Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              WishListPage()));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => WishListPage(),
+                                    ),
+                                  );
                                 }
-                              } on FirebaseAuthException catch (e) {
-                                if (e.code == 'user-not-found') {
-                                  print('No user found for that email.');
-                                } else if (e.code == 'wrong-password') {
-                                  print(
-                                      'Wrong password provided for that user.');
-                                }
+                              } catch (e) {
+                                print(e);
                               }
                             }
                           },
@@ -146,6 +198,12 @@ class _LoginState extends State<Login> {
                                   fontSize: 12, fontWeight: FontWeight.w400),
                             ),
                             GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => SignUpForm()));
+                              },
                               child: Text(
                                 "Sign up",
                                 style: TextStyle(
@@ -169,55 +227,10 @@ class _LoginState extends State<Login> {
   }
 }
 
-class LoginTextForm extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _form,
-      child: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.only(bottom: 26),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: kTextFieldBorder,
-                enabledBorder: kTextFieldEnabledBorder,
-                hintText: 'E-mail',
-                labelText: "E-mail",
-              ),
-              controller: _email,
-              validator: (val) {
-                if (val.isEmpty) {
-                  return 'Empty';
-                }
-                return null;
-              },
-            ),
-          ),
-          Padding(
-            padding: EdgeInsets.only(bottom: 26),
-            child: TextFormField(
-              decoration: InputDecoration(
-                border: kTextFieldBorder,
-                enabledBorder: kTextFieldEnabledBorder,
-                hintText: 'Input-text',
-                labelText: "Password",
-                suffixIcon: Icon(
-                  Icons.remove_red_eye,
-                  color: Color(0xff000000),
-                ),
-              ),
-              controller: _password,
-              validator: (val) {
-                if (val.isEmpty) {
-                  return 'Empty';
-                }
-                return null;
-              },
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
+// class LoginTextForm extends StatelessWidget {
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return ;
+//   }
+// }

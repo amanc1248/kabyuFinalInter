@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:kabyu_feather_webs/Model/Provider/provider.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
 import 'package:kabyu_feather_webs/views/Authentication/KitabTitle/maintitle.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/LowerPart/AlreadyHaveAnAccount.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kabyu_feather_webs/Widgets/EmailPasswordConfim.dart';
-import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/auth.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Authentication/auth.dart';
 import 'package:provider/provider.dart';
 
 class SignUpForm extends StatefulWidget {
@@ -14,18 +13,20 @@ class SignUpForm extends StatefulWidget {
   _SignUpFormState createState() => _SignUpFormState();
 }
 
-var theProvider;
+var googleSignInProvider;
 
 class _SignUpFormState extends State<SignUpForm> {
   User user;
   void initState() {
     super.initState();
-    signOutGoogle();
+    AuthHelper.logOut();
   }
 
   void click() {
-    signInWithGoogle().then((user) => {
+    googleSignInProvider.signInWithGoogle().then((user) => {
           this.user = user,
+          googleSignInProvider.createUser(),
+          googleSignInProvider.storeUserData(),
           Navigator.push(
               context, MaterialPageRoute(builder: (context) => WishListPage()))
         });
@@ -37,8 +38,9 @@ class _SignUpFormState extends State<SignUpForm> {
 
   @override
   Widget build(BuildContext context) {
-    theProvider = Provider.of<ProviderClass>(context, listen: false);
-
+    googleSignInProvider =
+        Provider.of<GoogleSignInProvider>(context, listen: false);
+    AuthHelper.logOut();
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,
@@ -108,24 +110,3 @@ class _SignUpFormState extends State<SignUpForm> {
     );
   }
 }
-//  onTap: () async {
-//                           try {
-//                             UserCredential userCredential =
-//                                 await auth.createUserWithEmailAndPassword(
-//                                     email: email,
-//                                     password: password);
-//                           } on FirebaseAuthException catch (e) {
-//                             if (e.code == 'weak-password') {
-//                               print('The password provided is too weak.');
-//                             } else if (e.code == 'email-already-in-use') {
-//                               print(
-//                                   'The account already exists for that email.');
-//                             }
-//                           } catch (e) {
-//                             print(e);
-//                           }
-//                           Navigator.push(
-//                               context,
-//                               MaterialPageRoute(
-//                                   builder: (context) => SignupEmail()));
-//                         },
