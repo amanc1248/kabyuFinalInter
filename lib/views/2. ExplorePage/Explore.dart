@@ -26,9 +26,9 @@ class _ExplorePageState extends State<ExplorePage> {
     return ListView(
       children: [
         TopNavigationBar(
-          // icon: Icons.menu,
-          // ontap: () {},
-        ),
+            // icon: Icons.menu,
+            // ontap: () {},
+            ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: 12.0),
           child: Column(
@@ -198,29 +198,37 @@ class _ExplorePageState extends State<ExplorePage> {
               ),
               SingleChildScrollView(
                 child: Column(children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width / 3,
-                    margin: EdgeInsets.only(
-                        left: 20.0, top: 9, right: 9, bottom: 9),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text("How innovation works",
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ProductIndividual()));
+                    },
+                    child: Container(
+                      width: MediaQuery.of(context).size.width / 3,
+                      margin: EdgeInsets.only(
+                          left: 20.0, top: 9, right: 9, bottom: 9),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text("How innovation works",
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              )),
+                          Text(
+                            "Npr 120",
                             style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            )),
-                        Text(
-                          "Npr 120",
-                          style: TextStyle(
-                            color: Colors.black54,
+                              color: Colors.black54,
+                            ),
                           ),
-                        ),
-                        RatingBar(),
-                        Text("Science-Fiction",
-                            style: TextStyle(color: Color(0XFF30009C))),
-                      ],
+                          RatingBar(),
+                          Text("Science-Fiction",
+                              style: TextStyle(color: Color(0XFF30009C))),
+                        ],
+                      ),
                     ),
                   ),
                 ]),

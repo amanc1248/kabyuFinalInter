@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/LowerPart/AlreadyHaveAnAccount.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path/path.dart';
 import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -19,23 +18,9 @@ class ProfileTab extends StatefulWidget {
   _ProfileTabState createState() => _ProfileTabState();
 }
 
-// GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
 var googleSignInProvider;
 
 class _ProfileTabState extends State<ProfileTab> {
-  uploadImageToFirebase() {
-    String fileName = basename(_imageFile.path);
-    print("I am inside the upload image to firebae");
-    final Reference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('uploads/$fileName');
-    final UploadTask task = firebaseStorageRef.putFile(_imageFile);
-    task.whenComplete(() async {
-      String imageurl = await firebaseStorageRef.getDownloadURL();
-      print("this is the url" + imageurl);
-      googleSignInProvider.userDetails[5] = imageurl;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     googleSignInProvider =
@@ -43,7 +28,6 @@ class _ProfileTabState extends State<ProfileTab> {
 
     return Container(
       child: Column(
-        // mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Padding(
             padding: const EdgeInsets.only(bottom: 43),
@@ -54,8 +38,16 @@ class _ProfileTabState extends State<ProfileTab> {
               Expanded(
                 child: FlatButton(
                     onPressed: () {
-                      widget.theTabController
-                          .animateTo((widget.theTabController.index + 1));
+                      Future.delayed(Duration.zero, () {
+                        widget.theTabController.animateTo(
+                          (widget.theTabController.index + 1),
+                        );
+                      });
+                      SchedulerBinding.instance.addPostFrameCallback((_) {
+                        // add your code here.
+
+                        googleSignInProvider.createUser();
+                      });
                     },
                     child: Container(
                         child: Text(
@@ -76,11 +68,14 @@ class _ProfileTabState extends State<ProfileTab> {
                   child: FlatButton(
                     onPressed: () async {
                       // Going to another tab👇
-                      widget.theTabController.animateTo(
-                        (widget.theTabController.index + 1),
-                      );
-                      googleSignInProvider.showSpinner = true;
-                      await uploadImageToFirebase();
+                      Future.delayed(Duration.zero, () {
+                        widget.theTabController.animateTo(
+                          (widget.theTabController.index + 1),
+                        );
+                      });
+                      SchedulerBinding.instance.addPostFrameCallback((_) {
+                        googleSignInProvider.createUser();
+                      });
                     },
                     child: Text("DONE",
                         style: TextStyle(
@@ -100,7 +95,6 @@ class _ProfileTabState extends State<ProfileTab> {
   }
 }
 
-File _imageFile;
 final picker = ImagePicker();
 
 class ImagePick extends StatefulWidget {
@@ -109,11 +103,24 @@ class ImagePick extends StatefulWidget {
 }
 
 class _ImagePickState extends State<ImagePick> {
-  Future pickImage() async {
-    var pickedFile = await picker.getImage(source: ImageSource.camera);
+  // var pickedFile =;
+  Future pickImageFromGallery() async {
+    var pickedFile = await picker.getImage(source: ImageSource.gallery);
+    // var pickedFile = await picker.getImage(source: ImageSource.gallery);
+    googleSignInProvider.imageFile = null;
 
     setState(() {
-      _imageFile = File(pickedFile.path);
+      googleSignInProvider.imageFile = File(pickedFile.path);
+    });
+  }
+
+  Future pickImageFromCamera() async {
+    var pickedFile = await picker.getImage(source: ImageSource.camera);
+    // var pickedFile = await picker.getImage(source: ImageSource.gallery);
+    googleSignInProvider.imageFile = null;
+
+    setState(() {
+      googleSignInProvider.imageFile = File(pickedFile.path);
     });
   }
 
@@ -129,14 +136,14 @@ class _ImagePickState extends State<ImagePick> {
                       leading: new Icon(Icons.photo_library),
                       title: new Text('Photo Library'),
                       onTap: () {
-                        pickImage();
+                        pickImageFromGallery();
                         Navigator.of(context).pop();
                       }),
                   new ListTile(
                     leading: new Icon(Icons.photo_camera),
                     title: new Text('Camera'),
                     onTap: () {
-                      pickImage();
+                      pickImageFromCamera();
                       Navigator.of(context).pop();
                     },
                   ),
@@ -155,14 +162,14 @@ class _ImagePickState extends State<ImagePick> {
       },
       child: Container(
         decoration: BoxDecoration(borderRadius: BorderRadius.circular(90)),
-        child: _imageFile != null
+        child: googleSignInProvider.imageFile != null
             ? ClipRRect(
                 borderRadius: BorderRadius.circular(75),
                 child: Image.file(
-                  _imageFile,
+                  googleSignInProvider.imageFile,
                   width: 150,
                   height: 150,
-                  fit: BoxFit.fitHeight,
+                  fit: BoxFit.cover,
                 ),
               )
             : Container(

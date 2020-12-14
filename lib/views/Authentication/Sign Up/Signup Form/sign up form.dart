@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
-import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
+import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 import 'package:kabyu_feather_webs/views/Authentication/KitabTitle/maintitle.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/LowerPart/AlreadyHaveAnAccount.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kabyu_feather_webs/Widgets/EmailPasswordConfim.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Authentication/auth.dart';
+import 'package:kabyu_feather_webs/views/Navigation/buttomNavigationBar.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class SignUpForm extends StatefulWidget {
   @override
@@ -16,20 +16,9 @@ class SignUpForm extends StatefulWidget {
 var googleSignInProvider;
 
 class _SignUpFormState extends State<SignUpForm> {
-  User user;
   void initState() {
     super.initState();
     AuthHelper.logOut();
-  }
-
-  void click() {
-    googleSignInProvider.signInWithGoogle().then((user) => {
-          this.user = user,
-          googleSignInProvider.createUser(),
-          googleSignInProvider.storeUserData(),
-          Navigator.push(
-              context, MaterialPageRoute(builder: (context) => WishListPage()))
-        });
   }
 
   String email;
@@ -55,7 +44,11 @@ class _SignUpFormState extends State<SignUpForm> {
                     MainTitle(),
                     GestureDetector(
                       onTap: () async {
-                        click();
+                        await googleSignInProvider.click();
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => MyHomePage()));
                       },
                       child: Container(
                         height: 56,
@@ -68,9 +61,9 @@ class _SignUpFormState extends State<SignUpForm> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(
-                              FontAwesomeIcons.google,
-                              color: Colors.orangeAccent,
+                            SvgPicture.asset(
+                              "assets/googleicon.svg",
+                              height: 25,
                             ),
                             SizedBox(
                               width: 20,

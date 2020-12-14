@@ -38,11 +38,9 @@ class _EmailTabState extends State<EmailTab> {
               padding: kSignUpFormTextFieldPadding,
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
+
                 maxLength: 30,
-                keyboardType: TextInputType.emailAddress,
-                onChanged: (value) {
-                  _form.currentState.validate();
-                },
+                keyboardType: TextInputType.name,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[a-zA-Z ]')),
                 ],
@@ -54,6 +52,9 @@ class _EmailTabState extends State<EmailTab> {
                 ),
                 controller: _name,
                 validator: (val) {
+                  if (val.isEmpty) {
+                    return "Empty";
+                  }
                   return null;
                 },
               ),
@@ -64,13 +65,11 @@ class _EmailTabState extends State<EmailTab> {
               padding: kSignUpFormTextFieldPadding,
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
+
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[0-9+]')),
                 ],
                 keyboardType: TextInputType.phone,
-                onChanged: (value) {
-                  _form.currentState.validate();
-                },
                 decoration: InputDecoration(
                   border: kTextFieldBorder,
                   enabledBorder: kTextFieldEnabledBorder,
@@ -79,6 +78,9 @@ class _EmailTabState extends State<EmailTab> {
                 ),
                 controller: _contact,
                 validator: (val) {
+                  if (val.isEmpty) {
+                    return "Empty";
+                  }
                   return null;
                 },
               ),
@@ -89,13 +91,11 @@ class _EmailTabState extends State<EmailTab> {
               padding: kSignUpFormTextFieldPadding,
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
+
                 keyboardType: TextInputType.streetAddress,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9 ,]')),
                 ],
-                onChanged: (value) {
-                  _form.currentState.validate();
-                },
                 decoration: InputDecoration(
                   border: kTextFieldBorder,
                   enabledBorder: kTextFieldEnabledBorder,
@@ -104,6 +104,9 @@ class _EmailTabState extends State<EmailTab> {
                 ),
                 controller: _address,
                 validator: (val) {
+                  if (val.isEmpty) {
+                    return "Empty";
+                  }
                   return null;
                 },
               ),
@@ -127,8 +130,9 @@ class _EmailTabState extends State<EmailTab> {
                         googleSignInProvider.userDetails[4]);
                     print(googleSignInProvider.userDetails);
                     //Going to the Profile Tab ⏭
-                    widget.theTabController
-                        .animateTo((widget.theTabController.index + 1));
+                    widget.theTabController.animateTo(
+                      (widget.theTabController.index + 1),
+                    );
                   }
                 },
                 child: NextButton()),

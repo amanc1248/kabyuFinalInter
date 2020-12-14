@@ -1,11 +1,13 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/Provider/BottomNavigationProvider/BottomNavigationProvider.dart';
+import 'package:kabyu_feather_webs/Provider/ChangePassword/ChangePasswordProvider.dart';
 import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
-import 'package:kabyu_feather_webs/Provider/CompleteProvider/CompleteProvider.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart';
+import 'package:kabyu_feather_webs/views/Navigation/buttomNavigationBar.dart';
 import 'package:provider/provider.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -61,12 +63,20 @@ class _MyAppState extends State<MyApp> {
     }
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider<ProviderClass>(
-            create: (context) => ProviderClass()),
         ChangeNotifierProvider<GoogleSignInProvider>(
-            create: (context) => GoogleSignInProvider()),
+          create: (context) => GoogleSignInProvider(),
+        ),
+        ChangeNotifierProvider<ChangePasswordProvider>(
+          create: (context) => ChangePasswordProvider(),
+        ),
+        ChangeNotifierProvider<BottomNavigationProvider>(
+          create: (context) => BottomNavigationProvider(),
+        ),
       ],
       child: MaterialApp(
+        routes: {
+          WishListPage.id: (context) => WishListPage(),
+        },
         debugShowCheckedModeBanner: false,
         home: MainScreen(),
       ),
@@ -77,13 +87,18 @@ class _MyAppState extends State<MyApp> {
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<User>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData && snapshot.data != null) {
-            return WishListPage();
-          }
-          return Login();
-        });
+    var bottomNavigationBar =
+        Provider.of<BottomNavigationProvider>(context, listen: false);
+    return Consumer<BottomNavigationProvider>(
+      builder: (context, value, child) => StreamBuilder<User>(
+          stream: FirebaseAuth.instance.authStateChanges(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData && snapshot.data != null) {
+              // bottomNavigationBar.selectedIndex = 1;
+              return MyHomePage();
+            }
+            return Login();
+          }),
+    );
   }
 }

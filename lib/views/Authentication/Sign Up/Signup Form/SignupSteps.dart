@@ -26,6 +26,7 @@ class _SignupEmailState extends State<SignupEmail>
     });
   }
 
+  bool selectedTab = true;
   @override
   void dispose() {
     _tabController.dispose();
@@ -59,7 +60,7 @@ class _SignupEmailState extends State<SignupEmail>
                                   unselectedLabelColor:
                                       Color.fromRGBO(0, 0, 0, 0.87),
                                   labelColor: Color(0xff9E9E9E),
-                                  indicatorColor: Color.fromRGBO(98, 0, 238, 1),
+                                  indicatorColor: Color.fromRGBO(98,0,238,1),
                                   tabs: myTabs,
                                 ),
                               ),
@@ -71,10 +72,11 @@ class _SignupEmailState extends State<SignupEmail>
                               width: double.infinity,
                               height: 500,
                               child: TabBarView(
-                                  // physics: NeverScrollableScrollPhysics(),
+                                  physics: NeverScrollableScrollPhysics(),
                                   controller: _tabController,
                                   children: [
                                     EmailTab(
+                                    
                                       theTabController: _tabController,
                                     ),
                                     ProfileTab(

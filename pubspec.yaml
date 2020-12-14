@@ -62,7 +62,7 @@ flutter:
     - profileimage.jpg
     - complete.svg
     - howinnovationworks.jpg
-    - assets/WishlistBooks/
+    - googleicon.svg
 
   fonts:
     - family: Abril FatFace

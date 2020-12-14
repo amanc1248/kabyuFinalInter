@@ -1,8 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path/path.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
 final firestoreSave = FirebaseFirestore.instance;
@@ -36,6 +41,15 @@ class GoogleSignInProvider extends ChangeNotifier {
           await auth.createUserWithEmailAndPassword(
               email: userDetails[0], password: userDetails[1]);
       pref.setString("userId", userCredential.user.uid);
+      if (userCredential != null) {
+        showSpinner = true;
+        print("The spinner is true right now");
+        await uploadImageToFirebase();
+        await storeUserData();
+        print("The spinner is FALSE1 right now");
+        showSpinner = false;
+        print("The spinner is FALSE2 right now");
+      }
     } catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -50,21 +64,48 @@ class GoogleSignInProvider extends ChangeNotifier {
     print("i am inside user database ");
     SharedPreferences pref = await SharedPreferences.getInstance();
     String userId = pref.getString("userId");
+    userDetails[6] = userId;
     await firestoreSave.collection('users').doc(userId).set({
       'email': userDetails[0],
       'password': userDetails[1],
       'name': userDetails[2],
       'phone_number': userDetails[3],
       'address': userDetails[4],
-      'photo_url': userDetails[5]
+      'photo_url': userDetails[5],
+      'user_id': userDetails[6]
     }).catchError((onError) {
       print(
           "you have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a error");
     });
+    print("**************************************");
+    print(userDetails);
+    print("**************************************");
+  }
+
+  uploadImageToFirebase() async {
+    String fileName = basename(_imageFile.path);
+    Reference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child('uploads/$fileName');
+    UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+    TaskSnapshot taskSnapshot = await uploadTask;
+    await taskSnapshot.ref.getDownloadURL().then((value) {
+      print("Done: $value");
+      userDetails[5] = value;
+      print(userDetails);
+    });
+  }
+
+  User user;
+
+  click() async {
+    await signInWithGoogle().then((user) => {
+          this.user = user,
+          createUser(),
+        });
   }
 
   //1) Stores the userDetails 👇
-  List _userDetails = new List(6);
+  List _userDetails = new List(7);
   List get userDetails => _userDetails;
   set userDetails(List val) {
     _userDetails = val;
@@ -72,10 +113,18 @@ class GoogleSignInProvider extends ChangeNotifier {
   }
 
   //2) showing spinner
-  bool _showSpinner = false;
+  bool _showSpinner = true;
   bool get showSpinner => _showSpinner;
   set showSpinner(bool val) {
     _showSpinner = val;
+    notifyListeners();
+  }
+
+  //3) User Image file
+  File _imageFile;
+  File get imageFile => _imageFile;
+  set imageFile(File val) {
+    _imageFile = val;
     notifyListeners();
   }
 }

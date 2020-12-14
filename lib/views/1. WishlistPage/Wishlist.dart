@@ -22,20 +22,6 @@ final List<HamburgerOptions> theHamburgerOptionsList = [
   )
 ];
 
-// class MainWishListPage extends StatefulWidget {
-//   @override
-//   _MainWishListPageState createState() => _MainWishListPageState();
-// }
-
-// class _MainWishListPageState extends State<MainWishListPage> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       home: WishListPage(),
-//     );
-//   }
-// }
-
 class WishListPage extends StatefulWidget {
   static const String id = 'wishlistPage';
 
@@ -157,11 +143,11 @@ class _WishListPageState extends State<WishListPage> {
                         itemBuilder: (context, index) => GestureDetector(
                           onTap: () {
                             Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        theHamburgerOptionsList[index]
-                                            .theRoute));
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      theHamburgerOptionsList[index].theRoute),
+                            );
                           },
                           child: ListTile(
                             leading:

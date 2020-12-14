@@ -27,7 +27,6 @@ class _ProfileEditState extends State<ProfileEdit> {
                   SizedBox(
                     height: 10,
                   ),
-                  // ImagePick(),
                   SizedBox(
                     height: 20,
                   ),

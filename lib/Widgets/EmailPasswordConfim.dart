@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/LowerPart/Button.dart';
 import 'package:provider/provider.dart';
@@ -12,17 +13,29 @@ class EmailPasswordConfirmPassword extends StatefulWidget {
       _EmailPasswordConfirmPasswordState();
 }
 
-// String validateEmail(String value) {
-//   Pattern pattern =
-//       r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-//       r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-//       r"{0,253}[a-zA-Z0-9])?)*$";
-//   RegExp regex = new RegExp(pattern);
-//   if (!regex.hasMatch(value) || value == null)
-//     return 'Enter a valid email address';
-//   else
-//     return null;
+// bool isPasswordCompliant(String password, [int minLength = 6]) {
+//   if (password == null || password.isEmpty) {
+//     return false;
+//   }
+
+//   bool hasMinLength = password.length > minLength;
+
 // }
+
+//For upper and lower case
+bool isPasswordUpperLowerCase(String password) {
+  bool hasUppercase = password.contains(new RegExp(r'[A-Z]'));
+  bool hasLowercase = password.contains(new RegExp(r'[a-z]'));
+  return hasUppercase & hasLowercase;
+}
+
+//for password containing digits and special character
+bool isPasswordDigitSpecialCharacter(String password) {
+  bool hasDigits = password.contains(new RegExp(r'[0-9]'));
+  bool hasSpecialCharacters =
+      password.contains(new RegExp(r'[!@#$%^&*(),.?":{}|<>]'));
+  return hasDigits & hasSpecialCharacters;
+}
 
 var googleSignInProvider;
 bool passwordEye = true;
@@ -50,9 +63,6 @@ class _EmailPasswordConfirmPasswordState
             child: TextFormField(
               autovalidateMode: AutovalidateMode.onUserInteraction,
               keyboardType: TextInputType.emailAddress,
-              onChanged: (value) {
-                _form.currentState.validate();
-              },
               decoration: InputDecoration(
                 border: kTextFieldBorder,
                 enabledBorder: kTextFieldEnabledBorder,
@@ -71,7 +81,6 @@ class _EmailPasswordConfirmPasswordState
             padding: kSignUpFormTextFieldPadding,
             child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-                keyboardType: TextInputType.emailAddress,
                 obscureText: passwordEye,
                 decoration: InputDecoration(
                   border: kTextFieldBorder,
@@ -85,16 +94,27 @@ class _EmailPasswordConfirmPasswordState
                       });
                     },
                     child: Icon(
-                      Icons.remove_red_eye,
+                      passwordEye
+                          ? FontAwesomeIcons.eye
+                          : FontAwesomeIcons.eyeSlash,
                       color: Color(0xff000000),
                     ),
                   ),
                 ),
                 controller: _pass,
                 validator: (val) {
-                  // if (val.isEmpty) {
-                  //   return 'Empty';
-                  // }
+                  if (val.isEmpty) {
+                    return "Empty";
+                  }
+                  if (isPasswordUpperLowerCase(val) != true) {
+                    return "Password must contain upper and lower case letter";
+                  }
+                  if (isPasswordDigitSpecialCharacter(val) != true) {
+                    return "Password must contain digit with special character";
+                  }
+                  if (val.length < 6) {
+                    return "Password length must be greater than 6";
+                  }
                   return null;
                 }),
           ),
@@ -103,9 +123,8 @@ class _EmailPasswordConfirmPasswordState
           Padding(
             padding: kSignUpFormTextFieldPadding,
             child: TextFormField(
-                obscureText: confirmPasswordEye,
-                keyboardType: TextInputType.emailAddress,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
+                obscureText: confirmPasswordEye,
                 decoration: InputDecoration(
                   border: kTextFieldBorder,
                   enabledBorder: kTextFieldEnabledBorder,
@@ -118,16 +137,18 @@ class _EmailPasswordConfirmPasswordState
                       });
                     },
                     child: Icon(
-                      Icons.remove_red_eye,
+                      confirmPasswordEye
+                          ? FontAwesomeIcons.eye
+                          : FontAwesomeIcons.eyeSlash,
                       color: Color(0xff000000),
                     ),
                   ),
                 ),
                 controller: _confirmPass,
                 validator: (val) {
-                  // if (val.isEmpty) {
-                  //   return "Empty";
-                  // }
+                  if (val.isEmpty) {
+                    return "Empty";
+                  }
                   if (val != _pass.text) {
                     return 'Not Match';
                   }
@@ -158,45 +179,3 @@ class _EmailPasswordConfirmPasswordState
         ]));
   }
 }
-// class EmailPasswordConfirmPassword extends StatefulWidget {
-//   final bool obscureTextValue;
-//   final Function onChangedFunction;
-//   final String hintString;
-//   final String labelString;
-//   final IconData suffixIcon;
-//   EmailPasswordConfirmPassword(
-//       {@required this.obscureTextValue,
-//       this.onChangedFunction,
-//       @required this.hintString,
-//       @required this.labelString,
-//       this.suffixIcon});
-//   @override
-//   _EmailPasswordConfirmPasswordState createState() =>
-//       _EmailPasswordConfirmPasswordState();
-// }
-
-// class _EmailPasswordConfirmPasswordState
-//     extends State<EmailPasswordConfirmPassword> {
-//   @override
-//   Widget build(BuildContext context) {
-//     return Padding(
-//            padding: kSignUpFormTextFieldPadding,
-//       child: TextField(
-//         obscureText: widget.obscureTextValue,
-//         onChanged: widget.onChangedFunction,
-//         keyboardType: TextInputType.emailAddress,
-//         decoration: InputDecoration(
-//           border: kTextFieldBorder,
-//           // errorText: validate ? 'Password Can\'t Be Empty' : null,
-//           enabledBorder: kTextFieldEnabledBorder,
-//           hintText: widget.hintString,
-//           labelText: widget.labelString,
-//           suffixIcon: Icon(
-//             widget.suffixIcon,
-//             color: Color(0xff000000),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
