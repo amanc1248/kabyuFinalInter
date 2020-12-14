@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/Widgets/BookOverview.dart';
 import 'package:kabyu_feather_webs/Model/Hamburger%20Model/HamburgerOptionsClass.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 import 'package:kabyu_feather_webs/views/ProductsSale/MyProducts/MyProducts.dart';
 import 'package:kabyu_feather_webs/views/Profile/SettingOpen/SettingOpen.dart';
+import 'package:provider/provider.dart';
 
 final List<HamburgerOptions> theHamburgerOptionsList = [
   HamburgerOptions(
@@ -30,6 +32,12 @@ class WishListPage extends StatefulWidget {
 }
 
 class _WishListPageState extends State<WishListPage> {
+  void initState() {
+    Provider.of<WishlistProvider>(context, listen: false).loadwishList();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(

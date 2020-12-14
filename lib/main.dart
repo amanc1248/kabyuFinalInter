@@ -5,6 +5,7 @@ import 'package:kabyu_feather_webs/Provider/ChangePassword/ChangePasswordProvide
 import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart';
 import 'package:kabyu_feather_webs/views/Navigation/buttomNavigationBar.dart';
@@ -64,6 +65,14 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<GoogleSignInProvider>(
+            create: (context) => GoogleSignInProvider()),
+        ChangeNotifierProvider<CategoryProvider>(
+            create: (context) => CategoryProvider()),
+        ChangeNotifierProvider<ProductProvider>(
+            create: (context) => ProductProvider()),
+        ChangeNotifierProvider<WishlistProvider>(
+            create: (context) => WishlistProvider()),
+        ChangeNotifierProvider<GoogleSignInProvider>(
           create: (context) => GoogleSignInProvider(),
         ),
         ChangeNotifierProvider<ChangePasswordProvider>(
@@ -72,6 +81,8 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider<BottomNavigationProvider>(
           create: (context) => BottomNavigationProvider(),
         ),
+        ChangeNotifierProvider<WishlistProvider>(
+            create: (context) => WishlistProvider()),
       ],
       child: MaterialApp(
         routes: {
@@ -87,8 +98,6 @@ class _MyAppState extends State<MyApp> {
 class MainScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var bottomNavigationBar =
-        Provider.of<BottomNavigationProvider>(context, listen: false);
     return Consumer<BottomNavigationProvider>(
       builder: (context, value, child) => StreamBuilder<User>(
           stream: FirebaseAuth.instance.authStateChanges(),

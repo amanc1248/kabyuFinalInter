@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Model/product_individual_carousel.dart';
+import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/Widgets/Rating_Bar.dart';
 import 'package:kabyu_feather_webs/Widgets/products_grid.dart';
-import 'package:kabyu_feather_webs/views/3.%20ChatPage/ChatListBookStore/Chat.dart';
+import 'package:kabyu_feather_webs/services/database.dart';
 
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
+import 'package:provider/provider.dart';
 
 class ProductIndividual extends StatefulWidget {
   @override
@@ -14,200 +16,222 @@ class ProductIndividual extends StatefulWidget {
 class _ProductIndividualState extends State<ProductIndividual> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-          child: Column(children: [
-        Container(
-          color: Colors.white,
-          child: Column(
-            children: [
-              TopNavigationBar(
-                  // icon: Icons.chevron_left,
-                  ),
-              ProductCarousel(),
-            ],
+    ProductProvider productProvider =
+        Provider.of<ProductProvider>(context, listen: false);
+    // double rate = productProvider.currentProduct.rating;
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+            child: Column(children: [
+          Container(
+            color: Colors.white,
+            child: Column(
+              children: [
+                TopNavigationBar(
+                    // icon: Icons.chevron_left,
+                    ),
+                IconButton(
+                    icon: Icon(Icons.chevron_left),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    }),
+                ProductCarousel(),
+              ],
+            ),
           ),
-        ),
-        Container(
-          color: Color(0XFFF8F8F8),
-          padding: EdgeInsets.all(12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Npr 200 /-",
-                style: TextStyle(
-                    color: Color(0xFF01A299), fontWeight: FontWeight.w700),
-              ),
-              Text(
-                "How innovation works",
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0),
-              ),
-              SizedBox(height: 5.0),
-              Row(
-                children: [
-                  RatingBar(),
-                  SizedBox(width: 10.0),
-                  Text(
-                    "Science",
-                    style: TextStyle(
-                        fontWeight: FontWeight.w400, color: Color(0xFF30009C)),
-                  ),
-                ],
-              ),
-              SizedBox(height: 10.0),
-              Divider(
-                color: Color.fromRGBO(33, 33, 33, 0.08),
-                thickness: 1.0,
-                height: 10.0,
-              ),
-              SizedBox(height: 5.0),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Column(
+          Container(
+            color: Color(0XFFF8F8F8),
+            padding: EdgeInsets.all(12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Npr " +
+                      (productProvider.currentProduct.price != ''
+                          ? productProvider.currentProduct.price
+                          : "\"" "Not Provided" "\"") +
+                      "/-",
+                  style: TextStyle(
+                      color: Color(0xFF01A299), fontWeight: FontWeight.w700),
+                ),
+                Text(
+                  productProvider.currentProduct.title,
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0),
+                ),
+                SizedBox(height: 5.0),
+                Row(
                   children: [
-                    buildRows(first: "Condition", second: "Brand new"),
-                    SizedBox(height: 10.0),
-                    buildRows(first: "Available for", second: "Exchange Sell"),
+                    productProvider.currentProduct.rating != null
+                        ? RatingBar()
+                        : Text("No Ratings"),
+                    SizedBox(width: 10.0),
+                    Text(
+                      productProvider.currentProduct.categoryid,
+                      style: TextStyle(
+                          fontWeight: FontWeight.w400,
+                          color: Color(0xFF30009C)),
+                    ),
                   ],
                 ),
-              ),
-              buildTitle(title: "Description"),
-              SizedBox(height: 10.0),
-              Text(
-                "Sit arcu, tortor euismod nisi, volutpat massa neque, quis ac. Leo lorem volutpat urna, maecenas fringilla condimentum risus adipiscing vehicula. Feugiat duis lacus consequat, ut consequat, morbi ultricies ac elementum. Et nibh aliquet egestas porttitor. Id a ultrices leo dolor.",
-                style: TextStyle(
-                  fontWeight: FontWeight.w400,
+                SizedBox(height: 10.0),
+                Divider(
+                  color: Color.fromRGBO(33, 33, 33, 0.08),
+                  thickness: 1.0,
+                  height: 10.0,
                 ),
-              ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    buildTitle(title: "Seller details"),
-                    SizedBox(height: 10.0),
-                    Row(
-                      children: [
-                        Text("Seller: ",
-                            style: TextStyle(fontWeight: FontWeight.w400)),
-                        SizedBox(width: 20.0),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Ekta bookstore"),
-                            Text(
-                              "( 7 more products )",
-                              style: TextStyle(color: Color(0xFF30009C)),
-                            )
-                          ],
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: 10.0),
-                    Row(
-                      children: [
-                        Text("Contact: ",
-                            style: TextStyle(fontWeight: FontWeight.w400)),
-                        SizedBox(width: 5.0),
-                        Text("Hidden", style: TextStyle(color: Colors.black54))
-                      ],
-                    ),
-                    SizedBox(height: 10.0),
-                    Divider(
-                      color: Color.fromRGBO(33, 33, 33, 0.08),
-                      thickness: 1.0,
-                      height: 10.0,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30.0),
-                      child: Column(
+                SizedBox(height: 5.0),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    children: [
+                      buildRows(
+                          first: "Condition",
+                          second: productProvider.currentProduct.condition),
+                      SizedBox(height: 10.0),
+                      buildRows(
+                          first: "Available for",
+                          second: productProvider.currentProduct.availablefor),
+                    ],
+                  ),
+                ),
+                buildTitle(title: "Description"),
+                SizedBox(height: 10.0),
+                Text(
+                  productProvider.currentProduct.description,
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(vertical: 10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildTitle(title: "Seller details"),
+                      SizedBox(height: 10.0),
+                      Row(
                         children: [
-                          Container(
-                            margin: const EdgeInsets.symmetric(vertical: 8.0),
-                            height: 56,
-                            child: FlatButton(
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4.0),
-                                  side: BorderSide(color: Color(0xFF6200EE))),
-                              color: Colors.white,
-                              textColor: Color(0xFF6200EE),
-                              onPressed: () {},
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(
-                                    Icons.favorite_border,
-                                    color: Color(0xFFB00020),
-                                  ),
-                                  Text(
-                                    "add to wishlist".toUpperCase(),
-                                    style: TextStyle(
-                                      fontSize: 14.0,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            height: 56,
-                            width: double.infinity,
-                            child: RaisedButton(
-                              onPressed: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ChatPage()));
-                              },
-                              child: Text(
-                                "talk to seller".toUpperCase(),
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500),
-                              ),
-                              color: Color(0xFF6200EE),
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4)),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          "similar books",
-                          style: TextStyle(fontWeight: FontWeight.w500),
-                        ),
-                        Container(
-                          child: Row(
+                          Text("Seller: ",
+                              style: TextStyle(fontWeight: FontWeight.w400)),
+                          SizedBox(width: 20.0),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Icon(
-                                Icons.arrow_right_alt,
-                                color: Color(0XFF30009C),
-                              ),
+                              Text("Ekta bookstore"),
                               Text(
-                                "view more",
-                                style: TextStyle(color: Color(0XFF30009C)),
+                                "( 7 more products )",
+                                style: TextStyle(color: Color(0xFF30009C)),
                               )
                             ],
                           ),
-                        )
-                      ],
-                    ),
-                    SizedBox(
-                      height: 10,
-                    ),
-                    ProductGrid()
-                  ],
+                        ],
+                      ),
+                      SizedBox(height: 10.0),
+                      Row(
+                        children: [
+                          Text("Contact: ",
+                              style: TextStyle(fontWeight: FontWeight.w400)),
+                          SizedBox(width: 5.0),
+                          Text("Hidden",
+                              style: TextStyle(color: Colors.black54))
+                        ],
+                      ),
+                      SizedBox(height: 10.0),
+                      Divider(
+                        color: Color.fromRGBO(33, 33, 33, 0.08),
+                        thickness: 1.0,
+                        height: 10.0,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 30.0),
+                        child: Column(
+                          children: [
+                            Container(
+                              margin: const EdgeInsets.symmetric(vertical: 8.0),
+                              height: 56,
+                              child: FlatButton(
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                    side: BorderSide(color: Color(0xFF6200EE))),
+                                color: Colors.white,
+                                textColor: Color(0xFF6200EE),
+                                onPressed: () {
+                                  addWishlist(
+                                      productProvider.currentProduct.book_Id);
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Icon(
+                                      Icons.favorite_border,
+                                      color: Color(0xFFB00020),
+                                    ),
+                                    Text(
+                                      "add to wishlist".toUpperCase(),
+                                      style: TextStyle(
+                                        fontSize: 14.0,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            Container(
+                              height: 56,
+                              width: double.infinity,
+                              child: RaisedButton(
+                                onPressed: () {},
+                                child: Text(
+                                  "talk to seller".toUpperCase(),
+                                  style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w500),
+                                ),
+                                color: Color(0xFF6200EE),
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4)),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            "similar books",
+                            style: TextStyle(fontWeight: FontWeight.w500),
+                          ),
+                          Container(
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.arrow_right_alt,
+                                  color: Color(0XFF30009C),
+                                ),
+                                Text(
+                                  "view more",
+                                  style: TextStyle(color: Color(0XFF30009C)),
+                                )
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      ProductGrid(
+                        count: 2,
+                      )
+                    ],
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ])),
+        ])),
+      ),
     );
   }
 

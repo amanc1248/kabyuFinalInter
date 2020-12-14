@@ -1,22 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:kabyu_feather_webs/Model/books_model.dart';
+import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
+import 'package:kabyu_feather_webs/Widgets/wishlistbooks.dart';
 
-import 'package:kabyu_feather_webs/widgets/booksList.dart';
+import 'package:provider/provider.dart';
 
+class WishListGrid extends StatefulWidget {
+  final int count;
 
-class WishListGrid extends StatelessWidget {
+  const WishListGrid({Key key, this.count}) : super(key: key);
+  @override
+  _WishListGridState createState() => _WishListGridState();
+}
+
+class _WishListGridState extends State<WishListGrid> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: double.infinity,
-        height: 234,
-        child: ListView.builder(
-            itemCount: getPopularBooks().length,
-            scrollDirection: Axis.horizontal,
-            itemBuilder: (ctxt, index) {
-              return BooksList(
-                book: getWishlistBooks()[index],
-              );
-            }));
+    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
+
+    return wishlistProvider.wishlistproductList.length == 0
+        ? Center(child: CircularProgressIndicator())
+        : Container(
+            height: 225,
+            child: GridView.count(
+              crossAxisCount: 2,
+              childAspectRatio: 0.75,
+              children: List.generate(widget.count, (index) {
+                return WishlistBooksList(book: index);
+              }),
+            ));
+    // child: ListView.builder(
+    //   scrollDirection: Axis.horizontal,
+    //   itemBuilder: (context, index) {
+    //     return WishlistBooksList(
+    //       book: index,
+    //     );
+    //   },
+    //   itemCount: wishlistProvider.wishlistproductList.length,
+    // ));
   }
 }
