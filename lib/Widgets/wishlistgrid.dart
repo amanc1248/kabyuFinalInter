@@ -18,7 +18,7 @@ class _WishListGridState extends State<WishListGrid> {
     WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
 
     return wishlistProvider.wishlistproductList.length == 0
-        ? Center(child: CircularProgressIndicator())
+        ? Center(child: Text("No any products in your wishlist"))
         : Container(
             height: 225,
             child: GridView.count(

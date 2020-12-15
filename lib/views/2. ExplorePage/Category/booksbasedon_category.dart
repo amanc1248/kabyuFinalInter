@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Model/books_model.dart';
+import 'package:kabyu_feather_webs/Widgets/booksList.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
-import 'package:kabyu_feather_webs/widgets/booksList.dart';
-
 class BooksBasedOnCategory extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -36,7 +35,7 @@ class BooksBasedOnCategory extends StatelessWidget {
                       (MediaQuery.of(context).size.width / 2) / 230,
                 ),
                 itemBuilder: (BuildContext context, int index) {
-                  return BooksList(book: getBooksBasedCategory()[index]);
+                  // return BooksList(book: getBooksBasedCategory()[index]);
                 },
               ),
             )

@@ -14,7 +14,7 @@ class _BookOverviewState extends State<BookOverview> {
     WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
     return Expanded(
       child: wishlistProvider.wishlistproductList.length == 0
-          ? Center(child: CircularProgressIndicator())
+          ? Center(child: Text("No products in your wishlist."))
           : ListView.builder(
               itemCount: wishlistProvider.wishlistproductList.length,
               itemBuilder: (context, index) => Container(
@@ -55,7 +55,7 @@ class _BookOverviewState extends State<BookOverview> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              wishlistProvider.wishlistproductList[index].price,
+                              "Npr "+ wishlistProvider.wishlistproductList[index].price + "/-",
                               style: TextStyle(
                                   color: Color.fromRGBO(255, 107, 107, 1),
                                   fontWeight: FontWeight.w700),

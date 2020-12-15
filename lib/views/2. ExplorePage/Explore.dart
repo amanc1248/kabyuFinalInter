@@ -1,10 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:kabyu_feather_webs/Widgets/Rating_Bar.dart';
+import 'package:kabyu_feather_webs/Model/Hamburger%20Model/HamburgerOptionsClass.dart';
+import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
+import 'package:kabyu_feather_webs/Widgets/category.dart';
 import 'package:kabyu_feather_webs/Widgets/products_grid.dart';
 import 'package:kabyu_feather_webs/Widgets/wishlistgrid.dart';
+import 'package:kabyu_feather_webs/services/database.dart';
+import 'package:kabyu_feather_webs/views/2.%20ExplorePage/listproduct.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
-import 'package:kabyu_feather_webs/views/Product%20Individual/product_individual.dart';
+import 'package:kabyu_feather_webs/views/ProductsSale/MyProducts/MyProducts.dart';
+import 'package:kabyu_feather_webs/views/Profile/SettingOpen/SettingOpen.dart';
+import 'package:provider/provider.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
+
+final List<HamburgerOptions> theHamburgerOptionsList = [
+  HamburgerOptions(
+      iconName: "Setting", iconSymbol: Icons.settings, theRoute: SettingOpen()),
+  HamburgerOptions(
+      iconName: "Profile", iconSymbol: Icons.person, theRoute: SettingOpen()),
+  HamburgerOptions(
+      iconName: "My Products",
+      iconSymbol: Icons.card_travel,
+      theRoute: MyProducts()),
+  HamburgerOptions(
+    iconName: "Logout",
+    iconSymbol: Icons.arrow_forward,
+    theRoute: SignUpForm(),
+  )
+];
 
 class ExplorePage extends StatefulWidget {
   static const String id = 'explorePage';
@@ -21,167 +44,208 @@ class _ExplorePageState extends State<ExplorePage> {
     });
   }
 
+  void initState() {
+    Provider.of<ProductProvider>(context, listen: false).loadProducts();
+    Provider.of<WishlistProvider>(context, listen: false).loadwishList();
+    Provider.of<CategoryProvider>(context, listen: false).loadCategoryList();
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      children: [
-        TopNavigationBar(
-            // icon: Icons.menu,
-            // ontap: () {},
-            ),
-        Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Categories",
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
+    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
+
+    Future<void> _refreshList() async {
+      getProduct();
+      getWishlist();
+    }
+
+    return RefreshIndicator(
+      onRefresh: _refreshList,
+      child: Scaffold(
+        appBar: AppBar(
+          title: TopNavigationBar(),
+          actions: [
+            Padding(
+              padding: const EdgeInsets.only(left: 13, right: 13),
+              child: Icon(
+                Icons.notifications,
+                color: Color(0xff30009C),
+                size: 30,
               ),
-              buildCategory(),
-              buildCards(title: "Popular Books"),
-              ProductGrid(),
-              buildCards(title: "My Wishlist"),
-              WishListGrid(),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Explore",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                  ),
-                  buildExplore(),
-                  buildExplore(),
-                  buildExplore(),
-                ],
-              )),
-            ],
+            )
+          ],
+          elevation: 0.0,
+          titleSpacing: 0.0,
+          centerTitle: false,
+          backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+          iconTheme: IconThemeData(
+            color: Color.fromRGBO(35, 3, 106, 1),
           ),
         ),
-      ],
-    );
-  }
-
-  Widget buildCategory() {
-    return Container(
-      child: Column(
-        children: [
-          buildRowCategory(
-              name1: "Science",
-              name2: "Psychlog",
-              name3: "Thriller",
-              color1: Color(0xFFF2E7FE),
-              color2: Color(0xFFF2E7FE),
-              textcolor: Colors.black,
-              onpressed: () {
-                Get.to(ProductIndividual());
-              }),
-          buildRowCategory(
-              name1: "Drama",
-              name2: "Romance",
-              name3: _isVisibleCategory ? "Less " : "More ",
-              color1: Color(0xFFF2E7FE),
-              color2: Color(0xFF3700B3),
-              textcolor: Colors.white,
-              icon: _isVisibleCategory ? Icons.remove : Icons.add,
-              onpressed: showExtraCategory),
-          Visibility(
-            visible: _isVisibleCategory,
-            child: Column(children: [
-              buildRowCategory(
-                  name1: "Science",
-                  name2: "Psychlog",
-                  name3: "Thriller",
-                  color1: Color(0xFFF2E7FE),
-                  color2: Color(0xFFF2E7FE),
-                  textcolor: Colors.black,
-                  onpressed: () {}),
-              buildRowCategory(
-                  name1: "Drama",
-                  name2: "Romance",
-                  name3: "Science",
-                  color1: Color(0xFFF2E7FE),
-                  color2: Color(0xFFF2E7FE),
-                  textcolor: Colors.black,
-                  onpressed: () {}),
-            ]),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget buildRowCategory(
-      {String name1,
-      String name2,
-      String name3,
-      Color color1,
-      Color color2,
-      Color textcolor,
-      IconData icon,
-      Function onpressed}) {
-    return Row(
-      children: [
-        Expanded(
-            child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              child: ButtonTheme(
-                minWidth: 100,
-                height: 30,
-                child: RaisedButton(
-                  onPressed: () {},
-                  child: Text(name1),
-                  color: color1,
-                ),
-              ),
-            ),
-            Container(
-              child: ButtonTheme(
-                minWidth: 100,
-                height: 30,
-                child: RaisedButton(
-                  onPressed: () {},
-                  child: Text(name2),
-                  color: color1,
-                ),
-              ),
-            ),
-            Container(
-              child: ButtonTheme(
-                minWidth: 100,
-                height: 30,
-                child: RaisedButton(
-                  onPressed: onpressed,
-                  child: Row(
+        drawer: Drawer(
+          child: Container(
+            color: Colors.white,
+            child: Column(
+              // Important: Remove any padding from the ListView.
+              children: <Widget>[
+                DrawerHeader(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        name3,
-                        style: TextStyle(color: textcolor),
+                      SizedBox(
+                        height: 15,
                       ),
-                      Icon(
-                        icon,
-                        size: 15,
-                        color: Colors.white,
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          color: Color.fromRGBO(48, 0, 156, 1),
+                        ),
+                      ),
+                      SizedBox(
+                        height: 23,
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          // Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => ()),
+                          // );
+                        },
+                        child: Container(
+                          child: Column(
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 20,
+                                    backgroundImage:
+                                        AssetImage("assets/profileimage.jpg"),
+                                  ),
+                                  SizedBox(
+                                    width: 16,
+                                  ),
+                                  Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Masama Nikine",
+                                        // bookStoresDetails[theIndex].bookStoreName,
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      SizedBox(
+                                        height: 1,
+                                      ),
+                                      Text(
+                                        // bookStoresDetails[theIndex].newMessage.toString() +
+                                        "Click to view profile",
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.w400,
+                                            color:
+                                                Color.fromRGBO(0, 0, 0, 0.6)),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
-                  color: color2,
                 ),
+                Expanded(
+                  child: Container(
+                    child: ListView.builder(
+                      itemCount: theHamburgerOptionsList.length,
+                      itemBuilder: (context, index) => GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    theHamburgerOptionsList[index].theRoute),
+                          );
+                        },
+                        child: ListTile(
+                          leading:
+                              Icon(theHamburgerOptionsList[index].iconSymbol),
+                          title: Text(theHamburgerOptionsList[index].iconName),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        body: SingleChildScrollView(
+            child: Column(
+          children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    "Categories",
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                  ),
+                  BuildCategory(),
+                  buildCards(title: "Popular Books"),
+                  ProductGrid(
+                    count: 2,
+                  ),
+                  buildCards(title: "My Wishlist"),
+                  WishListGrid(
+                    count:
+                        wishlistProvider.wishlistproductList.length < 2 ? 1 : 2,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  Container(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Explore",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 16),
+                      ),
+                      ListView.builder(
+                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          return buildExplore(productProvider, index);
+                        },
+                        itemCount: productProvider.productList.length,
+                      )
+                    ],
+                  )),
+                ],
               ),
             ),
           ],
         )),
-      ],
+      ),
     );
   }
 
-  Widget buildExplore() {
+  Widget buildExplore(ProductProvider productProvider, int index) {
     return Container(
         height: 120,
         child: Card(
@@ -191,44 +255,62 @@ class _ExplorePageState extends State<ExplorePage> {
               Container(
                 height: 120,
                 width: MediaQuery.of(context).size.width / 2 - 30,
-                child: Image.network(
-                  'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1086&q=80',
-                  fit: BoxFit.fill,
+                decoration: BoxDecoration(
+                  image: productProvider.productList[index].image != ''
+                      ? DecorationImage(
+                          image: NetworkImage(
+                              productProvider.productList[index].image),
+                        )
+                      : DecorationImage(
+                          image: AssetImage("assets/howinnovationworks.jpg"),
+                          fit: BoxFit.cover,
+                        ),
                 ),
               ),
               SingleChildScrollView(
                 child: Column(children: [
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => ProductIndividual()));
-                    },
-                    child: Container(
-                      width: MediaQuery.of(context).size.width / 3,
-                      margin: EdgeInsets.only(
-                          left: 20.0, top: 9, right: 9, bottom: 9),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text("How innovation works",
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              )),
-                          Text(
-                            "Npr 120",
+                  Container(
+                    width: MediaQuery.of(context).size.width / 3,
+                    margin: EdgeInsets.only(
+                        left: 20.0, top: 9, right: 9, bottom: 9),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Text(
+                            (productProvider.productList[index].title != ''
+                                ? productProvider.productList[index].title
+                                : "\"" "Not Provided" "\""),
                             style: TextStyle(
-                              color: Colors.black54,
-                            ),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                            )),
+                        Text(
+                          "Npr " +
+                              (productProvider.productList[index].price != ''
+                                  ? productProvider.productList[index].price +
+                                      "/-"
+                                  : "\"" "Not Provided" "\"" + "/-"),
+                          style: TextStyle(
+                            color: Colors.black54,
                           ),
-                          RatingBar(),
-                          Text("Science-Fiction",
-                              style: TextStyle(color: Color(0XFF30009C))),
-                        ],
-                      ),
+                        ),
+                        SmoothStarRating(
+                          rating: productProvider.productList[index].rating,
+                          isReadOnly: true,
+                          size: 15,
+                          filledIconData: Icons.star,
+                          halfFilledIconData: Icons.star_half,
+                          defaultIconData: Icons.star_border,
+                          starCount: 5,
+                          allowHalfRating: true,
+                          spacing: 2.0,
+                          color: Colors.yellow,
+                          borderColor: Colors.yellow,
+                        ),
+                        Text("Science-Fiction",
+                            style: TextStyle(color: Color(0XFF30009C))),
+                      ],
                     ),
                   ),
                 ]),
@@ -247,7 +329,7 @@ class _ExplorePageState extends State<ExplorePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(title,
-                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16)),
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20)),
               Container(
                 child: Row(
                   children: [
@@ -255,28 +337,23 @@ class _ExplorePageState extends State<ExplorePage> {
                       Icons.arrow_right_alt,
                       color: Color(0XFF30009C),
                     ),
-                    Text(
-                      "view more",
-                      style: TextStyle(color: Color(0XFF30009C)),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ListProducts()));
+                      },
+                      child: Text(
+                        "view more",
+                        style: TextStyle(color: Color(0XFF30009C)),
+                      ),
                     )
                   ],
                 ),
               )
             ],
           ),
-
-          // Container(
-          //   height: 240,
-          //   width: double.infinity,
-          //   child: GridView.count(
-          //     childAspectRatio: MediaQuery.of(context).size.width / 2 / 240,
-
-          //     crossAxisCount: 2,
-          //     children: List.generate(2, (index) {
-          //       return ;
-          //     }),
-          //   ),
-          // )
         ],
       ),
     );

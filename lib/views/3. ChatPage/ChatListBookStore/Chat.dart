@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
+
 class ChatPage extends StatefulWidget {
   static const String id = 'chatPage';
 
@@ -47,6 +48,7 @@ class _ChatPageState extends State<ChatPage> {
         backgroundColor: Color(0xffF8F8F8),
         body: Container(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Container(
                 decoration: BoxDecoration(),
@@ -335,22 +337,10 @@ class _ChatPageState extends State<ChatPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Expanded(
-                      child: TextField(
-                        // controller: messageTextController,
-                        // onChanged: (value) {
-                        //   messageText = value;
-                        // },
-                        // decoration: kMessageTextFieldDecoration,
-                      ),
+                      child: TextField(),
                     ),
                     FlatButton(
-                      onPressed: () {
-                        // messageTextController.clear();
-                        // _firestore.collection('messages').add({
-                        //   'text': messageText,
-                        //   'sender': loggedInUser.email,
-                        // });
-                      },
+                      onPressed: () {},
                       child: Text(
                         'Send',
                         // style: kSendButtonTextStyle,
@@ -359,16 +349,6 @@ class _ChatPageState extends State<ChatPage> {
                   ],
                 ),
               ),
-
-              // TextFormField(
-              //   decoration: InputDecoration(
-              //       border: InputBorder.none,
-              //       suffixText: "Send",
-              //       suffixStyle: TextStyle(
-              //           color: Color.fromRGBO(35, 3, 106, 1),
-              //           fontSize: 16,
-              //           fontWeight: FontWeight.bold)),
-              // ),
             ],
           ),
         ),
