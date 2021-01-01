@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/views/Product%20Individual/product_individual.dart';
@@ -25,8 +24,12 @@ class _WishlistBooksListState extends State<WishlistBooksList> {
         productProvider.currentProduct =
             productProvider.productList[widget.book];
 
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ProductIndividual()));
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductIndividual(),
+          ),
+        );
       },
       child: Container(
           width: MediaQuery.of(context).size.width / 2,
@@ -45,7 +48,7 @@ class _WishlistBooksListState extends State<WishlistBooksList> {
                                 .wishlistproductList[widget.book].image),
                           )
                         : DecorationImage(
-                            image: AssetImage("assets/howinnovationworks.jpg"),
+                            image: AssetImage(""),
                             fit: BoxFit.cover,
                           ),
                   ),

@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/Widgets/BookOverview.dart';
-import 'package:kabyu_feather_webs/Model/Hamburger%20Model/HamburgerOptionsClass.dart';
-import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
-import 'package:kabyu_feather_webs/views/ProductsSale/MyProducts/MyProducts.dart';
-import 'package:kabyu_feather_webs/views/Profile/SettingOpen/SettingOpen.dart';
 import 'package:provider/provider.dart';
 
 class WishListPage extends StatefulWidget {

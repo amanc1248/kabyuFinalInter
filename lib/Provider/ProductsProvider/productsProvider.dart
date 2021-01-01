@@ -8,17 +8,15 @@ import 'package:kabyu_feather_webs/services/database.dart';
 
 class ProductProvider with ChangeNotifier {
   List<Product> _productList = [];
-  Product _currentProduct;
-
   UnmodifiableListView<Product> get productList =>
       UnmodifiableListView(_productList);
-
-  Product get currentProduct => _currentProduct;
   set productList(List<Product> productList) {
     _productList = productList;
     notifyListeners();
   }
 
+  Product _currentProduct;
+  Product get currentProduct => _currentProduct;
   set currentProduct(Product product) {
     _currentProduct = product;
     notifyListeners();
@@ -27,6 +25,13 @@ class ProductProvider with ChangeNotifier {
   loadProducts() async {
     List<Product> product = await getProduct();
     _productList = product;
+    notifyListeners();
+  }
+
+  int _bookIndexForChat;
+  int get bookIndexForChat => _bookIndexForChat;
+  set bookIndexForChat(int val) {
+    _bookIndexForChat = val;
     notifyListeners();
   }
 }
@@ -52,6 +57,22 @@ class WishlistProvider with ChangeNotifier {
   loadwishList() async {
     List<Product> wishlist = await getWishlist();
     _wishlistproductList = wishlist;
+    notifyListeners();
+  }
+}
+
+class MyBooksProvider with ChangeNotifier {
+  List<Product> _myBooksList = [];
+  UnmodifiableListView<Product> get myBooksList =>
+      UnmodifiableListView(_myBooksList);
+  set myBooksList(List<Product> bookList) {
+    _myBooksList = bookList;
+    notifyListeners();
+  }
+
+  loadMyBooksList() async {
+    List<Product> bookList = await getMyBooksList();
+    _myBooksList = bookList;
     notifyListeners();
   }
 }

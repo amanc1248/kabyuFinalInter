@@ -11,38 +11,7 @@ class Product {
   String price;
   double rating;
   String title;
-
-  // Product(this.author, this.availablefor, this.categoryid, this.condition,
-  //     this.description, this.image, this.price, this.rating, this.title);
-
-  // Product.fromMap(Map<String, dynamic> data) {
-  //   int intvar = data['rating'];
-  //   double doublevar = intvar.toDouble();
-  //   author = data['author'];
-  //   availablefor = data['availablefor'];
-  //   categoryid = data['categoryid'];
-  //   image = data['image'];
-  //   condition = data['condition'];
-  //   description = data['description'];
-  //   image = data['image'];
-  //   price = data['price'];
-  //   rating = doublevar;
-  //   title = data['title'];
-  // }
-
-  // Map<String, dynamic> toMap() {
-  //   return {
-  //     'author': author,
-  //     'availablefor': availablefor,
-  //     'categoryid': categoryid,
-  //     'image': image,
-  //     'condition': condition,
-  //     'description': description,
-  //     'price': price,
-  //     'rating': rating,
-  //     'title': title
-  //   };
-  // }
+  String seller_Id;
 
   Product.fromSnapshot(DocumentSnapshot snapshot) {
     book_Id = snapshot.id;
@@ -57,5 +26,6 @@ class Product {
     price = snapshot.data()['price'];
     rating = doublevar;
     title = snapshot.data()['title'];
+    seller_Id = snapshot.data()['seller_id'];
   }
 }

@@ -19,6 +19,7 @@ class AuthHelper {
 
   static logOut() {
     GoogleSignIn().signOut();
+
     return _auth.signOut();
   }
 }

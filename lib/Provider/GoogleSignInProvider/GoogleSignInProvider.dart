@@ -15,6 +15,12 @@ final FirebaseAuth _auth = FirebaseAuth.instance;
 final GoogleSignIn googleSignIn = GoogleSignIn();
 
 class GoogleSignInProvider extends ChangeNotifier {
+  // clearUserId() async {
+  //   SharedPreferences preferences = await SharedPreferences.getInstance();
+  //   await preferences.clear();
+  //   print("Clearing Shared Preference");
+  // }
+
   //signInWIthGoogle method 👇
   signInWithGoogle() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
@@ -24,6 +30,9 @@ class GoogleSignInProvider extends ChangeNotifier {
         accessToken: auth.accessToken, idToken: auth.idToken);
     final res = await _auth.signInWithCredential(credential);
     final _user = res.user;
+
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    pref.setString("userId", _user.uid);
 
     userDetails[0] = "${_user.email}";
     userDetails[2] = "${_user.displayName}";
@@ -64,6 +73,7 @@ class GoogleSignInProvider extends ChangeNotifier {
     print("i am inside user database ");
     SharedPreferences pref = await SharedPreferences.getInstance();
     String userId = pref.getString("userId");
+    entryUserId = userId;
     userDetails[6] = userId;
     await firestoreSave.collection('users').doc(userId).set({
       'email': userDetails[0],
@@ -125,6 +135,14 @@ class GoogleSignInProvider extends ChangeNotifier {
   File get imageFile => _imageFile;
   set imageFile(File val) {
     _imageFile = val;
+    notifyListeners();
+  }
+
+  //4) user Id
+  String _entryUserId;
+  String get entryUserId => _entryUserId;
+  set entryUserId(String val) {
+    _entryUserId = val;
     notifyListeners();
   }
 }

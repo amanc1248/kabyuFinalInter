@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 import 'package:kabyu_feather_webs/views/ProductsSale/MyProducts/MyProductswithbooks.dart';
+import 'package:provider/provider.dart';
+import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class MyProducts extends StatefulWidget {
   @override
@@ -57,28 +60,7 @@ class _MyProductsState extends State<MyProducts> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        Center(
-                          child: Column(
-                            children: [
-                              Text(
-                                "Be a seller",
-                                style: TextStyle(
-                                    fontSize: 34,
-                                    fontWeight: FontWeight.w700,
-                                    color: Color.fromRGBO(0, 0, 0, 0.38)),
-                              ),
-                              SizedBox(
-                                height: 8,
-                              ),
-                              Text(
-                                "Easy step to become a business person",
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    color: Color.fromRGBO(0, 0, 0, 0.38)),
-                              ),
-                            ],
-                          ),
-                        ),
+                        MyBooksOverview(),
                         Column(
                           children: [
                             Padding(
@@ -131,6 +113,142 @@ class _MyProductsState extends State<MyProducts> {
             ],
           ),
         ),
+      ),
+    );
+  }
+}
+
+class MyBooksOverview extends StatefulWidget {
+  @override
+  _MyBooksOverviewState createState() => _MyBooksOverviewState();
+}
+
+class _MyBooksOverviewState extends State<MyBooksOverview> {
+  @override
+  Widget build(BuildContext context) {
+    MyBooksProvider myBooksProvider = Provider.of<MyBooksProvider>(context);
+    return Expanded(
+      child: myBooksProvider.myBooksList.length == 0
+          ? Center(child: withNoBooks())
+          : ListView.builder(
+              itemCount: myBooksProvider.myBooksList.length,
+              itemBuilder: (context, index) => Container(
+                height: 92,
+                margin: EdgeInsets.only(bottom: 8),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.all(Radius.circular(4)),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Color.fromRGBO(0, 0, 0, 0.05),
+                          spreadRadius: 2,
+                          blurRadius: 5,
+                          offset: Offset(0, 0)),
+                    ],
+                    color: Color.fromRGBO(244, 244, 244, 1)),
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 10, 10, 10),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Image(
+                          image: myBooksProvider.myBooksList[index].image != ''
+                              ? NetworkImage(
+                                  myBooksProvider.myBooksList[index].image)
+                              : AssetImage("assets/howinnovationworks.jpg"),
+                          fit: BoxFit.cover,
+                          width: 65,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 13,
+                      ),
+                      Expanded(
+                        flex: 3,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Npr " +
+                                  myBooksProvider.myBooksList[index].price +
+                                  "/-",
+                              style: TextStyle(
+                                  color: Color.fromRGBO(255, 107, 107, 1),
+                                  fontWeight: FontWeight.w700),
+                            ),
+                            SizedBox(
+                              height: 3,
+                            ),
+                            Text(
+                              myBooksProvider.myBooksList[index].title,
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w500, fontSize: 20),
+                            ),
+                            SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              children: [
+                                SmoothStarRating(
+                                  rating: myBooksProvider
+                                      .myBooksList[index].rating
+                                      .toDouble(),
+                                  isReadOnly: true,
+                                  size: 15,
+                                  filledIconData: Icons.star,
+                                  halfFilledIconData: Icons.star_half,
+                                  defaultIconData: Icons.star_border,
+                                  starCount: 5,
+                                  allowHalfRating: true,
+                                  spacing: 2.0,
+                                  color: Colors.yellow,
+                                  borderColor: Colors.yellow,
+                                  onRated: (value) {
+                                    print("rating value -> $value");
+                                  },
+                                ),
+                                SizedBox(
+                                  width: 9.5,
+                                ),
+                                Text(
+                                  myBooksProvider.myBooksList[index].categoryid,
+                                  style: TextStyle(
+                                      color: Color.fromRGBO(48, 0, 156, 1),
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w400),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ),
+            ),
+    );
+  }
+
+  Widget withNoBooks() {
+    return Center(
+      child: Column(
+        children: [
+          Text(
+            "Be a seller",
+            style: TextStyle(
+                fontSize: 34,
+                fontWeight: FontWeight.w700,
+                color: Color.fromRGBO(0, 0, 0, 0.38)),
+          ),
+          SizedBox(
+            height: 8,
+          ),
+          Text(
+            "Easy step to become a business person",
+            style:
+                TextStyle(fontSize: 16, color: Color.fromRGBO(0, 0, 0, 0.38)),
+          ),
+        ],
       ),
     );
   }

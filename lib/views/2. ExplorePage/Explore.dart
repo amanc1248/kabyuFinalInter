@@ -6,11 +6,13 @@ import 'package:kabyu_feather_webs/Widgets/products_grid.dart';
 import 'package:kabyu_feather_webs/Widgets/wishlistgrid.dart';
 import 'package:kabyu_feather_webs/services/database.dart';
 import 'package:kabyu_feather_webs/views/2.%20ExplorePage/listproduct.dart';
-import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Authentication/auth.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 import 'package:kabyu_feather_webs/views/ProductsSale/MyProducts/MyProducts.dart';
 import 'package:kabyu_feather_webs/views/Profile/SettingOpen/SettingOpen.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 final List<HamburgerOptions> theHamburgerOptionsList = [
@@ -25,7 +27,7 @@ final List<HamburgerOptions> theHamburgerOptionsList = [
   HamburgerOptions(
     iconName: "Logout",
     iconSymbol: Icons.arrow_forward,
-    theRoute: SignUpForm(),
+    theRoute: Login(),
   )
 ];
 
@@ -48,6 +50,8 @@ class _ExplorePageState extends State<ExplorePage> {
     Provider.of<ProductProvider>(context, listen: false).loadProducts();
     Provider.of<WishlistProvider>(context, listen: false).loadwishList();
     Provider.of<CategoryProvider>(context, listen: false).loadCategoryList();
+    Provider.of<MyBooksProvider>(context, listen: false).loadMyBooksList();
+    // Provider.of<ChatProvider>(context, listen: false).;
 
     super.initState();
   }
@@ -55,8 +59,8 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
-    CategoryProvider categoryProvider = Provider.of<CategoryProvider>(context);
     WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
+    MyBooksProvider myBooksProvider = Provider.of<MyBooksProvider>(context);
 
     Future<void> _refreshList() async {
       getProduct();
@@ -171,7 +175,15 @@ class _ExplorePageState extends State<ExplorePage> {
                     child: ListView.builder(
                       itemCount: theHamburgerOptionsList.length,
                       itemBuilder: (context, index) => GestureDetector(
-                        onTap: () {
+                        onTap: () async {
+                          if (theHamburgerOptionsList[index].iconName ==
+                              "Logout") {
+                            AuthHelper.logOut();
+                            SharedPreferences preferences =
+                                await SharedPreferences.getInstance();
+                            await preferences.clear();
+                            print("Clearing Shared Preference");
+                          }
                           Navigator.push(
                             context,
                             MaterialPageRoute(
@@ -193,53 +205,50 @@ class _ExplorePageState extends State<ExplorePage> {
           ),
         ),
         body: SingleChildScrollView(
-            child: Column(
-          children: [
-            Container(
-              padding: EdgeInsets.symmetric(horizontal: 12.0),
-              child: Column(
+            child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Categories",
+                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+              ),
+              BuildCategory(),
+              buildCards(title: "Popular Books"),
+              ProductGrid(
+                count: 2,
+              ),
+              buildCards(title: "My Books"),
+              MyBooksGrid(
+                  count: myBooksProvider.myBooksList.length < 2 ? 1 : 2),
+              buildCards(title: "My Wishlist"),
+              WishListGrid(
+                count: wishlistProvider.wishlistproductList.length < 2 ? 1 : 2,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              Container(
+                  child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    "Categories",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                    "Explore",
+                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
                   ),
-                  BuildCategory(),
-                  buildCards(title: "Popular Books"),
-                  ProductGrid(
-                    count: 2,
-                  ),
-                  buildCards(title: "My Wishlist"),
-                  WishListGrid(
-                    count:
-                        wishlistProvider.wishlistproductList.length < 2 ? 1 : 2,
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  Container(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Explore",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w500, fontSize: 16),
-                      ),
-                      ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemBuilder: (context, index) {
-                          return buildExplore(productProvider, index);
-                        },
-                        itemCount: productProvider.productList.length,
-                      )
-                    ],
-                  )),
+                  ListView.builder(
+                    physics: NeverScrollableScrollPhysics(),
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      return buildExplore(productProvider, index);
+                    },
+                    itemCount: productProvider.productList.length,
+                  )
                 ],
-              ),
-            ),
-          ],
+              )),
+            ],
+          ),
         )),
       ),
     );
@@ -320,6 +329,7 @@ class _ExplorePageState extends State<ExplorePage> {
         ));
   }
 
+//THis is for view more button
   Widget buildCards({String title}) {
     return Container(
       padding: EdgeInsets.only(top: 10),
@@ -356,6 +366,118 @@ class _ExplorePageState extends State<ExplorePage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class MyBooksGrid extends StatefulWidget {
+  final int count;
+
+  const MyBooksGrid({Key key, this.count}) : super(key: key);
+  @override
+  _MyBooksGridState createState() => _MyBooksGridState();
+}
+
+class _MyBooksGridState extends State<MyBooksGrid> {
+  @override
+  Widget build(BuildContext context) {
+    MyBooksProvider myBooksProvider = Provider.of<MyBooksProvider>(context);
+    print("My BookList: 👇");
+    print(myBooksProvider.myBooksList);
+    return myBooksProvider.myBooksList.length == 0
+        ? Center(child: Text("YOu do not have any products"))
+        : Container(
+            height: 225,
+            child: GridView.count(
+              physics: NeverScrollableScrollPhysics(),
+              crossAxisCount: 2,
+              childAspectRatio: 0.75,
+              children: List.generate(widget.count, (index) {
+                return MyBooksList(
+                  book: index,
+                );
+              }),
+            ));
+  }
+}
+
+class MyBooksList extends StatefulWidget {
+  final int book;
+  const MyBooksList({Key key, this.book}) : super(key: key);
+
+  @override
+  _MyBooksListState createState() => _MyBooksListState();
+}
+
+class _MyBooksListState extends State<MyBooksList> {
+  @override
+  Widget build(BuildContext context) {
+    MyBooksProvider myBooksProvider = Provider.of<MyBooksProvider>(context);
+
+    // print(wishlistProvider.currentWishlist.book_Id);
+    return GestureDetector(
+      onTap: () {
+        // productProvider.currentProduct =
+        //     productProvider.productList[widget.book];
+
+        // Navigator.push(context,
+        //     MaterialPageRoute(builder: (context) => ProductIndividual()));
+      },
+      child: Container(
+          width: MediaQuery.of(context).size.width / 2,
+          child: Card(
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: Column(
+              children: [
+                Container(
+                  height: 135,
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: NetworkImage(
+                          myBooksProvider.myBooksList[widget.book].image),
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.only(
+                      left: 10.0, top: 10, right: 5, bottom: 0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Container(
+                        height: 40,
+                        child:
+                            Text(myBooksProvider.myBooksList[widget.book].title,
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                )),
+                      ),
+                      Container(
+                        height: 30,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(
+                              "Npr " +
+                                  myBooksProvider
+                                      .myBooksList[widget.book].price,
+                              style: TextStyle(
+                                color: Colors.black54,
+                                fontSize: 14,
+                              ),
+                            ),
+                            Icon(Icons.more_vert, color: Colors.black54),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          )),
     );
   }
 }

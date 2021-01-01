@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Model/product_individual_carousel.dart';
+import 'package:kabyu_feather_webs/Provider/ChatProvider/ChatProvider.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/Widgets/Rating_Bar.dart';
 import 'package:kabyu_feather_webs/Widgets/products_grid.dart';
 import 'package:kabyu_feather_webs/services/database.dart';
+import 'package:kabyu_feather_webs/views/3.%20ChatPage/ChatListBookStore/Chat.dart';
+import 'package:kabyu_feather_webs/views/AppBar/AppBar.dart';
 
-import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 import 'package:provider/provider.dart';
 
 class ProductIndividual extends StatefulWidget {
@@ -14,27 +16,26 @@ class ProductIndividual extends StatefulWidget {
 }
 
 class _ProductIndividualState extends State<ProductIndividual> {
+  void initState() {
+    // Provider.of<ChatProvider>(context).loadourUsersAndBuyers();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider =
         Provider.of<ProductProvider>(context, listen: false);
-    // double rate = productProvider.currentProduct.rating;
+    ChatProvider chatProvider =
+        Provider.of<ChatProvider>(context, listen: false);
     return SafeArea(
       child: Scaffold(
+        appBar: OurAppBar.ourAppBar(context),
         body: SingleChildScrollView(
             child: Column(children: [
           Container(
             color: Colors.white,
             child: Column(
               children: [
-                TopNavigationBar(
-                    // icon: Icons.chevron_left,
-                    ),
-                IconButton(
-                    icon: Icon(Icons.chevron_left),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    }),
                 ProductCarousel(),
               ],
             ),
@@ -180,7 +181,39 @@ class _ProductIndividualState extends State<ProductIndividual> {
                               height: 56,
                               width: double.infinity,
                               child: RaisedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  //Storing seller_id, buyer_id, and user_id to the provider
+                                  //Seller_id👇
+                                  chatProvider.loadourUsersAndBuyers();
+                                  chatProvider.sellerId = productProvider
+                                      .productList[
+                                          productProvider.bookIndexForChat]
+                                      .seller_Id;
+
+                                  var contain = chatProvider.ourUsersAndBuyers
+                                      .firstWhere(
+                                          (element) => ((element.sellerId ==
+                                                  chatProvider.sellerId) &&
+                                              (element.buyerId ==
+                                                  chatProvider.userId)),
+                                          orElse: () => chatProvider
+                                              .ourUsersAndBuyers[0]);
+
+                                  if (contain.buyerId == null) {
+                                    print("Chat does not exists");
+                                    print(contain.chatid);
+                                    print(contain.sellerId);
+                                    print(contain.name);
+                                  } else {
+                                    // Navigator.push(
+                                    //     context,
+                                    //     MaterialPageRoute(
+                                    //         builder: (context) => ChatPage(
+                                    //               chatIndex: chat,
+                                    //             )));
+
+                                  }
+                                },
                                 child: Text(
                                   "talk to seller".toUpperCase(),
                                   style: TextStyle(

@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Provider/BottomNavigationProvider/BottomNavigationProvider.dart';
 import 'package:kabyu_feather_webs/Provider/ChangePassword/ChangePasswordProvider.dart';
+import 'package:kabyu_feather_webs/Provider/ChatProvider/ChatProvider.dart';
 import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 
 import 'package:firebase_auth/firebase_auth.dart';
@@ -83,6 +84,10 @@ class _MyAppState extends State<MyApp> {
         ),
         ChangeNotifierProvider<WishlistProvider>(
             create: (context) => WishlistProvider()),
+        ChangeNotifierProvider<ChatProvider>(
+            create: (context) => ChatProvider(context: context)),
+        ChangeNotifierProvider<MyBooksProvider>(
+            create: (context) => MyBooksProvider()),
       ],
       child: MaterialApp(
         routes: {
@@ -103,7 +108,6 @@ class MainScreen extends StatelessWidget {
           stream: FirebaseAuth.instance.authStateChanges(),
           builder: (context, snapshot) {
             if (snapshot.hasData && snapshot.data != null) {
-              // bottomNavigationBar.selectedIndex = 1;
               return MyHomePage();
             }
             return Login();

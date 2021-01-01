@@ -16,9 +16,11 @@ class _BooksListState extends State<BooksList> {
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    // ChatProvider chatProvider = Provider.of<Chat>(context);
     print(productProvider.productList[widget.book].image);
     return GestureDetector(
       onTap: () {
+        productProvider.bookIndexForChat = widget.book;
         productProvider.currentProduct =
             productProvider.productList[widget.book];
 
@@ -40,7 +42,7 @@ class _BooksListState extends State<BooksList> {
                                 productProvider.productList[widget.book].image),
                           )
                         : DecorationImage(
-                            image: AssetImage("assets/howinnovationworks.jpg"),
+                            image: AssetImage(""),
                             fit: BoxFit.cover,
                           ),
                   ),

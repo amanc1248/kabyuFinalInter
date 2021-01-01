@@ -3,7 +3,6 @@ import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInPro
 import 'package:kabyu_feather_webs/views/Authentication/KitabTitle/maintitle.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/LowerPart/AlreadyHaveAnAccount.dart';
 import 'package:kabyu_feather_webs/Widgets/EmailPasswordConfim.dart';
-import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Authentication/auth.dart';
 import 'package:kabyu_feather_webs/views/Navigation/buttomNavigationBar.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -18,7 +17,6 @@ var googleSignInProvider;
 class _SignUpFormState extends State<SignUpForm> {
   void initState() {
     super.initState();
-    AuthHelper.logOut();
   }
 
   String email;
@@ -29,7 +27,6 @@ class _SignUpFormState extends State<SignUpForm> {
   Widget build(BuildContext context) {
     googleSignInProvider =
         Provider.of<GoogleSignInProvider>(context, listen: false);
-    AuthHelper.logOut();
     return SafeArea(
       child: Scaffold(
           backgroundColor: Colors.white,

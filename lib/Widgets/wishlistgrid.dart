@@ -22,20 +22,12 @@ class _WishListGridState extends State<WishListGrid> {
         : Container(
             height: 225,
             child: GridView.count(
+              physics: NeverScrollableScrollPhysics(),
               crossAxisCount: 2,
               childAspectRatio: 0.75,
               children: List.generate(widget.count, (index) {
                 return WishlistBooksList(book: index);
               }),
             ));
-    // child: ListView.builder(
-    //   scrollDirection: Axis.horizontal,
-    //   itemBuilder: (context, index) {
-    //     return WishlistBooksList(
-    //       book: index,
-    //     );
-    //   },
-    //   itemCount: wishlistProvider.wishlistproductList.length,
-    // ));
   }
 }

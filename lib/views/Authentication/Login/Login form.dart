@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:kabyu_feather_webs/Provider/BottomNavigationProvider/BottomNavigationProvider.dart';
-import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
 import 'package:kabyu_feather_webs/views/Authentication/KitabTitle/maintitle.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Authentication/auth.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
@@ -16,8 +15,6 @@ final TextEditingController _password = TextEditingController();
 class Login extends StatefulWidget {
   // final GlobalKey<FormState> form;
 
-  // final form;
-  // Login({this.form});
   @override
   _LoginState createState() => _LoginState();
 }
@@ -26,15 +23,19 @@ var googleSignInProvider;
 
 class _LoginState extends State<Login> {
   GlobalKey<FormState> _form = GlobalKey<FormState>();
-  var googleLogInProvider;
   bool passwordEye = true;
   var bottomNavigationProvider;
+  void initState() {
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     googleSignInProvider =
         Provider.of<GoogleSignInProvider>(context, listen: false);
     bottomNavigationProvider =
         Provider.of<BottomNavigationProvider>(context, listen: false);
+
     return Consumer<BottomNavigationProvider>(
       builder: (context, value, child) => SafeArea(
         child: Scaffold(
@@ -104,7 +105,6 @@ class _LoginState extends State<Login> {
                             padding: EdgeInsets.only(bottom: 26),
                             child: TextFormField(
                               keyboardType: TextInputType.emailAddress,
-                              maxLength: 20,
                               decoration: InputDecoration(
                                 border: kTextFieldBorder,
                                 enabledBorder: kTextFieldEnabledBorder,
@@ -175,7 +175,7 @@ class _LoginState extends State<Login> {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => WishListPage(),
+                                        builder: (context) => MyHomePage(),
                                       ),
                                     );
                                   }
