@@ -43,7 +43,12 @@ class _ChatPageState extends State<ChatPage> {
               children: <Widget>[
                 buildUserHeader(),
                 // List of messages
-                buildListMessage(),
+                chatProvider.theIndexValue == -1
+                    ? Expanded(
+                        child: Center(
+                        child: Text("No conversation yet!"),
+                      ))
+                    : buildListMessage(),
 
                 // Input content
                 buildInput(),

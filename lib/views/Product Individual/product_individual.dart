@@ -17,16 +17,15 @@ class ProductIndividual extends StatefulWidget {
 
 class _ProductIndividualState extends State<ProductIndividual> {
   void initState() {
-    // Provider.of<ChatProvider>(context).loadourUsersAndBuyers();
     super.initState();
+    Provider.of<ChatProvider>(context, listen: false).loadourUsersAndBuyers();
   }
 
   @override
   Widget build(BuildContext context) {
-    ProductProvider productProvider =
-        Provider.of<ProductProvider>(context, listen: false);
-    ChatProvider chatProvider =
-        Provider.of<ChatProvider>(context, listen: false);
+    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    ChatProvider chatProvider = Provider.of<ChatProvider>(context);
+
     return SafeArea(
       child: Scaffold(
         appBar: OurAppBar.ourAppBar(context),
@@ -181,38 +180,68 @@ class _ProductIndividualState extends State<ProductIndividual> {
                               height: 56,
                               width: double.infinity,
                               child: RaisedButton(
-                                onPressed: () {
-                                  //Storing seller_id, buyer_id, and user_id to the provider
+                                onPressed: () async {
+                                  //Storing seller_id to the provider
                                   //Seller_id👇
-                                  chatProvider.loadourUsersAndBuyers();
-                                  chatProvider.sellerId = productProvider
-                                      .productList[
-                                          productProvider.bookIndexForChat]
-                                      .seller_Id;
-
-                                  var contain = chatProvider.ourUsersAndBuyers
-                                      .firstWhere(
-                                          (element) => ((element.sellerId ==
-                                                  chatProvider.sellerId) &&
-                                              (element.buyerId ==
-                                                  chatProvider.userId)),
-                                          orElse: () => chatProvider
-                                              .ourUsersAndBuyers[0]);
-
-                                  if (contain.buyerId == null) {
-                                    print("Chat does not exists");
-                                    print(contain.chatid);
-                                    print(contain.sellerId);
-                                    print(contain.name);
+                                  chatProvider.sellerIdFromBook =
+                                      productProvider
+                                          .productList[
+                                              productProvider.bookIndexForChat]
+                                          .seller_Id;
+                                  //userId👇
+                                  await chatProvider.getUserId();
+                                  print("BuyerId=>" + chatProvider.userId);
+                                  print("SellerId=>" +
+                                      chatProvider.sellerIdFromBook);
+                                  int valueIs;
+                                  if (chatProvider.ourUsersAndBuyers.length !=
+                                      0) {
+                                    for (var i = 0;
+                                        i <
+                                            chatProvider
+                                                .ourUsersAndBuyers.length;
+                                        i++) {
+                                      print("User Buyer Id:");
+                                      print(chatProvider
+                                          .ourUsersAndBuyers[i].buyerId
+                                          .toString());
+                                      print("User seller Id:");
+                                      print(chatProvider
+                                          .ourUsersAndBuyers[i].sellerId
+                                          .toString());
+                                      print("Name:");
+                                      print(chatProvider
+                                          .ourUsersAndBuyers[i].name);
+                                      print("ChatID:");
+                                      print(chatProvider
+                                          .ourUsersAndBuyers[i].chatid);
+                                      if (chatProvider.ourUsersAndBuyers[i]
+                                                  .buyerId ==
+                                              chatProvider.userId &&
+                                          chatProvider.ourUsersAndBuyers[i]
+                                                  .sellerId ==
+                                              chatProvider.sellerIdFromBook) {
+                                        print("ourIndex======>" + i.toString());
+                                        valueIs = i;
+                                        break;
+                                      } else {
+                                        valueIs = -1;
+                                      }
+                                    }
                                   } else {
-                                    // Navigator.push(
-                                    //     context,
-                                    //     MaterialPageRoute(
-                                    //         builder: (context) => ChatPage(
-                                    //               chatIndex: chat,
-                                    //             )));
-
+                                    valueIs = -1;
                                   }
+                                  print("Value Is=>" + valueIs.toString());
+                                  chatProvider.theIndexValue = valueIs;
+
+                                  //passing the chatId index to the chatPage
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => ChatPage(
+                                              chatIndex: valueIs,
+                                            )),
+                                  );
                                 },
                                 child: Text(
                                   "talk to seller".toUpperCase(),

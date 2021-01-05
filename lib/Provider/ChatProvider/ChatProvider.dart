@@ -15,21 +15,69 @@ class ChatProvider extends ChangeNotifier {
   ChatProvider({this.context, this.currentProduct});
   FirebaseAuth auth = FirebaseAuth.instance;
   final firestoreSave = FirebaseFirestore.instance;
+  getUserId() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    String userid = pref.getString("userId");
+    print("This is the user id: " + userId);
+    userId = userid;
+  }
+
+//Checking Buyer👇
+  checkBuyer() {
+    if (buyerId == '') {
+      return userId;
+    }
+    if (buyerId == userId) {
+      return userId;
+    }
+    if (buyerId != userId) {
+      return buyerId;
+    }
+  }
+
+//Checking Seller👇
+  checkSeller() {
+    if (sellerId == '') {
+      return _sellerIdFromBook;
+    }
+    if (sellerId == userId) {
+      return userId;
+    }
+    if (sellerId != userId) {
+      return sellerId;
+    }
+  }
+
+//Checking chatId👇
+  checkChatId() {
+    // chatId = "Tt9Pl5u7iMNJzpOrTXv1ZByouF12";
+    if (chatId == '') {
+      return sellerIdFromBook + userId;
+    } else {
+      return chatId;
+    }
+  }
 
   storeDataToChat() async {
     ProductProvider productProvider =
         Provider.of<ProductProvider>(context, listen: false);
+    await loadourUsersAndBuyers();
+    int valueIs = ourUsersAndBuyers.indexWhere((element) =>
+        element.buyerId == userId && element.sellerId == sellerIdFromBook);
+    theIndexValue = valueIs;
+    print("Our index value.👇");
 
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    String userId = pref.getString("userId");
-    print("This is the user id: " + userId);
+    print(valueIs);
+    print("🛒🛒🛒🛒");
+    print(ourUsersAndBuyers[0].buyerId);
+    print(ourUsersAndBuyers[0].sellerId);
+    print(ourUsersAndBuyers[0].chatid);
     //concatinating user_id+book_id
-    await firestoreSave.collection('chat').doc().set({
-      'buyer_id': userId, //aman() //ranjit(seller)
+    await firestoreSave.collection('chat').doc(checkChatId()).set({
+      'buyer_id': checkBuyer(), //aman() //ranjit(seller)
       'book_id':
           productProvider.productList[productProvider.bookIndexForChat].book_Id,
-      'seller_id': productProvider
-          .productList[productProvider.bookIndexForChat].seller_Id,
+      'seller_id': checkSeller(),
       "messages": FieldValue.arrayUnion(
         [
           {
@@ -46,35 +94,6 @@ class ChatProvider extends ChangeNotifier {
     // print();
   }
 
-  //run if there is already a conversation👇
-  storeDataToChatFromSecondTime() async {
-    ProductProvider productProvider =
-        Provider.of<ProductProvider>(context, listen: false);
-
-    SharedPreferences pref = await SharedPreferences.getInstance();
-    String userId = pref.getString("userId");
-    print("This is the user id: " + userId);
-    //concatinating user_id+book_id
-    await firestoreSave.collection('chat').doc(chatId).set({
-      'buyer_id': buyerId == userId ? userId : buyerId,
-      'book_id':
-          productProvider.productList[productProvider.bookIndexForChat].book_Id,
-      'seller_id': sellerId == userId ? userId : sellerId,
-      "messages": FieldValue.arrayUnion(
-        [
-          {
-            "message": chatMessage,
-            "timeStamp": DateTime.now().millisecondsSinceEpoch,
-            "type": userId
-          },
-        ],
-      )
-    }, SetOptions(merge: true)).catchError((onError) {
-      print(
-          "you have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a error");
-    });
-  }
-
   List<UserModel> _ourUsersAndBuyers = [];
   UnmodifiableListView<UserModel> get ourUsersAndBuyers =>
       UnmodifiableListView(_ourUsersAndBuyers);
@@ -87,10 +106,6 @@ class ChatProvider extends ChangeNotifier {
     List<UserModel> ourUsersAndBuyers = await getourUsersAndBuyers();
     _ourUsersAndBuyers = ourUsersAndBuyers;
     notifyListeners();
-    print('ourUsersAndBuyers');
-    print(ourUsersAndBuyers);
-    print('ourUsersAndBuyers Length');
-    print(ourUsersAndBuyers.length);
   }
 
   //1) Storing book document id
@@ -110,7 +125,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   //2) Storing chat id
-  String _chatId;
+  String _chatId = '';
   String get chatId => _chatId;
   set chatId(String val) {
     _chatId = val;
@@ -133,5 +148,19 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  
+  //5) Seller Id from book
+  String _sellerIdFromBook = "";
+  String get sellerIdFromBook => _sellerIdFromBook;
+  set sellerIdFromBook(String val) {
+    _sellerIdFromBook = val;
+    notifyListeners();
+  }
+
+  //5) indexValue
+  int _theIndexValue;
+  int get theIndexValue => _theIndexValue;
+  set theIndexValue(int val) {
+    _theIndexValue = val;
+    notifyListeners();
+  }
 }
