@@ -35,16 +35,15 @@ class ChatListBookStore extends StatefulWidget {
 
 class _ChatListBookStoreState extends State<ChatListBookStore> {
   void initState() {
+    Provider.of<ChatProvider>(context, listen: false).loadourUsersAndBuyers();
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     ChatProvider chatProvider =
-        Provider.of<ChatProvider>(context, listen: false);
-    chatProvider.loadourUsersAndBuyers();
+        Provider.of<ChatProvider>(context);
     print("This is our user and buyers👇");
-    print(chatProvider.ourUsersAndBuyers[0].runtimeType);
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,

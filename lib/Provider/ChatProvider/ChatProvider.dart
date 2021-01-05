@@ -61,17 +61,27 @@ class ChatProvider extends ChangeNotifier {
   storeDataToChat() async {
     ProductProvider productProvider =
         Provider.of<ProductProvider>(context, listen: false);
-    await loadourUsersAndBuyers();
-    int valueIs = ourUsersAndBuyers.indexWhere((element) =>
-        element.buyerId == userId && element.sellerId == sellerIdFromBook);
-    theIndexValue = valueIs;
+    await getUserId();
+    // await loadourUsersAndBuyers();
+    int valueIs;
+    if (ourUsersAndBuyers.length != 0) {
+      for (var i = 0; i < ourUsersAndBuyers.length; i++) {
+        if (ourUsersAndBuyers[i].buyerId == userId &&
+            ourUsersAndBuyers[i].sellerId == sellerIdFromBook) {
+          print("ourIndex======>" + i.toString());
+          valueIs = i;
+          break;
+        } else {
+          valueIs = -1;
+        }
+      }
+    } else {
+      valueIs = -1;
+    }
     print("Our index value.👇");
 
     print(valueIs);
     print("🛒🛒🛒🛒");
-    print(ourUsersAndBuyers[0].buyerId);
-    print(ourUsersAndBuyers[0].sellerId);
-    print(ourUsersAndBuyers[0].chatid);
     //concatinating user_id+book_id
     await firestoreSave.collection('chat').doc(checkChatId()).set({
       'buyer_id': checkBuyer(), //aman() //ranjit(seller)

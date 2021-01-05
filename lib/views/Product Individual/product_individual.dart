@@ -18,14 +18,13 @@ class ProductIndividual extends StatefulWidget {
 class _ProductIndividualState extends State<ProductIndividual> {
   void initState() {
     super.initState();
-    Provider.of<ChatProvider>(context, listen: false).loadourUsersAndBuyers();
+    // Provider.of<ChatProvider>(context).loadourUsersAndBuyers();
   }
 
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     ChatProvider chatProvider = Provider.of<ChatProvider>(context);
-
     return SafeArea(
       child: Scaffold(
         appBar: OurAppBar.ourAppBar(context),
@@ -188,7 +187,7 @@ class _ProductIndividualState extends State<ProductIndividual> {
                                           .productList[
                                               productProvider.bookIndexForChat]
                                           .seller_Id;
-                                  //userId👇
+                                  await chatProvider.loadourUsersAndBuyers();
                                   await chatProvider.getUserId();
                                   print("BuyerId=>" + chatProvider.userId);
                                   print("SellerId=>" +

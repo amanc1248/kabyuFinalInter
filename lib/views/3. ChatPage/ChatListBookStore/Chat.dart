@@ -93,6 +93,7 @@ class _ChatPageState extends State<ChatPage> {
             onTap: () {
               chatProvider.storeDataToChat();
               chatProvider.chatMessage = _message.text;
+              _message.clear();
             },
             child: Material(
               child: Container(

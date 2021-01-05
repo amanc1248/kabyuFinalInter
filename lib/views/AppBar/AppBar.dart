@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
-class OurAppBar  {
-  static   ourAppBar(context) {
+
+class OurAppBar {
+  static ourAppBar(context) {
     return AppBar(
       automaticallyImplyLeading: false,
       leading: GestureDetector(
