@@ -7,8 +7,6 @@ class UserModel {
   String buyerId;
   String sellerId;
   UserModel.fromSnapshot(DocumentSnapshot snapshot, chatId, buyerId, sellerId) {
-    print("=========" + buyerId);
-    print("=========" + sellerId);
     name = snapshot.data()['name'];
     image = snapshot.data()['image'];
     chatid = chatId;

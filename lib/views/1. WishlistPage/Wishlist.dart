@@ -24,14 +24,7 @@ class _WishListPageState extends State<WishListPage> {
       child: Scaffold(
           appBar: AppBar(
             automaticallyImplyLeading: false,
-            leading: GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
-              child: Icon(
-                Icons.chevron_left,
-              ),
-            ),
+            leading: SizedBox(),
             title: TopNavigationBar(),
             actions: [
               Padding(

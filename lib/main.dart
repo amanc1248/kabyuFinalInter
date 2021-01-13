@@ -7,6 +7,7 @@ import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInPro
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
+import 'package:kabyu_feather_webs/Provider/UserProvider.dart';
 import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart';
 import 'package:kabyu_feather_webs/views/Navigation/buttomNavigationBar.dart';
@@ -88,6 +89,8 @@ class _MyAppState extends State<MyApp> {
             create: (context) => ChatProvider(context: context)),
         ChangeNotifierProvider<MyBooksProvider>(
             create: (context) => MyBooksProvider()),
+        ChangeNotifierProvider<UserProvider>(
+            create: (context) => UserProvider()),
       ],
       child: MaterialApp(
         routes: {

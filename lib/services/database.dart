@@ -1,9 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:kabyu_feather_webs/Model/UserDetail.dart';
 import 'package:kabyu_feather_webs/Model/UserModel.dart';
 import 'package:kabyu_feather_webs/Model/category_model.dart';
 import 'package:kabyu_feather_webs/Model/product.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
+
+// getChat() async {
+//   SharedPreferences pref = await SharedPreferences.getInstance();
+//   String userId = pref.getString("userId");
+//   return userId;
+// }
 
 getCategory() async {
   QuerySnapshot snapshot =
@@ -35,6 +43,21 @@ getProduct() async {
   return _productList;
 }
 
+getUserDetails() async {
+  SharedPreferences pref = await SharedPreferences.getInstance();
+  String userId = pref.getString("userId");
+  QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collection('users')
+      .where('user_id', isEqualTo: userId)
+      .get();
+  List<UserDetail> _userDetail = [];
+  for (DocumentSnapshot item in snapshot.docs) {
+    UserDetail userDetail = UserDetail.fromSnapshot(item);
+    _userDetail.add(userDetail);
+  }
+  return _userDetail;
+}
+
 getWishlist() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   String userId = pref.getString("userId");
@@ -64,7 +87,6 @@ getMyBooksList() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   String userId = pref.getString("userId");
   print("💕💕💕💕💕💕" + userId);
-  
 
   QuerySnapshot snapshot = await FirebaseFirestore.instance
       .collection('book')
@@ -148,7 +170,6 @@ getourUsersAndBuyers() async {
       }
     }
   }
-  // print("_buyersAndSellers");
   return _buyersAndSellers;
 }
 

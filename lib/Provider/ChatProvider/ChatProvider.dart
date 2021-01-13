@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class ChatProvider extends ChangeNotifier {
   final BuildContext context;
@@ -57,6 +58,7 @@ class ChatProvider extends ChangeNotifier {
       return chatId;
     }
   }
+//checkTimeStamp
 
   storeDataToChat() async {
     ProductProvider productProvider =
@@ -83,6 +85,7 @@ class ChatProvider extends ChangeNotifier {
     print(valueIs);
     print("🛒🛒🛒🛒");
     //concatinating user_id+book_id
+
     await firestoreSave.collection('chat').doc(checkChatId()).set({
       'buyer_id': checkBuyer(), //aman() //ranjit(seller)
       'book_id':
@@ -92,7 +95,7 @@ class ChatProvider extends ChangeNotifier {
         [
           {
             "message": chatMessage,
-            "timeStamp": DateTime.now().millisecondsSinceEpoch,
+            "timeStamp": DateFormat.yMMMd().format(new DateTime.now()),
             "type": userId
           },
         ],
@@ -139,7 +142,7 @@ class ChatProvider extends ChangeNotifier {
   String get chatId => _chatId;
   set chatId(String val) {
     _chatId = val;
-    notifyListeners();
+    // notifyListeners();
   }
 
   //4) Storing buyer id
@@ -171,6 +174,21 @@ class ChatProvider extends ChangeNotifier {
   int get theIndexValue => _theIndexValue;
   set theIndexValue(int val) {
     _theIndexValue = val;
+    notifyListeners();
+  }
+
+  //6) timeStamp
+  String _timeStamp;
+  String get timeStamp => _timeStamp;
+  set timeStamp(String val) {
+    _timeStamp = val;
+    notifyListeners();
+  }
+
+  String _previoustimeStamp;
+  String get previoustimeStamp => _previoustimeStamp;
+  set previoustimeStamp(String val) {
+    _previoustimeStamp = val;
     notifyListeners();
   }
 }

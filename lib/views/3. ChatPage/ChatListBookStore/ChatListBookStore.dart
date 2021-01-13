@@ -1,32 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:kabyu_feather_webs/Model/Chat%20Model/BookStoresClass.dart';
 import 'package:kabyu_feather_webs/Provider/ChatProvider/ChatProvider.dart';
 import 'package:kabyu_feather_webs/views/3.%20ChatPage/ChatListBookStore/BookStoreLists.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 import 'package:provider/provider.dart';
-
-final List<BookStoresClass> bookStoresDetails = [
-  BookStoresClass(
-    imageName: "howinnovationworks.jpg",
-    bookStoreName: "Ekta BookStore",
-    newMessage: 3,
-  ),
-  BookStoresClass(
-    imageName: "howinnovationworks.jpg",
-    bookStoreName: "Ekta BookStore",
-    newMessage: 3,
-  ),
-  BookStoresClass(
-    imageName: "howinnovationworks.jpg",
-    bookStoreName: "Ekta BookStore",
-    newMessage: 3,
-  ),
-  BookStoresClass(
-    imageName: "howinnovationworks.jpg",
-    bookStoreName: "Ekta BookStore",
-    newMessage: 3,
-  )
-];
 
 class ChatListBookStore extends StatefulWidget {
   @override
@@ -41,20 +17,12 @@ class _ChatListBookStoreState extends State<ChatListBookStore> {
 
   @override
   Widget build(BuildContext context) {
-    ChatProvider chatProvider =
-        Provider.of<ChatProvider>(context);
+    ChatProvider chatProvider = Provider.of<ChatProvider>(context);
     print("This is our user and buyers👇");
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          leading: GestureDetector(
-            onTap: () {
-              Navigator.pop(context);
-            },
-            child: Icon(
-              Icons.chevron_left,
-            ),
-          ),
+          leading: SizedBox(),
           title: TopNavigationBar(),
           actions: [
             Padding(
@@ -74,7 +42,7 @@ class _ChatListBookStoreState extends State<ChatListBookStore> {
             color: Color.fromRGBO(0, 0, 0, 0.87),
           ),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromRGBO(248, 248, 248, 1),
         body: Column(
           children: [
             Expanded(

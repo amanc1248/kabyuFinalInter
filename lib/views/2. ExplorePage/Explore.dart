@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Model/Hamburger%20Model/HamburgerOptionsClass.dart';
+import 'package:kabyu_feather_webs/Model/UserDetail.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
+import 'package:kabyu_feather_webs/Provider/UserProvider.dart';
 import 'package:kabyu_feather_webs/Widgets/category.dart';
 import 'package:kabyu_feather_webs/Widgets/products_grid.dart';
 import 'package:kabyu_feather_webs/Widgets/wishlistgrid.dart';
@@ -46,21 +49,26 @@ class _ExplorePageState extends State<ExplorePage> {
     });
   }
 
+  List<UserDetail> ourUser = [];
   void initState() {
     Provider.of<ProductProvider>(context, listen: false).loadProducts();
     Provider.of<WishlistProvider>(context, listen: false).loadwishList();
     Provider.of<CategoryProvider>(context, listen: false).loadCategoryList();
     Provider.of<MyBooksProvider>(context, listen: false).loadMyBooksList();
-    // Provider.of<ChatProvider>(context, listen: false).;
+    Provider.of<UserProvider>(context, listen: false).loadUserDetail();
+    
 
     super.initState();
   }
+
+
 
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
     MyBooksProvider myBooksProvider = Provider.of<MyBooksProvider>(context);
+    UserProvider userProvider = Provider.of<UserProvider>(context);
 
     Future<void> _refreshList() async {
       getProduct();
@@ -131,7 +139,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                   CircleAvatar(
                                     radius: 20,
                                     backgroundImage:
-                                        AssetImage("assets/profileimage.jpg"),
+                                        NetworkImage(userProvider.userDetail[0].image),
                                   ),
                                   SizedBox(
                                     width: 16,
@@ -141,7 +149,8 @@ class _ExplorePageState extends State<ExplorePage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        "Masama Nikine",
+                                        userProvider.userDetail[0].name,
+                                        // "saman",
                                         // bookStoresDetails[theIndex].bookStoreName,
                                         style: TextStyle(
                                             fontSize: 20,

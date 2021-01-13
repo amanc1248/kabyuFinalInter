@@ -55,7 +55,10 @@ class _BookOverviewState extends State<BookOverview> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Npr "+ wishlistProvider.wishlistproductList[index].price + "/-",
+                              "Npr " +
+                                  wishlistProvider
+                                      .wishlistproductList[index].price +
+                                  "/-",
                               style: TextStyle(
                                   color: Color.fromRGBO(255, 107, 107, 1),
                                   fontWeight: FontWeight.w700),
@@ -65,6 +68,7 @@ class _BookOverviewState extends State<BookOverview> {
                             ),
                             Text(
                               wishlistProvider.wishlistproductList[index].title,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
                                   fontWeight: FontWeight.w500, fontSize: 20),
                             ),
@@ -87,20 +91,21 @@ class _BookOverviewState extends State<BookOverview> {
                                   spacing: 2.0,
                                   color: Colors.yellow,
                                   borderColor: Colors.yellow,
-                                  onRated: (value) {
-                                    print("rating value -> $value");
-                                  },
+                                  onRated: (value) {},
                                 ),
                                 SizedBox(
                                   width: 9.5,
                                 ),
-                                Text(
-                                  wishlistProvider
-                                      .wishlistproductList[index].categoryid,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(48, 0, 156, 1),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
+                                Expanded(
+                                  child: Text(
+                                    wishlistProvider
+                                        .wishlistproductList[index].categoryid,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(48, 0, 156, 1),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
                                 ),
                               ],
                             )

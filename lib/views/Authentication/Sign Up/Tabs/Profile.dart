@@ -18,7 +18,7 @@ class ProfileTab extends StatefulWidget {
   _ProfileTabState createState() => _ProfileTabState();
 }
 
-var googleSignInProvider;
+GoogleSignInProvider googleSignInProvider;
 
 class _ProfileTabState extends State<ProfileTab> {
   @override

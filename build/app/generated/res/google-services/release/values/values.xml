@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="default_web_client_id" translatable="false">121213172736-tg5tia49q41f6lvlku9vcgkl7250c7pg.apps.googleusercontent.com</string>
+    <string name="firebase_database_url" translatable="false">https://kabyuappfinalinternproject.firebaseio.com</string>
+    <string name="gcm_defaultSenderId" translatable="false">121213172736</string>
+    <string name="google_api_key" translatable="false">AIzaSyD-OC_-UjM4y0BVCaGGYzro4VjHYDvDMVw</string>
+    <string name="google_app_id" translatable="false">1:121213172736:android:d452a9a79a3f8c93b7ace5</string>
+    <string name="google_crash_reporting_api_key" translatable="false">AIzaSyD-OC_-UjM4y0BVCaGGYzro4VjHYDvDMVw</string>
+    <string name="google_storage_bucket" translatable="false">kabyuappfinalinternproject.appspot.com</string>
+    <string name="project_id" translatable="false">kabyuappfinalinternproject</string>
+</resources>

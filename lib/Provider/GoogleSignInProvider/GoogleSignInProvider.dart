@@ -81,7 +81,7 @@ class GoogleSignInProvider extends ChangeNotifier {
       'name': userDetails[2],
       'phone_number': userDetails[3],
       'address': userDetails[4],
-      'photo_url': userDetails[5],
+      'image': userDetails[5],
       'user_id': userDetails[6]
     }).catchError((onError) {
       print(

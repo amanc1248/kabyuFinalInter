@@ -12,6 +12,7 @@ class BookStoreLists extends StatelessWidget {
         Provider.of<ChatProvider>(context, listen: false);
     return GestureDetector(
       onTap: () {
+        chatProvider.theIndexValue = theIndex;
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -23,7 +24,7 @@ class BookStoreLists extends StatelessWidget {
       child: Container(
         child: Padding(
           padding:
-              const EdgeInsets.only(left: 35, right: 35, bottom: 2, top: 25),
+              const EdgeInsets.only(left: 35, right: 0, bottom: 2, top: 25),
           child: Column(
             children: [
               Row(

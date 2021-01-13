@@ -180,8 +180,11 @@ class _MyBooksOverviewState extends State<MyBooksOverview> {
                             ),
                             Text(
                               myBooksProvider.myBooksList[index].title,
+                              overflow: TextOverflow.ellipsis,
                               style: TextStyle(
-                                  fontWeight: FontWeight.w500, fontSize: 20),
+                                fontWeight: FontWeight.w500,
+                                fontSize: 20,
+                              ),
                             ),
                             SizedBox(
                               height: 5,
@@ -202,19 +205,21 @@ class _MyBooksOverviewState extends State<MyBooksOverview> {
                                   spacing: 2.0,
                                   color: Colors.yellow,
                                   borderColor: Colors.yellow,
-                                  onRated: (value) {
-                                    print("rating value -> $value");
-                                  },
+                                  onRated: (value) {},
                                 ),
                                 SizedBox(
                                   width: 9.5,
                                 ),
-                                Text(
-                                  myBooksProvider.myBooksList[index].categoryid,
-                                  style: TextStyle(
-                                      color: Color.fromRGBO(48, 0, 156, 1),
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w400),
+                                Expanded(
+                                  child: Text(
+                                    myBooksProvider
+                                        .myBooksList[index].categoryid,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                        color: Color.fromRGBO(48, 0, 156, 1),
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w400),
+                                  ),
                                 ),
                               ],
                             )
