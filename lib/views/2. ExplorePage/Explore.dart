@@ -138,8 +138,8 @@ class _ExplorePageState extends State<ExplorePage> {
                                 children: [
                                   CircleAvatar(
                                     radius: 20,
-                                    backgroundImage:
-                                        NetworkImage(userProvider.userDetail[0].image),
+                                    // backgroundImage:
+                                    //     NetworkImage(userProvider.userDetail[0].image),
                                   ),
                                   SizedBox(
                                     width: 16,
@@ -149,7 +149,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        userProvider.userDetail[0].name,
+                                        "userProvider.userDetail[0].name,",
                                         // "saman",
                                         // bookStoresDetails[theIndex].bookStoreName,
                                         style: TextStyle(

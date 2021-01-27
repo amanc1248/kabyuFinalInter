@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kabyu_feather_webs/Provider/BottomNavigationProvider/BottomNavigationProvider.dart';
 import 'package:kabyu_feather_webs/views/Authentication/KitabTitle/maintitle.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Authentication/auth.dart';
@@ -27,6 +28,33 @@ class _LoginState extends State<Login> {
   var bottomNavigationProvider;
   void initState() {
     super.initState();
+  }
+
+  Future<void> _showMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Incorrect Credentials'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text('Please login with correct email and password.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Ok'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -127,7 +155,7 @@ class _LoginState extends State<Login> {
                               decoration: InputDecoration(
                                 border: kTextFieldBorder,
                                 enabledBorder: kTextFieldEnabledBorder,
-                                hintText: 'Input-text',
+                                hintText: "Password",
                                 labelText: "Password",
                                 suffixIcon: GestureDetector(
                                   onTap: () {
@@ -136,7 +164,9 @@ class _LoginState extends State<Login> {
                                     });
                                   },
                                   child: Icon(
-                                    Icons.remove_red_eye,
+                                    passwordEye
+                                        ? FontAwesomeIcons.eye
+                                        : FontAwesomeIcons.eyeSlash,
                                     color: Color(0xff000000),
                                   ),
                                 ),
@@ -180,7 +210,7 @@ class _LoginState extends State<Login> {
                                     );
                                   }
                                 } catch (e) {
-                                  print("we hvae a error");
+                                  _showMyDialog();
                                 }
                               }
                             },

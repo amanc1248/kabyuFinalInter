@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -59,12 +60,9 @@ class GoogleSignInProvider extends ChangeNotifier {
         showSpinner = false;
         print("The spinner is FALSE2 right now");
       }
-    } catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
+    } catch (signUpError) {
+      print(signUpError);
+      print("We have a signup error");
     }
   }
 
@@ -93,16 +91,20 @@ class GoogleSignInProvider extends ChangeNotifier {
   }
 
   uploadImageToFirebase() async {
-    String fileName = basename(_imageFile.path);
-    Reference firebaseStorageRef =
-        FirebaseStorage.instance.ref().child('uploads/$fileName');
-    UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
-    TaskSnapshot taskSnapshot = await uploadTask;
-    await taskSnapshot.ref.getDownloadURL().then((value) {
-      print("Done: $value");
-      userDetails[5] = value;
-      print(userDetails);
-    });
+    if (_imageFile == null) {
+      print("Image will be not shown in your profile");
+    } else {
+      String fileName = basename(_imageFile.path);
+      Reference firebaseStorageRef =
+          FirebaseStorage.instance.ref().child('uploads/$fileName');
+      UploadTask uploadTask = firebaseStorageRef.putFile(_imageFile);
+      TaskSnapshot taskSnapshot = await uploadTask;
+      await taskSnapshot.ref.getDownloadURL().then((value) {
+        print("Done: $value");
+        userDetails[5] = value;
+        print(userDetails);
+      });
+    }
   }
 
   User user;

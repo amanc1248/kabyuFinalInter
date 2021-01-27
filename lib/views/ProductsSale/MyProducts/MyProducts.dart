@@ -237,6 +237,7 @@ class _MyBooksOverviewState extends State<MyBooksOverview> {
   Widget withNoBooks() {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(
             "Be a seller",
