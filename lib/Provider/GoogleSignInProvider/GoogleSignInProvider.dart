@@ -2,9 +2,9 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/services.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Tabs/Profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -60,8 +60,9 @@ class GoogleSignInProvider extends ChangeNotifier {
         showSpinner = false;
         print("The spinner is FALSE2 right now");
       }
-    } catch (signUpError) {
-      print(signUpError);
+    } catch (e) {
+      signUpError = true;
+      print(e);
       print("We have a signup error");
     }
   }
@@ -90,6 +91,7 @@ class GoogleSignInProvider extends ChangeNotifier {
     print("**************************************");
   }
 
+  //Uploading image to firebase👇
   uploadImageToFirebase() async {
     if (_imageFile == null) {
       print("Image will be not shown in your profile");
@@ -107,13 +109,15 @@ class GoogleSignInProvider extends ChangeNotifier {
     }
   }
 
+  //reseting password 👇
+  Future<void> resetPassword(String email) async {
+    await _auth.sendPasswordResetEmail(email: email);
+  }
+
   User user;
 
   click() async {
-    await signInWithGoogle().then((user) => {
-          this.user = user,
-          createUser(),
-        });
+    await signInWithGoogle().then((user) => {this.user = user, createUser()});
   }
 
   //1) Stores the userDetails 👇
@@ -145,6 +149,14 @@ class GoogleSignInProvider extends ChangeNotifier {
   String get entryUserId => _entryUserId;
   set entryUserId(String val) {
     _entryUserId = val;
+    notifyListeners();
+  }
+
+  //5) signup error
+  bool _signUpError = false;
+  bool get signUpError => _signUpError;
+  set signUpError(bool val) {
+    _signUpError = val;
     notifyListeners();
   }
 }

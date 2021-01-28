@@ -15,8 +15,8 @@ class AlreadyHaveAnAccount extends StatelessWidget {
                 Text("Have an account ? "),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Login()));
+                    Navigator.pushNamedAndRemoveUntil(
+                        context, "/loginForm", (r) => false);
                   },
                   child: Text(
                     "Sign in",

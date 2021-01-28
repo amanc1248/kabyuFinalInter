@@ -8,6 +8,8 @@ import 'package:provider/provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class SignUpForm extends StatefulWidget {
+  static const String id = 'signUpFormPage';
+
   @override
   _SignUpFormState createState() => _SignUpFormState();
 }

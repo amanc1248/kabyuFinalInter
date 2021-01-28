@@ -3,8 +3,8 @@ import 'package:flutter_svg/svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:kabyu_feather_webs/Provider/BottomNavigationProvider/BottomNavigationProvider.dart';
 import 'package:kabyu_feather_webs/views/Authentication/KitabTitle/maintitle.dart';
+import 'package:kabyu_feather_webs/views/Authentication/ResetPassword/ResetPassword.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Authentication/auth.dart';
-import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
 import 'package:kabyu_feather_webs/views/Authentication/contants.dart';
 import 'package:kabyu_feather_webs/views/Navigation/buttomNavigationBar.dart';
 import 'package:provider/provider.dart';
@@ -20,7 +20,7 @@ class Login extends StatefulWidget {
   _LoginState createState() => _LoginState();
 }
 
-var googleSignInProvider;
+GoogleSignInProvider googleSignInProvider;
 
 class _LoginState extends State<Login> {
   GlobalKey<FormState> _form = GlobalKey<FormState>();
@@ -227,12 +227,21 @@ class _LoginState extends State<Login> {
                         ),
                       ),
                     ),
-                    Text(
-                      "Forgot Password?",
-                      style: TextStyle(
-                          color: Color(0xff23036A),
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ResetPassword(),
+                            ));
+                      },
+                      child: Text(
+                        "Forgot Password?",
+                        style: TextStyle(
+                            color: Color(0xff23036A),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w400),
+                      ),
                     ),
                     SizedBox(
                       height: 8,
@@ -250,10 +259,8 @@ class _LoginState extends State<Login> {
                               ),
                               GestureDetector(
                                 onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => SignUpForm()));
+                                  Navigator.pushNamedAndRemoveUntil(
+                                      context, "/signUpForm", (r) => false);
                                 },
                                 child: Text(
                                   "Sign up",

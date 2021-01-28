@@ -56,12 +56,9 @@ class _ExplorePageState extends State<ExplorePage> {
     Provider.of<CategoryProvider>(context, listen: false).loadCategoryList();
     Provider.of<MyBooksProvider>(context, listen: false).loadMyBooksList();
     Provider.of<UserProvider>(context, listen: false).loadUserDetail();
-    
 
     super.initState();
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -193,12 +190,8 @@ class _ExplorePageState extends State<ExplorePage> {
                             await preferences.clear();
                             print("Clearing Shared Preference");
                           }
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) =>
-                                    theHamburgerOptionsList[index].theRoute),
-                          );
+                          Navigator.pushNamedAndRemoveUntil(
+                              context, "/loginForm", (r) => false);
                         },
                         child: ListTile(
                           leading:

@@ -10,6 +10,8 @@ import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.da
 import 'package:kabyu_feather_webs/Provider/UserProvider.dart';
 import 'package:kabyu_feather_webs/views/1.%20WishlistPage/Wishlist.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart';
+import 'package:kabyu_feather_webs/views/Authentication/ResetPassword/ResetPassword.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
 import 'package:kabyu_feather_webs/views/Navigation/buttomNavigationBar.dart';
 import 'package:provider/provider.dart';
 
@@ -95,6 +97,9 @@ class _MyAppState extends State<MyApp> {
       child: MaterialApp(
         routes: {
           WishListPage.id: (context) => WishListPage(),
+          "/signUpForm": (context) => SignUpForm(),
+          "/loginForm": (context) => Login(),
+          "/resetPasswordForm": (context) => ResetPassword()
         },
         debugShowCheckedModeBanner: false,
         home: MainScreen(),
