@@ -169,6 +169,8 @@ class _EmailPasswordConfirmPasswordState
                       "\n" +
                       "Password: " +
                       googleSignInProvider.userDetails[1]);
+                  _email.clear();
+                  _pass.clear();
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SignupEmail()));
                 } else {

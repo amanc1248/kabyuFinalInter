@@ -99,7 +99,8 @@ class _MyAppState extends State<MyApp> {
           WishListPage.id: (context) => WishListPage(),
           "/signUpForm": (context) => SignUpForm(),
           "/loginForm": (context) => Login(),
-          "/resetPasswordForm": (context) => ResetPassword()
+          "/resetPasswordForm": (context) => ResetPassword(),
+          "/homePage": (context) => MyHomePage()
         },
         debugShowCheckedModeBanner: false,
         home: MainScreen(),

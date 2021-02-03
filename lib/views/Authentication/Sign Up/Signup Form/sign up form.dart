@@ -14,7 +14,7 @@ class SignUpForm extends StatefulWidget {
   _SignUpFormState createState() => _SignUpFormState();
 }
 
-var googleSignInProvider;
+GoogleSignInProvider googleSignInProvider;
 
 class _SignUpFormState extends State<SignUpForm> {
   void initState() {

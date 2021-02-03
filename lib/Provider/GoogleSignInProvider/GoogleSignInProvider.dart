@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Tabs/Profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:firebase_storage/firebase_storage.dart';
@@ -26,12 +25,14 @@ class GoogleSignInProvider extends ChangeNotifier {
   signInWithGoogle() async {
     GoogleSignIn googleSignIn = GoogleSignIn();
     final acc = await googleSignIn.signIn();
+
     final auth = await acc.authentication;
     final credential = GoogleAuthProvider.credential(
         accessToken: auth.accessToken, idToken: auth.idToken);
     final res = await _auth.signInWithCredential(credential);
     final _user = res.user;
-
+    print("the Progesss indicator is CCCCCCCCCCC");
+    print(progressIndicator);
     SharedPreferences pref = await SharedPreferences.getInstance();
     pref.setString("userId", _user.uid);
 
@@ -39,6 +40,10 @@ class GoogleSignInProvider extends ChangeNotifier {
     userDetails[2] = "${_user.displayName}";
     userDetails[3] = "${_user.phoneNumber}";
     userDetails[5] = "${_user.photoURL}";
+    print("This is userDetails👇👇👇");
+    print(userDetails);
+    await uploadImageToFirebase();
+    await storeUserData();
     return res.user;
   }
 
@@ -115,9 +120,8 @@ class GoogleSignInProvider extends ChangeNotifier {
   }
 
   User user;
-
   click() async {
-    await signInWithGoogle().then((user) => {this.user = user, createUser()});
+    await signInWithGoogle();
   }
 
   //1) Stores the userDetails 👇
@@ -157,6 +161,14 @@ class GoogleSignInProvider extends ChangeNotifier {
   bool get signUpError => _signUpError;
   set signUpError(bool val) {
     _signUpError = val;
+    notifyListeners();
+  }
+
+  // 6 progressIndicator
+  bool _progressIndicator = false;
+  bool get progressIndicator => _progressIndicator;
+  set progressIndicator(bool val) {
+    _progressIndicator = val;
     notifyListeners();
   }
 }

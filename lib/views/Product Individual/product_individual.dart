@@ -200,27 +200,12 @@ class _ProductIndividualState extends State<ProductIndividual> {
                                             chatProvider
                                                 .ourUsersAndBuyers.length;
                                         i++) {
-                                      print("User Buyer Id:");
-                                      print(chatProvider
-                                          .ourUsersAndBuyers[i].buyerId
-                                          .toString());
-                                      print("User seller Id:");
-                                      print(chatProvider
-                                          .ourUsersAndBuyers[i].sellerId
-                                          .toString());
-                                      print("Name:");
-                                      print(chatProvider
-                                          .ourUsersAndBuyers[i].name);
-                                      print("ChatID:");
-                                      print(chatProvider
-                                          .ourUsersAndBuyers[i].chatid);
                                       if (chatProvider.ourUsersAndBuyers[i]
                                                   .buyerId ==
                                               chatProvider.userId &&
                                           chatProvider.ourUsersAndBuyers[i]
                                                   .sellerId ==
                                               chatProvider.sellerIdFromBook) {
-                                        print("ourIndex======>" + i.toString());
                                         valueIs = i;
                                         break;
                                       } else {

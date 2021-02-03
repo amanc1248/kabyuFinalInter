@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/services/database.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
 import 'package:kabyu_feather_webs/views/ProductsSale/MyProducts/MyProducts.dart';
 import 'package:kabyu_feather_webs/views/Profile/Change%20Password/ChangePassword.dart';
@@ -20,8 +21,43 @@ final List<SettingOpenClass> theSettingOpenClassList = [
 //   ChangePassword()
 // ];
 
-class SettingOpen extends StatelessWidget {
+class SettingOpen extends StatefulWidget {
   @override
+  _SettingOpenState createState() => _SettingOpenState();
+}
+
+class _SettingOpenState extends State<SettingOpen> {
+  @override
+  Future<void> _showDeleteMyDialog() async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Delete Account'),
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                Text(
+                    'By clicking ok, you allow us to delete your account associated to this app.'),
+              ],
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Ok'),
+              onPressed: () async {
+                await deleteTheUser();
+                Navigator.pushNamedAndRemoveUntil(
+                    context, "/loginForm", (r) => false);
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
@@ -81,14 +117,21 @@ class SettingOpen extends StatelessWidget {
                                     padding: const EdgeInsets.symmetric(
                                         vertical: 12),
                                     child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  theSettingOpenClassList[index]
-                                                      .theRoute),
-                                        );
+                                      onTap: () async {
+                                        if (theSettingOpenClassList[index]
+                                                .iconName ==
+                                            "Delete Account") {
+                                          _showDeleteMyDialog();
+                                        } else {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    theSettingOpenClassList[
+                                                            index]
+                                                        .theRoute),
+                                          );
+                                        }
                                       },
                                       child: Row(
                                         children: [

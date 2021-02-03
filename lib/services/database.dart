@@ -4,6 +4,7 @@ import 'package:kabyu_feather_webs/Model/UserDetail.dart';
 import 'package:kabyu_feather_webs/Model/UserModel.dart';
 import 'package:kabyu_feather_webs/Model/category_model.dart';
 import 'package:kabyu_feather_webs/Model/product.dart';
+import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Authentication/auth.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -44,8 +45,10 @@ getProduct() async {
 }
 
 getUserDetails() async {
-  SharedPreferences pref = await SharedPreferences.getInstance();
-  String userId = pref.getString("userId");
+  // SharedPreferences pref = await SharedPreferences.getInstance();
+  String userId = FirebaseAuth.instance.currentUser.uid;
+  print("🧡🧡🧡⏭");
+  print(userId);
   QuerySnapshot snapshot = await FirebaseFirestore.instance
       .collection('users')
       .where('user_id', isEqualTo: userId)
@@ -188,4 +191,14 @@ Future<void> addWishlist(bookId) async {
       })
       .then((value) => print("User Added"))
       .catchError((error) => print("Failed to add user: $error"));
+}
+
+//Delete user from database and firebase
+deleteTheUser() async {
+  User user = FirebaseAuth.instance.currentUser;
+  SharedPreferences preferences = await SharedPreferences.getInstance();
+  await preferences.clear();
+  print("Clearing Shared Preference");
+  print(user);
+  user.delete();
 }

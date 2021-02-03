@@ -49,7 +49,10 @@ class _ChatPageState extends State<ChatPage> {
                 chatProvider.theIndexValue == -1
                     ? Expanded(
                         child: Center(
-                        child: Text("No conversation yet!"),
+                        child: Text(
+                          "No conversation yet!",
+                          style: TextStyle(fontWeight: FontWeight.bold),
+                        ),
                       ))
                     : buildListMessage(),
 
@@ -98,7 +101,7 @@ class _ChatPageState extends State<ChatPage> {
 
             // Button send message
             GestureDetector(
-              onTap: () {
+              onTap: () async {
                 chatProvider.storeDataToChat();
                 chatProvider.chatMessage = _message.text;
                 _message.clear();

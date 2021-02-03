@@ -19,12 +19,13 @@ class ChatProvider extends ChangeNotifier {
   getUserId() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     String userid = pref.getString("userId");
-    print("This is the user id: " + userId);
     userId = userid;
   }
 
 //Checking Buyer👇
   checkBuyer() {
+    print("Userid===>" + userId);
+    print("Buyerid===>" + buyerId);
     if (buyerId == '') {
       return userId;
     }
@@ -66,6 +67,9 @@ class ChatProvider extends ChangeNotifier {
     await getUserId();
     // await loadourUsersAndBuyers();
     int valueIs;
+
+    print("RightNow the ourUsersAndBuyers lenght is===💋💋💋" +
+        ourUsersAndBuyers.length.toString());
     if (ourUsersAndBuyers.length != 0) {
       for (var i = 0; i < ourUsersAndBuyers.length; i++) {
         if (ourUsersAndBuyers[i].buyerId == userId &&
@@ -80,6 +84,7 @@ class ChatProvider extends ChangeNotifier {
     } else {
       valueIs = -1;
     }
+
     print("Our index value.👇");
 
     print(valueIs);
@@ -116,6 +121,7 @@ class ChatProvider extends ChangeNotifier {
   }
 
   loadourUsersAndBuyers() async {
+    print("I am insise laodOUrUsersAndBuyers((((((");
     List<UserModel> ourUsersAndBuyers = await getourUsersAndBuyers();
     _ourUsersAndBuyers = ourUsersAndBuyers;
     notifyListeners();

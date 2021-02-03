@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:kabyu_feather_webs/Model/Hamburger%20Model/HamburgerOptionsClass.dart';
 import 'package:kabyu_feather_webs/Model/UserDetail.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
@@ -72,186 +73,200 @@ class _ExplorePageState extends State<ExplorePage> {
       getWishlist();
     }
 
-    return RefreshIndicator(
-      onRefresh: _refreshList,
-      child: Scaffold(
-        appBar: AppBar(
-          title: TopNavigationBar(),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.only(left: 13, right: 13),
-              child: Icon(
-                Icons.notifications,
-                color: Color(0xff30009C),
-                size: 30,
-              ),
-            )
-          ],
-          elevation: 0.0,
-          titleSpacing: 0.0,
-          centerTitle: false,
-          backgroundColor: Color.fromRGBO(255, 255, 255, 1),
-          iconTheme: IconThemeData(
-            color: Color.fromRGBO(35, 3, 106, 1),
+    return ProgressHUD(
+      indicatorColor: Color(0xff6200EE),
+      child: RefreshIndicator(
+        onRefresh: _refreshList,
+        child: Scaffold(
+          appBar: AppBar(
+            title: TopNavigationBar(),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.only(left: 13, right: 13),
+                child: Icon(
+                  Icons.notifications,
+                  color: Color(0xff30009C),
+                  size: 30,
+                ),
+              )
+            ],
+            elevation: 0.0,
+            titleSpacing: 0.0,
+            centerTitle: false,
+            backgroundColor: Color.fromRGBO(255, 255, 255, 1),
+            iconTheme: IconThemeData(
+              color: Color.fromRGBO(35, 3, 106, 1),
+            ),
           ),
-        ),
-        drawer: Drawer(
-          child: Container(
-            color: Colors.white,
-            child: Column(
-              // Important: Remove any padding from the ListView.
-              children: <Widget>[
-                DrawerHeader(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      SizedBox(
-                        height: 15,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(
-                          Icons.close,
-                          color: Color.fromRGBO(48, 0, 156, 1),
+          drawer: Drawer(
+            child: Container(
+              color: Colors.white,
+              child: Column(
+                // Important: Remove any padding from the ListView.
+                children: <Widget>[
+                  DrawerHeader(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          height: 15,
                         ),
-                      ),
-                      SizedBox(
-                        height: 23,
-                      ),
-                      GestureDetector(
-                        onTap: () {
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => ()),
-                          // );
-                        },
-                        child: Container(
-                          child: Column(
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  CircleAvatar(
-                                    radius: 20,
-                                    // backgroundImage:
-                                    //     NetworkImage(userProvider.userDetail[0].image),
-                                  ),
-                                  SizedBox(
-                                    width: 16,
-                                  ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        "userProvider.userDetail[0].name,",
-                                        // "saman",
-                                        // bookStoresDetails[theIndex].bookStoreName,
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      SizedBox(
-                                        height: 1,
-                                      ),
-                                      Text(
-                                        // bookStoresDetails[theIndex].newMessage.toString() +
-                                        "Click to view profile",
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.w400,
-                                            color:
-                                                Color.fromRGBO(0, 0, 0, 0.6)),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ],
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.pop(context);
+                          },
+                          child: Icon(
+                            Icons.close,
+                            color: Color.fromRGBO(48, 0, 156, 1),
                           ),
                         ),
-                      ),
-                    ],
+                        SizedBox(
+                          height: 23,
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            // Navigator.push(
+                            //   context,
+                            //   MaterialPageRoute(builder: (context) => ()),
+                            // );
+                          },
+                          child: Container(
+                            child: Column(
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    CircleAvatar(
+                                      radius: 20,
+                                      backgroundImage: NetworkImage(
+                                          userProvider.userDetail[0].image),
+                                    ),
+                                    SizedBox(
+                                      width: 16,
+                                    ),
+                                    Expanded(
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            userProvider.userDetail[0].name,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.w500),
+                                          ),
+                                          SizedBox(
+                                            height: 1,
+                                          ),
+                                          Text(
+                                            // bookStoresDetails[theIndex].newMessage.toString() +
+                                            "Click to view profile",
+                                            style: TextStyle(
+                                                fontSize: 14,
+                                                fontWeight: FontWeight.w400,
+                                                color: Color.fromRGBO(
+                                                    0, 0, 0, 0.6)),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-                Expanded(
-                  child: Container(
-                    child: ListView.builder(
-                      itemCount: theHamburgerOptionsList.length,
-                      itemBuilder: (context, index) => GestureDetector(
-                        onTap: () async {
-                          if (theHamburgerOptionsList[index].iconName ==
-                              "Logout") {
-                            AuthHelper.logOut();
-                            SharedPreferences preferences =
-                                await SharedPreferences.getInstance();
-                            await preferences.clear();
-                            print("Clearing Shared Preference");
-                          }
-                          Navigator.pushNamedAndRemoveUntil(
-                              context, "/loginForm", (r) => false);
-                        },
-                        child: ListTile(
-                          leading:
-                              Icon(theHamburgerOptionsList[index].iconSymbol),
-                          title: Text(theHamburgerOptionsList[index].iconName),
+                  Expanded(
+                    child: Container(
+                      child: ListView.builder(
+                        itemCount: theHamburgerOptionsList.length,
+                        itemBuilder: (context, index) => GestureDetector(
+                          onTap: () async {
+                            if (theHamburgerOptionsList[index].iconName ==
+                                "Logout") {
+                              AuthHelper.logOut();
+                              SharedPreferences preferences =
+                                  await SharedPreferences.getInstance();
+                              await preferences.clear();
+                              print("Clearing Shared Preference");
+                              Navigator.pushNamedAndRemoveUntil(
+                                  context, "/loginForm", (r) => false);
+                            } else {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          theHamburgerOptionsList[index]
+                                              .theRoute));
+                            }
+                          },
+                          child: ListTile(
+                            leading:
+                                Icon(theHamburgerOptionsList[index].iconSymbol),
+                            title:
+                                Text(theHamburgerOptionsList[index].iconName),
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
+          body: SingleChildScrollView(
+              child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 12.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Categories",
+                  style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
+                ),
+                BuildCategory(),
+                buildCards(title: "Popular Books"),
+                ProductGrid(
+                  count: 2,
+                ),
+                buildCards(title: "My Books"),
+                MyBooksGrid(
+                    count: myBooksProvider.myBooksList.length < 2 ? 1 : 2),
+                buildCards(title: "My Wishlist"),
+                WishListGrid(
+                  count:
+                      wishlistProvider.wishlistproductList.length < 2 ? 1 : 2,
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                Container(
+                    child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Explore",
+                      style:
+                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    ),
+                    ListView.builder(
+                      physics: NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemBuilder: (context, index) {
+                        return buildExplore(productProvider, index);
+                      },
+                      itemCount: productProvider.productList.length,
+                    )
+                  ],
+                )),
+              ],
+            ),
+          )),
         ),
-        body: SingleChildScrollView(
-            child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Categories",
-                style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
-              ),
-              BuildCategory(),
-              buildCards(title: "Popular Books"),
-              ProductGrid(
-                count: 2,
-              ),
-              buildCards(title: "My Books"),
-              MyBooksGrid(
-                  count: myBooksProvider.myBooksList.length < 2 ? 1 : 2),
-              buildCards(title: "My Wishlist"),
-              WishListGrid(
-                count: wishlistProvider.wishlistproductList.length < 2 ? 1 : 2,
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                  child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Explore",
-                    style: TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
-                  ),
-                  ListView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) {
-                      return buildExplore(productProvider, index);
-                    },
-                    itemCount: productProvider.productList.length,
-                  )
-                ],
-              )),
-            ],
-          ),
-        )),
       ),
     );
   }

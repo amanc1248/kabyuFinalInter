@@ -3,7 +3,6 @@ import 'package:flutter/scheduler.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/LowerPart/AlreadyHaveAnAccount.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
 import 'package:provider/provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
@@ -159,7 +158,6 @@ class _ImagePickState extends State<ImagePick> {
 
   Future pickImageFromCamera() async {
     var pickedFile = await picker.getImage(source: ImageSource.camera);
-    // var pickedFile = await picker.getImage(source: ImageSource.gallery);
     googleSignInProvider.imageFile = null;
 
     setState(() {

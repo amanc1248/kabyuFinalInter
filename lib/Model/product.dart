@@ -15,8 +15,8 @@ class Product {
 
   Product.fromSnapshot(DocumentSnapshot snapshot) {
     book_Id = snapshot.id;
-    int intvar = snapshot.data()['rating'];
-    double doublevar = intvar.toDouble();
+    // int intvar = snapshot.data()['rating'];
+    // double doublevar = intvar.toDouble();
     author = snapshot.data()['author'];
     availablefor = snapshot.data()['availablefor'];
     categoryid = snapshot.data()['categoryid'];
@@ -24,7 +24,7 @@ class Product {
     condition = snapshot.data()['condition'];
     description = snapshot.data()['description'];
     price = snapshot.data()['price'];
-    rating = doublevar;
+    rating = 2.0;
     title = snapshot.data()['title'];
     seller_Id = snapshot.data()['seller_id'];
   }
