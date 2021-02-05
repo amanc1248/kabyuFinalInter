@@ -54,7 +54,8 @@ class ChatProvider extends ChangeNotifier {
   checkChatId() {
     // chatId = "Tt9Pl5u7iMNJzpOrTXv1ZByouF12";
     if (chatId == '') {
-      return sellerIdFromBook + userId;
+      String theCombinedChatId = sellerIdFromBook + userId;
+      return theCombinedChatId;
     } else {
       return chatId;
     }
@@ -80,7 +81,7 @@ class ChatProvider extends ChangeNotifier {
           valueIs = i;
           break;
         } else {
-          chatId = '';
+          // chatId = '';
           valueIs = -1;
         }
       }

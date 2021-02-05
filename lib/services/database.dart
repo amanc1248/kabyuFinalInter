@@ -93,7 +93,6 @@ getWishlist() async {
 getMyBooksList() async {
   SharedPreferences pref = await SharedPreferences.getInstance();
   String userId = pref.getString("userId");
-  print("💕💕💕💕💕💕" + userId);
 
   QuerySnapshot snapshot = await FirebaseFirestore.instance
       .collection('book')

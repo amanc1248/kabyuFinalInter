@@ -71,7 +71,7 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget buildInput() {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(16, 16, 16, 20),
+      padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
       child: Container(
         width: double.infinity,
         height: 51.0,
@@ -84,7 +84,7 @@ class _ChatPageState extends State<ChatPage> {
             Flexible(
               child: Container(
                 child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.only(top: 8.0, left: 8, bottom: 8),
                   child: TextField(
                     controller: _message,
                     style: TextStyle(color: Colors.black, fontSize: 15.0),
@@ -110,13 +110,16 @@ class _ChatPageState extends State<ChatPage> {
               },
               child: Material(
                 child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 8.0),
-                    child: Text(
-                      "Send",
-                      style: TextStyle(
-                          color: Color.fromRGBO(35, 3, 106, 1),
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16),
+                    height: 51,
+                    width: 51,
+                    child: Center(
+                      child: Text(
+                        "Send",
+                        style: TextStyle(
+                            color: Color.fromRGBO(35, 3, 106, 1),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 16),
+                      ),
                     )),
               ),
             ),

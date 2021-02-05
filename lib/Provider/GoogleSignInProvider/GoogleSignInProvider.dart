@@ -67,6 +67,7 @@ class GoogleSignInProvider extends ChangeNotifier {
       }
     } catch (e) {
       signUpError = true;
+      print(signUpError);
       print(e);
       print("We have a signup error");
     }

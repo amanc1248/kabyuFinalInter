@@ -21,7 +21,6 @@ class ProfileTab extends StatefulWidget {
 }
 
 GoogleSignInProvider googleSignInProvider;
-bool emailExists = false;
 
 class _ProfileTabState extends State<ProfileTab> {
   Future<void> _showMyDialog() async {
@@ -70,22 +69,22 @@ class _ProfileTabState extends State<ProfileTab> {
             children: [
               Expanded(
                 child: FlatButton(
-                    onPressed: () {
-                      SchedulerBinding.instance.addPostFrameCallback((_) {
-                        googleSignInProvider.createUser();
-                        print("👇👇emailExists Value: ");
-                        print(emailExists);
-                        if (googleSignInProvider.signUpError == true) {
-                          print("dude you have some error");
-                          _showMyDialog();
-                        } else {
-                          Future.delayed(Duration.zero, () {
-                            widget.theTabController.animateTo(
-                              (widget.theTabController.index + 1),
-                            );
-                          });
-                        }
-                      });
+                    onPressed: () async {
+                      // SchedulerBinding.instance.addPostFrameCallback((_) {
+                      await googleSignInProvider.createUser();
+                      print("👇👇emailExists Value: ");
+                      if (googleSignInProvider.signUpError == true) {
+                        print("dude you have some error");
+                        _showMyDialog();
+                      } else {
+                        Future.delayed(Duration.zero, () {
+                          print("Changed tab");
+                          widget.theTabController.animateTo(
+                            (widget.theTabController.index + 1),
+                          );
+                        });
+                      }
+                      // });
                     },
                     child: Container(
                         child: Text(
@@ -105,19 +104,19 @@ class _ProfileTabState extends State<ProfileTab> {
                       borderRadius: BorderRadius.all(Radius.circular(4))),
                   child: FlatButton(
                     onPressed: () async {
-                      SchedulerBinding.instance.addPostFrameCallback((_) {
-                        googleSignInProvider.createUser();
-                        if (googleSignInProvider.signUpError == true) {
-                          print("dude you have some error");
-                          _showMyDialog();
-                        } else {
-                          Future.delayed(Duration.zero, () {
-                            widget.theTabController.animateTo(
-                              (widget.theTabController.index + 1),
-                            );
-                          });
-                        }
-                      }); // Going to another tab👇
+                      // SchedulerBinding.instance.addPostFrameCallback((_) {
+                      await googleSignInProvider.createUser();
+                      if (googleSignInProvider.signUpError == true) {
+                        print("dude you have some error");
+                        _showMyDialog();
+                      } else {
+                        Future.delayed(Duration.zero, () {
+                          widget.theTabController.animateTo(
+                            (widget.theTabController.index + 1),
+                          );
+                        });
+                      }
+                      // }); // Going to another tab👇
                     },
                     child: Text("DONE",
                         style: TextStyle(

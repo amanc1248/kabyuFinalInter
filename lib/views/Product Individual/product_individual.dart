@@ -240,9 +240,9 @@ class _ProductIndividualState extends State<ProductIndividual> {
                                               valueIs = i;
                                               break;
                                             } else {
-                                              chatProvider.chatId = '';
-                                              chatProvider.sellerId =
-                                                  '';
+                                              // chatProvider.chatId = '';
+                                              // chatProvider.sellerId =
+                                              //     '';
                                               valueIs = -1;
                                             }
                                           }
