@@ -12,10 +12,38 @@ class WishlistBooksList extends StatefulWidget {
   _WishlistBooksListState createState() => _WishlistBooksListState();
 }
 
+WishlistProvider wishlistProvider;
+
 class _WishlistBooksListState extends State<WishlistBooksList> {
+  checkBookImage() {
+    if (wishlistProvider.wishlistproductList[widget.book].image == null) {
+      return Container(
+          decoration: BoxDecoration(color: Colors.grey),
+          height: 135,
+          child: Center(
+            child: Text(
+              '${wishlistProvider.wishlistproductList[widget.book].title[0]}'
+                  .toUpperCase(),
+              style: TextStyle(fontSize: 25),
+            ),
+          ));
+    } else {
+      return Container(
+        height: 135,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(
+                wishlistProvider.wishlistproductList[widget.book].image),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
+    wishlistProvider = Provider.of<WishlistProvider>(context);
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
     // print(wishlistProvider.currentWishlist.book_Id);
@@ -37,22 +65,7 @@ class _WishlistBooksListState extends State<WishlistBooksList> {
             clipBehavior: Clip.antiAliasWithSaveLayer,
             child: Column(
               children: [
-                Container(
-                  height: 135,
-                  decoration: BoxDecoration(
-                    image: wishlistProvider
-                                .wishlistproductList[widget.book].image !=
-                            ''
-                        ? DecorationImage(
-                            image: NetworkImage(wishlistProvider
-                                .wishlistproductList[widget.book].image),
-                          )
-                        : DecorationImage(
-                            image: AssetImage(""),
-                            fit: BoxFit.cover,
-                          ),
-                  ),
-                ),
+                checkBookImage(),
                 Container(
                   padding: const EdgeInsets.only(
                       left: 10.0, top: 10, right: 5, bottom: 0),

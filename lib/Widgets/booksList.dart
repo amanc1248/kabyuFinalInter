@@ -12,10 +12,39 @@ class BooksList extends StatefulWidget {
   _BooksListState createState() => _BooksListState();
 }
 
+ProductProvider productProvider;
+
 class _BooksListState extends State<BooksList> {
+  checkBookImage() {
+    print("👇👇👇");
+    print(productProvider.productList);
+    if (productProvider.productList[widget.book].image == null) {
+      return Container(
+          decoration: BoxDecoration(color: Colors.grey),
+          height: 135,
+          child: Center(
+            child: Text(
+              '${productProvider.productList[widget.book].title[0]}'
+                  .toUpperCase(),
+              style: TextStyle(fontSize: 25),
+            ),
+          ));
+    } else {
+      return Container(
+        height: 135,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(productProvider.productList[widget.book].image),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    ProductProvider productProvider = Provider.of<ProductProvider>(context);
+    productProvider = Provider.of<ProductProvider>(context);
     // ChatProvider chatProvider = Provider.of<Chat>(context);
     print(productProvider.productList[widget.book].image);
     return GestureDetector(
@@ -24,8 +53,12 @@ class _BooksListState extends State<BooksList> {
         productProvider.currentProduct =
             productProvider.productList[widget.book];
 
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ProductIndividual()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductIndividual(
+                      myIndividualProduct: productProvider.currentProduct,
+                    )));
       },
       child: Container(
           width: MediaQuery.of(context).size.width / 2,
@@ -35,17 +68,7 @@ class _BooksListState extends State<BooksList> {
               children: [
                 Container(
                   height: 135,
-                  decoration: BoxDecoration(
-                    image: productProvider.productList[widget.book].image != ''
-                        ? DecorationImage(
-                            image: NetworkImage(
-                                productProvider.productList[widget.book].image),
-                          )
-                        : DecorationImage(
-                            image: AssetImage(""),
-                            fit: BoxFit.cover,
-                          ),
-                  ),
+                  child: checkBookImage(),
                 ),
                 Container(
                   padding: const EdgeInsets.only(

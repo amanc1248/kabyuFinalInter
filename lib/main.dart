@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:kabyu_feather_webs/Provider/BottomNavigationProvider/BottomNavigationProvider.dart';
 import 'package:kabyu_feather_webs/Provider/ChangePassword/ChangePasswordProvider.dart';
 import 'package:kabyu_feather_webs/Provider/ChatProvider/ChatProvider.dart';
@@ -13,6 +14,7 @@ import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart'
 import 'package:kabyu_feather_webs/views/Authentication/ResetPassword/ResetPassword.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Signup%20Form/sign%20up%20form.dart';
 import 'package:kabyu_feather_webs/views/Navigation/buttomNavigationBar.dart';
+import 'package:kabyu_feather_webs/views/ProductsSale/MyProducts/product_ind_add.dart';
 import 'package:provider/provider.dart';
 
 FirebaseAuth auth = FirebaseAuth.instance;
@@ -93,14 +95,17 @@ class _MyAppState extends State<MyApp> {
             create: (context) => MyBooksProvider()),
         ChangeNotifierProvider<UserProvider>(
             create: (context) => UserProvider()),
+        ChangeNotifierProvider<AddProductsProvider>(
+            create: (context) => AddProductsProvider()),
       ],
-      child: MaterialApp(
+      child: GetMaterialApp(
         routes: {
           WishListPage.id: (context) => WishListPage(),
           "/signUpForm": (context) => SignUpForm(),
           "/loginForm": (context) => Login(),
           "/resetPasswordForm": (context) => ResetPassword(),
-          "/homePage": (context) => MyHomePage()
+          "/homePage": (context) => MyHomePage(),
+          "/productInAdd": (context) => ProductInAdd(),
         },
         debugShowCheckedModeBanner: false,
         home: MainScreen(),

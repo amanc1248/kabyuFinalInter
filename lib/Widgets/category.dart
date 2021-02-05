@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:provider/provider.dart';
 
-
-
 class BuildCategory extends StatefulWidget {
   @override
   _BuildCategoryState createState() => _BuildCategoryState();

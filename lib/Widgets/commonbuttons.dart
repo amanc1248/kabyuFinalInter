@@ -1,8 +1,11 @@
-
 import 'package:flutter/material.dart';
 
 class CommonButtons extends StatelessWidget {
+  final Function pressed;
+  final String text;
   const CommonButtons({
+    this.pressed,
+    this.text,
     Key key,
   }) : super(key: key);
 
@@ -14,7 +17,9 @@ class CommonButtons extends StatelessWidget {
           child: ButtonTheme(
             minWidth: 30,
             child: FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pop(context);
+              },
               child: Text("CANCEL",
                   style: TextStyle(
                     color: Color(0XFFB00020),
@@ -29,10 +34,10 @@ class CommonButtons extends StatelessWidget {
             child: ButtonTheme(
               height: 46,
               child: RaisedButton(
-                onPressed: () {},
+                onPressed: pressed,
                 color: Color(0xFF6200EE),
                 child: Text(
-                  "SAVE",
+                  text,
                   style: TextStyle(color: Colors.white),
                 ),
               ),

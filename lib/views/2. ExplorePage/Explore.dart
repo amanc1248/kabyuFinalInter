@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:kabyu_feather_webs/Model/Hamburger%20Model/HamburgerOptionsClass.dart';
 import 'package:kabyu_feather_webs/Model/UserDetail.dart';
+import 'package:kabyu_feather_webs/Model/product.dart';
+import 'package:kabyu_feather_webs/Model/product_individual_carousel.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/Provider/UserProvider.dart';
 import 'package:kabyu_feather_webs/Widgets/category.dart';
@@ -13,8 +15,10 @@ import 'package:kabyu_feather_webs/views/2.%20ExplorePage/listproduct.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Login/Login%20form.dart';
 import 'package:kabyu_feather_webs/views/Authentication/Sign%20Up/Authentication/auth.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
+import 'package:kabyu_feather_webs/views/Product%20Individual/product_individual.dart';
 import 'package:kabyu_feather_webs/views/ProductsSale/MyProducts/MyProducts.dart';
 import 'package:kabyu_feather_webs/views/Profile/SettingOpen/SettingOpen.dart';
+import 'package:kabyu_feather_webs/views/Profile/profile_edit.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
@@ -23,7 +27,7 @@ final List<HamburgerOptions> theHamburgerOptionsList = [
   HamburgerOptions(
       iconName: "Setting", iconSymbol: Icons.settings, theRoute: SettingOpen()),
   HamburgerOptions(
-      iconName: "Profile", iconSymbol: Icons.person, theRoute: SettingOpen()),
+      iconName: "Profile", iconSymbol: Icons.person, theRoute: ProfileEdit()),
   HamburgerOptions(
       iconName: "My Products",
       iconSymbol: Icons.card_travel,
@@ -41,6 +45,8 @@ class ExplorePage extends StatefulWidget {
   @override
   _ExplorePageState createState() => _ExplorePageState();
 }
+
+UserProvider userProvider;
 
 class _ExplorePageState extends State<ExplorePage> {
   bool _isVisibleCategory = false;
@@ -61,12 +67,27 @@ class _ExplorePageState extends State<ExplorePage> {
     super.initState();
   }
 
+  theUserImageMain() {
+    if (userProvider.userDetail[0].image == '') {
+      return CircularProgressIndicator();
+    } else if (userProvider.userDetail[0].image == null) {
+      return CircleAvatar(
+          radius: 20,
+          child: Text('${userProvider.userDetail[0].name[0]}'.toUpperCase()));
+    } else {
+      return CircleAvatar(
+        radius: 20,
+        backgroundImage: NetworkImage(userProvider.userDetail[0].image),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
     MyBooksProvider myBooksProvider = Provider.of<MyBooksProvider>(context);
-    UserProvider userProvider = Provider.of<UserProvider>(context);
+    userProvider = Provider.of<UserProvider>(context);
 
     Future<void> _refreshList() async {
       getProduct();
@@ -125,10 +146,11 @@ class _ExplorePageState extends State<ExplorePage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(builder: (context) => ()),
-                            // );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ProfileEdit()),
+                            );
                           },
                           child: Container(
                             child: Column(
@@ -136,11 +158,7 @@ class _ExplorePageState extends State<ExplorePage> {
                                 Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    CircleAvatar(
-                                      radius: 20,
-                                      backgroundImage: NetworkImage(
-                                          userProvider.userDetail[0].image),
-                                    ),
+                                    theUserImageMain(),
                                     SizedBox(
                                       width: 16,
                                     ),
@@ -229,18 +247,36 @@ class _ExplorePageState extends State<ExplorePage> {
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20),
                 ),
                 BuildCategory(),
-                buildCards(title: "Popular Books"),
+                buildCards(
+                    title: "Popular Books",
+                    myList: productProvider.productList,
+                    viewMoreTitle: "Popular Books"),
                 ProductGrid(
                   count: 2,
                 ),
-                buildCards(title: "My Books"),
-                MyBooksGrid(
-                    count: myBooksProvider.myBooksList.length < 2 ? 1 : 2),
-                buildCards(title: "My Wishlist"),
-                WishListGrid(
-                  count:
-                      wishlistProvider.wishlistproductList.length < 2 ? 1 : 2,
-                ),
+                myBooksProvider.myBooksList.length != 0
+                    ? buildCards(
+                        title: "My Books",
+                        myList: myBooksProvider.myBooksList,
+                        viewMoreTitle: "My Books")
+                    : SizedBox(),
+                myBooksProvider.myBooksList.length != 0
+                    ? MyBooksGrid(
+                        count: myBooksProvider.myBooksList.length < 2 ? 1 : 2)
+                    : SizedBox(),
+                wishlistProvider.wishlistproductList.length != 0
+                    ? buildCards(
+                        title: "My Wishlist",
+                        myList: wishlistProvider.wishlistproductList,
+                        viewMoreTitle: "Wishlist Books")
+                    : SizedBox(),
+                wishlistProvider.wishlistproductList.length != 0
+                    ? WishListGrid(
+                        count: wishlistProvider.wishlistproductList.length < 2
+                            ? 1
+                            : 2,
+                      )
+                    : SizedBox(),
                 SizedBox(
                   height: 10,
                 ),
@@ -248,10 +284,13 @@ class _ExplorePageState extends State<ExplorePage> {
                     child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Explore",
-                      style:
-                          TextStyle(fontWeight: FontWeight.w500, fontSize: 16),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 16),
+                      child: Text(
+                        "Explore",
+                        style: TextStyle(
+                            fontWeight: FontWeight.w500, fontSize: 20),
+                      ),
                     ),
                     ListView.builder(
                       physics: NeverScrollableScrollPhysics(),
@@ -272,27 +311,44 @@ class _ExplorePageState extends State<ExplorePage> {
   }
 
   Widget buildExplore(ProductProvider productProvider, int index) {
+    checkExploreImage(index) {
+      if (productProvider.productList[index].image == null) {
+        return Container(
+            decoration: BoxDecoration(color: Colors.grey),
+            height: 135,
+            width: MediaQuery.of(context).size.width / 2 - 30,
+            child: Center(
+              child: Text(
+                '${productProvider.productList[index].title[0]}'.toUpperCase(),
+                style: TextStyle(fontSize: 25),
+              ),
+            ));
+      } else {
+        return Container(
+          height: 120,
+          width: MediaQuery.of(context).size.width / 2 - 30,
+          decoration: BoxDecoration(
+            image: productProvider.productList[index].image != ''
+                ? DecorationImage(
+                    image:
+                        NetworkImage(productProvider.productList[index].image),
+                  )
+                : DecorationImage(
+                    image: AssetImage("assets/howinnovationworks.jpg"),
+                    fit: BoxFit.cover,
+                  ),
+          ),
+        );
+      }
+    }
+
     return Container(
         height: 120,
         child: Card(
           clipBehavior: Clip.antiAliasWithSaveLayer,
           child: Row(
             children: [
-              Container(
-                height: 120,
-                width: MediaQuery.of(context).size.width / 2 - 30,
-                decoration: BoxDecoration(
-                  image: productProvider.productList[index].image != ''
-                      ? DecorationImage(
-                          image: NetworkImage(
-                              productProvider.productList[index].image),
-                        )
-                      : DecorationImage(
-                          image: AssetImage("assets/howinnovationworks.jpg"),
-                          fit: BoxFit.cover,
-                        ),
-                ),
-              ),
+              checkExploreImage(index),
               SingleChildScrollView(
                 child: Column(children: [
                   Container(
@@ -310,7 +366,8 @@ class _ExplorePageState extends State<ExplorePage> {
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
-                            )),
+                            ),
+                            overflow: TextOverflow.ellipsis),
                         Text(
                           "Npr " +
                               (productProvider.productList[index].price != ''
@@ -347,9 +404,10 @@ class _ExplorePageState extends State<ExplorePage> {
   }
 
 //THis is for view more button
-  Widget buildCards({String title}) {
+  Widget buildCards(
+      {String title, List<Product> myList, String viewMoreTitle}) {
     return Container(
-      padding: EdgeInsets.only(top: 10),
+      padding: EdgeInsets.only(top: 10, bottom: 16),
       child: Column(
         children: [
           Row(
@@ -369,7 +427,10 @@ class _ExplorePageState extends State<ExplorePage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ListProducts()));
+                                builder: (context) => ListProducts(
+                                      myList: myList,
+                                      title: viewMoreTitle,
+                                    )));
                       },
                       child: Text(
                         "view more",
@@ -395,26 +456,31 @@ class MyBooksGrid extends StatefulWidget {
   _MyBooksGridState createState() => _MyBooksGridState();
 }
 
+MyBooksProvider myBooksProvider;
+
 class _MyBooksGridState extends State<MyBooksGrid> {
   @override
   Widget build(BuildContext context) {
-    MyBooksProvider myBooksProvider = Provider.of<MyBooksProvider>(context);
+    myBooksProvider = Provider.of<MyBooksProvider>(context);
     print("My BookList: 👇");
     print(myBooksProvider.myBooksList);
     return myBooksProvider.myBooksList.length == 0
         ? Center(child: Text("YOu do not have any products"))
-        : Container(
-            height: 225,
-            child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              childAspectRatio: 0.75,
-              children: List.generate(widget.count, (index) {
-                return MyBooksList(
-                  book: index,
-                );
-              }),
-            ));
+        : Padding(
+            padding: const EdgeInsets.only(bottom: 32),
+            child: Container(
+                height: 225,
+                child: GridView.count(
+                  physics: NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.75,
+                  children: List.generate(widget.count, (index) {
+                    return MyBooksList(
+                      book: index,
+                    );
+                  }),
+                )),
+          );
   }
 }
 
@@ -427,6 +493,33 @@ class MyBooksList extends StatefulWidget {
 }
 
 class _MyBooksListState extends State<MyBooksList> {
+  checkBookImage() {
+    print("👇👇👇");
+    print(myBooksProvider.myBooksList);
+    if (myBooksProvider.myBooksList[widget.book].image == null) {
+      return Container(
+          decoration: BoxDecoration(color: Colors.grey),
+          height: 135,
+          child: Center(
+            child: Text(
+              '${myBooksProvider.myBooksList[widget.book].title[0]}'
+                  .toUpperCase(),
+              style: TextStyle(fontSize: 25),
+            ),
+          ));
+    } else {
+      return Container(
+        height: 135,
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: NetworkImage(myBooksProvider.myBooksList[widget.book].image),
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     MyBooksProvider myBooksProvider = Provider.of<MyBooksProvider>(context);
@@ -434,11 +527,15 @@ class _MyBooksListState extends State<MyBooksList> {
     // print(wishlistProvider.currentWishlist.book_Id);
     return GestureDetector(
       onTap: () {
-        // productProvider.currentProduct =
-        //     productProvider.productList[widget.book];
+        myBooksProvider.myCurrentBook =
+            myBooksProvider.myBooksList[widget.book];
 
-        // Navigator.push(context,
-        //     MaterialPageRoute(builder: (context) => ProductIndividual()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductIndividual(
+                      myIndividualProduct: myBooksProvider.myCurrentBook,
+                    )));
       },
       child: Container(
           width: MediaQuery.of(context).size.width / 2,
@@ -446,16 +543,7 @@ class _MyBooksListState extends State<MyBooksList> {
             clipBehavior: Clip.antiAliasWithSaveLayer,
             child: Column(
               children: [
-                Container(
-                  height: 135,
-                  decoration: BoxDecoration(
-                    image: DecorationImage(
-                      image: NetworkImage(
-                          myBooksProvider.myBooksList[widget.book].image),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
+                checkBookImage(),
                 Container(
                   padding: const EdgeInsets.only(
                       left: 10.0, top: 10, right: 5, bottom: 0),

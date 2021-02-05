@@ -1,3 +1,7 @@
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/foundation.dart';
+import 'package:path/path.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kabyu_feather_webs/Model/UserDetail.dart';
@@ -201,4 +205,62 @@ deleteTheUser() async {
   print("Clearing Shared Preference");
   print(user);
   user.delete();
+}
+
+// For uploading image👇
+Future uploadImageToFirebase(File image) async {
+  if (image == null) {
+    print("Image will be not shown in your profile");
+  } else {
+    String url = "";
+    String fileName = basename(image.path);
+    Reference firebaseStorageRef =
+        FirebaseStorage.instance.ref().child('uploads/$fileName');
+    UploadTask uploadTask = firebaseStorageRef.putFile(image);
+    TaskSnapshot taskSnapshot = await uploadTask;
+    await taskSnapshot.ref.getDownloadURL().then((value) {
+      url = value;
+    });
+    return url;
+  }
+}
+
+// for storing products👇
+setProduct(
+    {String title,
+    String author,
+    String description,
+    String radio,
+    String check1,
+    String check2,
+    String price,
+    List<Category> category,
+    File imageName,
+    String seller}) async {
+  String imageUrl = await uploadImageToFirebase(imageName);
+
+  FirebaseFirestore.instance.collection('book').add({
+    "title": title,
+    "author": author,
+    "description": description,
+    "condition": radio,
+    "availablefor": check1 + " , " + check2,
+    "price": price,
+    "image": imageUrl,
+    "categoryid": category,
+    "seller_id": seller,
+  });
+}
+
+FirebaseAuth auth = FirebaseAuth.instance;
+final firestoreInstance = FirebaseFirestore.instance;
+updateTheProfile(String name, String address, String contact, String email) {
+  final User user = auth.currentUser;
+  final uid = user.uid;
+  firestoreInstance.collection("users").doc(uid).update({
+    "name": name,
+    "address": address,
+    "phone_number": contact,
+    "email": email
+  }).then((_) => print("successfully edited profile"));
 }

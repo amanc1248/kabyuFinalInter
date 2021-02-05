@@ -102,9 +102,11 @@ class _ChatPageState extends State<ChatPage> {
             // Button send message
             GestureDetector(
               onTap: () async {
-                chatProvider.storeDataToChat();
-                chatProvider.chatMessage = _message.text;
-                _message.clear();
+                if (_message.text != null) {
+                  chatProvider.storeDataToChat();
+                  chatProvider.chatMessage = _message.text;
+                  _message.clear();
+                }
               },
               child: Material(
                 child: Container(
@@ -154,19 +156,6 @@ class _ChatPageState extends State<ChatPage> {
             print(messages.runtimeType);
             print(messages.length);
             List<MessageBubble> messageBubbles = [];
-            // for (var message in messages) {
-            //   final messageText = message['message'];
-            //   final type = message['type'];
-            //   if (chatProvider.previoustimeStamp == '') {}
-            //   chatProvider.timeStamp = message['timeStamp'];
-
-            //   final messageBubble = MessageBubble(
-            //     text: messageText,
-            //     isMe: theUserId == type,
-            //   );
-
-            //   messageBubbles.add(messageBubble);
-            // }
 
             print("⏭⏭⏭⏭⏭" + messages.length.toString());
             print(messages[0]['timeStamp']);

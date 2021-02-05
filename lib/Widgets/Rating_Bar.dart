@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/Model/product.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:provider/provider.dart';
 import 'package:smooth_star_rating/smooth_star_rating.dart';
 
 class RatingBar extends StatefulWidget {
+  final Product theRating;
+  RatingBar({this.theRating});
   @override
   _RatingBarState createState() => _RatingBarState();
 }
@@ -13,7 +16,7 @@ class _RatingBarState extends State<RatingBar> {
   Widget build(BuildContext context) {
     ProductProvider productProvider =
         Provider.of<ProductProvider>(context, listen: false);
-    double rate = productProvider.currentProduct.rating;
+    double rate = widget.theRating.rating;
     return SmoothStarRating(
       rating: rate,
       isReadOnly: true,

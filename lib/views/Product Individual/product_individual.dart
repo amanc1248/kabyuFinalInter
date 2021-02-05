@@ -1,6 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/Model/product.dart';
 import 'package:kabyu_feather_webs/Model/product_individual_carousel.dart';
 import 'package:kabyu_feather_webs/Provider/ChatProvider/ChatProvider.dart';
+import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/Widgets/Rating_Bar.dart';
 import 'package:kabyu_feather_webs/Widgets/products_grid.dart';
@@ -11,6 +14,10 @@ import 'package:kabyu_feather_webs/views/AppBar/AppBar.dart';
 import 'package:provider/provider.dart';
 
 class ProductIndividual extends StatefulWidget {
+  final Product myIndividualProduct;
+  const ProductIndividual({Key key, this.myIndividualProduct})
+      : super(key: key);
+
   @override
   _ProductIndividualState createState() => _ProductIndividualState();
 }
@@ -21,10 +28,16 @@ class _ProductIndividualState extends State<ProductIndividual> {
     // Provider.of<ChatProvider>(context).loadourUsersAndBuyers();
   }
 
+  String userId = FirebaseAuth.instance.currentUser.uid;
+
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
     ChatProvider chatProvider = Provider.of<ChatProvider>(context);
+    AddProductsProvider addProductsProvider =
+        Provider.of<AddProductsProvider>(context);
+    GoogleSignInProvider googleSignInProvider =
+        Provider.of<GoogleSignInProvider>(context);
     return SafeArea(
       child: Scaffold(
         appBar: OurAppBar.ourAppBar(context),
@@ -34,7 +47,9 @@ class _ProductIndividualState extends State<ProductIndividual> {
             color: Colors.white,
             child: Column(
               children: [
-                ProductCarousel(),
+                ProductCarousel(
+                  myCarouselImage: widget.myIndividualProduct,
+                ),
               ],
             ),
           ),
@@ -46,30 +61,32 @@ class _ProductIndividualState extends State<ProductIndividual> {
               children: [
                 Text(
                   "Npr " +
-                      (productProvider.currentProduct.price != ''
-                          ? productProvider.currentProduct.price
+                      (widget.myIndividualProduct.price != ''
+                          ? widget.myIndividualProduct.price
                           : "\"" "Not Provided" "\"") +
                       "/-",
                   style: TextStyle(
                       color: Color(0xFF01A299), fontWeight: FontWeight.w700),
                 ),
                 Text(
-                  productProvider.currentProduct.title,
+                  widget.myIndividualProduct.title,
                   style: TextStyle(fontWeight: FontWeight.w500, fontSize: 20.0),
                 ),
                 SizedBox(height: 5.0),
                 Row(
                   children: [
-                    productProvider.currentProduct.rating != null
-                        ? RatingBar()
+                    widget.myIndividualProduct.rating != null
+                        ? RatingBar(
+                            theRating: widget.myIndividualProduct,
+                          )
                         : Text("No Ratings"),
                     SizedBox(width: 10.0),
-                    Text(
-                      productProvider.currentProduct.categoryid,
-                      style: TextStyle(
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xFF30009C)),
-                    ),
+                    // Text(
+                    //   widget.myIndividualProduct.categoryid,
+                    //   style: TextStyle(
+                    //       fontWeight: FontWeight.w400,
+                    //       color: Color(0xFF30009C)),
+                    // ),
                   ],
                 ),
                 SizedBox(height: 10.0),
@@ -85,18 +102,18 @@ class _ProductIndividualState extends State<ProductIndividual> {
                     children: [
                       buildRows(
                           first: "Condition",
-                          second: productProvider.currentProduct.condition),
+                          second: widget.myIndividualProduct.condition),
                       SizedBox(height: 10.0),
                       buildRows(
                           first: "Available for",
-                          second: productProvider.currentProduct.availablefor),
+                          second: widget.myIndividualProduct.availablefor),
                     ],
                   ),
                 ),
                 buildTitle(title: "Description"),
                 SizedBox(height: 10.0),
                 Text(
-                  productProvider.currentProduct.description,
+                  widget.myIndividualProduct.description,
                   style: TextStyle(
                     fontWeight: FontWeight.w400,
                   ),
@@ -131,8 +148,12 @@ class _ProductIndividualState extends State<ProductIndividual> {
                           Text("Contact: ",
                               style: TextStyle(fontWeight: FontWeight.w400)),
                           SizedBox(width: 5.0),
-                          Text("Hidden",
-                              style: TextStyle(color: Colors.black54))
+                          addProductsProvider.toggleContact == false
+                              ? Text("Hidden",
+                                  style: TextStyle(color: Colors.black54))
+                              : Text(googleSignInProvider.userDetails[3] == null
+                                  ? "Not Provided"
+                                  : googleSignInProvider.userDetails[3]),
                         ],
                       ),
                       SizedBox(height: 10.0),
@@ -145,99 +166,115 @@ class _ProductIndividualState extends State<ProductIndividual> {
                         padding: const EdgeInsets.only(bottom: 30.0),
                         child: Column(
                           children: [
-                            Container(
-                              margin: const EdgeInsets.symmetric(vertical: 8.0),
-                              height: 56,
-                              child: FlatButton(
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4.0),
-                                    side: BorderSide(color: Color(0xFF6200EE))),
-                                color: Colors.white,
-                                textColor: Color(0xFF6200EE),
-                                onPressed: () {
-                                  addWishlist(
-                                      productProvider.currentProduct.book_Id);
-                                },
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    Icon(
-                                      Icons.favorite_border,
-                                      color: Color(0xFFB00020),
-                                    ),
-                                    Text(
-                                      "add to wishlist".toUpperCase(),
-                                      style: TextStyle(
-                                        fontSize: 14.0,
+                            widget.myIndividualProduct.seller_Id != userId
+                                ? Container(
+                                    margin: const EdgeInsets.symmetric(
+                                        vertical: 8.0),
+                                    height: 56,
+                                    child: FlatButton(
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4.0),
+                                          side: BorderSide(
+                                              color: Color(0xFF6200EE))),
+                                      color: Colors.white,
+                                      textColor: Color(0xFF6200EE),
+                                      onPressed: () {
+                                        addWishlist(productProvider
+                                            .currentProduct.book_Id);
+                                      },
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Icon(
+                                            Icons.favorite_border,
+                                            color: Color(0xFFB00020),
+                                          ),
+                                          Text(
+                                            "add to wishlist".toUpperCase(),
+                                            style: TextStyle(
+                                              fontSize: 14.0,
+                                            ),
+                                          ),
+                                        ],
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                            Container(
-                              height: 56,
-                              width: double.infinity,
-                              child: RaisedButton(
-                                onPressed: () async {
-                                  //Storing seller_id to the provider
-                                  //Seller_id👇
-                                  chatProvider.sellerIdFromBook =
-                                      productProvider
-                                          .productList[
-                                              productProvider.bookIndexForChat]
-                                          .seller_Id;
-                                  await chatProvider.loadourUsersAndBuyers();
-                                  await chatProvider.getUserId();
-                                  print("BuyerId=>" + chatProvider.userId);
-                                  print("SellerId=>" +
-                                      chatProvider.sellerIdFromBook);
-                                  int valueIs;
-                                  if (chatProvider.ourUsersAndBuyers.length !=
-                                      0) {
-                                    for (var i = 0;
-                                        i <
-                                            chatProvider
-                                                .ourUsersAndBuyers.length;
-                                        i++) {
-                                      if (chatProvider.ourUsersAndBuyers[i]
-                                                  .buyerId ==
-                                              chatProvider.userId &&
-                                          chatProvider.ourUsersAndBuyers[i]
-                                                  .sellerId ==
-                                              chatProvider.sellerIdFromBook) {
-                                        valueIs = i;
-                                        break;
-                                      } else {
-                                        valueIs = -1;
-                                      }
-                                    }
-                                  } else {
-                                    valueIs = -1;
-                                  }
-                                  print("Value Is=>" + valueIs.toString());
-                                  chatProvider.theIndexValue = valueIs;
+                                  )
+                                : SizedBox(),
+                            widget.myIndividualProduct.seller_Id != userId
+                                ? Container(
+                                    height: 56,
+                                    width: double.infinity,
+                                    child: RaisedButton(
+                                      onPressed: () async {
+                                        //Storing seller_id to the provider
+                                        //Seller_id👇
+                                        chatProvider.sellerIdFromBook =
+                                            productProvider
+                                                .productList[productProvider
+                                                    .bookIndexForChat]
+                                                .seller_Id;
+                                        await chatProvider
+                                            .loadourUsersAndBuyers();
+                                        await chatProvider.getUserId();
 
-                                  //passing the chatId index to the chatPage
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) => ChatPage(
-                                              chatIndex: valueIs,
-                                            )),
-                                  );
-                                },
-                                child: Text(
-                                  "talk to seller".toUpperCase(),
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w500),
-                                ),
-                                color: Color(0xFF6200EE),
-                                shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(4)),
-                              ),
-                            ),
+                                        int valueIs;
+                                        if (chatProvider
+                                                .ourUsersAndBuyers.length !=
+                                            0) {
+                                          for (var i = 0;
+                                              i <
+                                                  chatProvider
+                                                      .ourUsersAndBuyers.length;
+                                              i++) {
+                                            if (chatProvider
+                                                        .ourUsersAndBuyers[i]
+                                                        .buyerId ==
+                                                    chatProvider.userId &&
+                                                chatProvider
+                                                        .ourUsersAndBuyers[i]
+                                                        .sellerId ==
+                                                    chatProvider
+                                                        .sellerIdFromBook) {
+                                              valueIs = i;
+                                              break;
+                                            } else {
+                                              chatProvider.chatId = '';
+                                              chatProvider.sellerId =
+                                                  '';
+                                              valueIs = -1;
+                                            }
+                                          }
+                                        } else {
+                                          valueIs = -1;
+                                        }
+                                        print(
+                                            "Value Is=>" + valueIs.toString());
+                                        chatProvider.theIndexValue = valueIs;
+
+                                        //passing the chatId index to the chatPage
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => ChatPage(
+                                                    chatIndex: valueIs,
+                                                  )),
+                                        );
+                                      },
+                                      child: Text(
+                                        "talk to seller".toUpperCase(),
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w500),
+                                      ),
+                                      color: Color(0xFF6200EE),
+                                      shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(4)),
+                                    ),
+                                  )
+                                : SizedBox(),
                           ],
                         ),
                       ),

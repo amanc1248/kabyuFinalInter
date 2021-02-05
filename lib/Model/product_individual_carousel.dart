@@ -1,31 +1,44 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/Model/product.dart';
+import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
+import 'package:provider/provider.dart';
 
-final List<String> imgList = [
-  'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1086&q=80',
-  'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1086&q=80',
-  'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1086&q=80',
-  'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1086&q=80',
-  'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1086&q=80',
-  'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1086&q=80',
-];
-final List<Widget> imageSliders = imgList
-    .map((item) => Container(
-          child: Container(
-            margin: EdgeInsets.all(8.0),
-            child: Container(
-              child: Image.network(
-                item,
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
-        ))
-    .toList();
+ProductProvider productProvider;
 
 class ProductCarousel extends StatelessWidget {
+  final Product myCarouselImage;
+
+  ProductCarousel({this.myCarouselImage});
+
   @override
   Widget build(BuildContext context) {
+    final List<String> imgList = [myCarouselImage.image];
+    final List<Widget> imageSliders = imgList
+        .map((item) => Container(
+              child: Container(
+                margin: EdgeInsets.all(8.0),
+                child: item != null
+                    ? Container(
+                        child: Image.network(
+                          item,
+                          fit: BoxFit.cover,
+                        ),
+                      )
+                    : Container(
+                        height: 208,
+                        color: Colors.grey,
+                        child: Center(
+                          child: Text(
+                            '${myCarouselImage.title[0]}'.toUpperCase(),
+                            style: TextStyle(fontSize: 25),
+                          ),
+                        ),
+                      ),
+              ),
+            ))
+        .toList();
+    productProvider = Provider.of<ProductProvider>(context);
     return Container(
         child: Column(
       children: <Widget>[

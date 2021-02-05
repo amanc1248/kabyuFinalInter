@@ -18,7 +18,8 @@ class _ChatListBookStoreState extends State<ChatListBookStore> {
   @override
   Widget build(BuildContext context) {
     ChatProvider chatProvider = Provider.of<ChatProvider>(context);
-    print("This is our user and buyers👇");
+    print("This is our user and buyers length is👇");
+    print(chatProvider.ourUsersAndBuyers.length);
     return Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,

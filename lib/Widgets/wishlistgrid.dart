@@ -13,6 +13,7 @@ class WishListGrid extends StatefulWidget {
 }
 
 class _WishListGridState extends State<WishListGrid> {
+  
   @override
   Widget build(BuildContext context) {
     WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);

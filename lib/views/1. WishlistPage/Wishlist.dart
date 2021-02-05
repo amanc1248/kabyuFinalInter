@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/Widgets/BookOverview.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
@@ -11,9 +12,12 @@ class WishListPage extends StatefulWidget {
   _WishListPageState createState() => _WishListPageState();
 }
 
+var wishlistProvider;
+
 class _WishListPageState extends State<WishListPage> {
   void initState() {
-    Provider.of<WishlistProvider>(context, listen: false).loadwishList();
+    wishlistProvider =
+        Provider.of<WishlistProvider>(context, listen: false).loadwishList();
 
     super.initState();
   }
@@ -69,7 +73,9 @@ class _WishListPageState extends State<WishListPage> {
                           SizedBox(
                             height: 16,
                           ),
-                          BookOverview()
+                          wishlistProvider == null
+                              ? CircularProgressIndicator()
+                              : BookOverview()
                         ],
                       ),
                     ),

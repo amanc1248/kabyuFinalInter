@@ -1,4 +1,5 @@
 import 'dart:collection';
+import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:kabyu_feather_webs/Model/category_model.dart';
@@ -15,6 +16,12 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  loadProducts() async {
+    List<Product> product = await getProduct();
+    _productList = product;
+    notifyListeners();
+  }
+
   Product _currentProduct;
   Product get currentProduct => _currentProduct;
   set currentProduct(Product product) {
@@ -22,16 +29,35 @@ class ProductProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  loadProducts() async {
-    List<Product> product = await getProduct();
-    _productList = product;
-    notifyListeners();
-  }
-
   int _bookIndexForChat;
   int get bookIndexForChat => _bookIndexForChat;
   set bookIndexForChat(int val) {
     _bookIndexForChat = val;
+    notifyListeners();
+  }
+}
+
+class AddProductsProvider with ChangeNotifier {
+  File _image;
+  File get image => _image;
+
+  set image(File image) {
+    _image = image;
+    notifyListeners();
+  }
+
+  String _imageFileName;
+  String get imageFileName => _imageFileName;
+  set imageFileName(String imageFileName) {
+    _imageFileName = imageFileName;
+    notifyListeners();
+  }
+
+  bool _toggleContact;
+  bool get toggleContact => _toggleContact;
+
+  set toggleContact(bool toggleContact) {
+    _toggleContact = toggleContact;
     notifyListeners();
   }
 }
@@ -73,6 +99,13 @@ class MyBooksProvider with ChangeNotifier {
   loadMyBooksList() async {
     List<Product> bookList = await getMyBooksList();
     _myBooksList = bookList;
+    notifyListeners();
+  }
+
+  Product _myCurrentBook;
+  Product get myCurrentBook => _myCurrentBook;
+  set myCurrentBook(Product product) {
+    _myCurrentBook = product;
     notifyListeners();
   }
 }

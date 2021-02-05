@@ -215,7 +215,6 @@ class _LoginState extends State<Login> {
                               onPressed: () async {
                                 if (_form.currentState.validate()) {
                                   final progress = ProgressHUD.of(context);
-
                                   progress.show();
                                   try {
                                     final user =

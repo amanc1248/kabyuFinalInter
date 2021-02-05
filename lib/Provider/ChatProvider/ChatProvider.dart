@@ -70,6 +70,8 @@ class ChatProvider extends ChangeNotifier {
 
     print("RightNow the ourUsersAndBuyers lenght is===💋💋💋" +
         ourUsersAndBuyers.length.toString());
+    print("UserId==⏭⏭" + userId.toString());
+    print("SellerIdFromBook==⏭⏭" + sellerIdFromBook.toString());
     if (ourUsersAndBuyers.length != 0) {
       for (var i = 0; i < ourUsersAndBuyers.length; i++) {
         if (ourUsersAndBuyers[i].buyerId == userId &&
@@ -78,19 +80,16 @@ class ChatProvider extends ChangeNotifier {
           valueIs = i;
           break;
         } else {
+          chatId = '';
           valueIs = -1;
         }
       }
     } else {
       valueIs = -1;
     }
-
-    print("Our index value.👇");
-
-    print(valueIs);
-    print("🛒🛒🛒🛒");
-    //concatinating user_id+book_id
-
+    print("This is chat Id===>" + chatId);
+    print("SellerId==>" + sellerId);
+    print(checkSeller());
     await firestoreSave.collection('chat').doc(checkChatId()).set({
       'buyer_id': checkBuyer(), //aman() //ranjit(seller)
       'book_id':
@@ -109,6 +108,13 @@ class ChatProvider extends ChangeNotifier {
       print(
           "you have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a error");
     });
+
+    print("Our index value.👇");
+
+    print(valueIs);
+    print("🛒🛒🛒🛒");
+    //concatinating user_id+book_id
+
     // print();
   }
 
@@ -148,7 +154,7 @@ class ChatProvider extends ChangeNotifier {
   String get chatId => _chatId;
   set chatId(String val) {
     _chatId = val;
-    // notifyListeners();
+    notifyListeners();
   }
 
   //4) Storing buyer id

@@ -19,17 +19,20 @@ class _ProductGridState extends State<ProductGrid> {
         productProvider.productList.length.toString());
     return productProvider.productList.length == 0
         ? Center(child: CircularProgressIndicator())
-        : Container(
-            height: 225,
-            child: GridView.count(
-              physics: NeverScrollableScrollPhysics(),
-              crossAxisCount: 2,
-              childAspectRatio: 0.75,
-              children: List.generate(widget.count, (index) {
-                return BooksList(
-                  book: index,
-                );
-              }),
-            ));
+        : Padding(
+            padding: const EdgeInsets.only(bottom: 32),
+            child: Container(
+                height: 225,
+                child: GridView.count(
+                  physics: NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  childAspectRatio: 0.75,
+                  children: List.generate(widget.count, (index) {
+                    return BooksList(
+                      book: index,
+                    );
+                  }),
+                )),
+          );
   }
 }
