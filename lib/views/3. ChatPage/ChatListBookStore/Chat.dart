@@ -1,7 +1,8 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Provider/ChatProvider/ChatProvider.dart';
-import 'package:kabyu_feather_webs/services/database.dart';
 import 'package:kabyu_feather_webs/views/AppBar/AppBar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -31,38 +32,35 @@ class _ChatPageState extends State<ChatPage> {
     return userId;
   }
 
+  // ScrollController _scrollController = new ScrollController();
   String theUserId;
+  final _controller = ScrollController();
   @override
   Widget build(BuildContext context) {
+    Timer(
+      Duration(seconds: 0),
+      () => _controller.jumpTo(_controller.position.maxScrollExtent + 60),
+    );
     chatProvider = Provider.of<ChatProvider>(context);
     return SafeArea(
       child: Scaffold(
         appBar: OurAppBar.ourAppBar(context),
-        body: Stack(
+        body: Column(
           children: <Widget>[
-            Column(
-              children: <Widget>[
-                chatProvider.theIndexValue == -1
-                    ? SizedBox()
-                    : buildUserHeader(),
-                // List of messages
-                chatProvider.theIndexValue == -1
-                    ? Expanded(
-                        child: Center(
-                        child: Text(
-                          "No conversation yet!",
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                      ))
-                    : buildListMessage(),
+            chatProvider.theIndexValue == -1 ? SizedBox() : buildUserHeader(),
+            // List of messages
+            chatProvider.theIndexValue == -1
+                ? Expanded(
+                    child: Center(
+                    child: Text(
+                      "No conversation yet!",
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ))
+                : buildListMessage(),
 
-                // Input content
-                buildInput(),
-              ],
-            ),
-
-            // Loading
-            // buildLoading()
+            // Input content
+            buildInput(),
           ],
         ),
       ),
@@ -102,7 +100,7 @@ class _ChatPageState extends State<ChatPage> {
             // Button send message
             GestureDetector(
               onTap: () async {
-                if (_message.text != null) {
+                if (_message.text != '') {
                   chatProvider.storeDataToChat();
                   chatProvider.chatMessage = _message.text;
                   _message.clear();
@@ -131,11 +129,11 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget buildListMessage() {
     chatProvider.chatId =
-        chatProvider.ourUsersAndBuyers[widget.chatIndex].chatid;
+        chatProvider.ourUsersAndBuyers[chatProvider.theIndexValue].chatid;
     chatProvider.buyerId =
-        chatProvider.ourUsersAndBuyers[widget.chatIndex].buyerId;
+        chatProvider.ourUsersAndBuyers[chatProvider.theIndexValue].buyerId;
     chatProvider.sellerId =
-        chatProvider.ourUsersAndBuyers[widget.chatIndex].sellerId;
+        chatProvider.ourUsersAndBuyers[chatProvider.theIndexValue].sellerId;
 
     return Flexible(
       child: StreamBuilder<DocumentSnapshot>(
@@ -149,46 +147,36 @@ class _ChatPageState extends State<ChatPage> {
               child: Center(child: Text("Start your conversation here")),
             );
           } else {
-            print("This is the chat Id:");
-            print(chatProvider.ourUsersAndBuyers[widget.chatIndex].chatid);
-            print("this isthe doc");
-            print(snapShot.data.data());
+            // print("This is the chat Id:");
+            // print(chatProvider.ourUsersAndBuyers[widget.chatIndex].chatid);
+            // print("this isthe doc");
+            // print(snapShot.data.data());
             final messages = snapShot.data['messages'].toList();
-            print("MESSAGES:👉👉👉👉");
-            print(messages);
-            print(messages.runtimeType);
-            print(messages.length);
-            List<MessageBubble> messageBubbles = [];
 
-            print("⏭⏭⏭⏭⏭" + messages.length.toString());
-            print(messages[0]['timeStamp']);
-            for (var i = 0; i < messages.length; i++) {
-              print("we have error here********");
-
-              final messageText = messages[i]['message'];
-              final type = messages[i]['type'];
-              String timeStamp;
-              if (i == 0) {
-                timeStamp = messages[i]['timeStamp'];
-              } else {
-                if (messages[i - 1]['timeStamp'] == messages[i]['timeStamp']) {
-                  timeStamp = '';
-                } else {
-                  timeStamp = messages[i]['timeStamp'];
-                }
-              }
-              final messageBubble = MessageBubble(
-                text: messageText,
-                isMe: theUserId == type,
-                timeStampFinal: timeStamp,
-              );
-              messageBubbles.add(messageBubble);
-            }
-            return ListView(
-              // reverse: true,
-              padding: EdgeInsets.symmetric(horizontal: 10.0, vertical: 20.0),
-              children: messageBubbles,
-            );
+            return ListView.builder(
+                controller: _controller,
+                itemCount: messages.length,
+                itemBuilder: (context, index) {
+                  print("Messsages length===>" + messages.length.toString());
+                  final messageText = messages[index]['message'];
+                  final type = messages[index]['type'];
+                  String timeStamp;
+                  if (index == 0) {
+                    timeStamp = messages[index]['timeStamp'];
+                  } else {
+                    if (messages[index - 1]['timeStamp'] ==
+                        messages[index]['timeStamp']) {
+                      timeStamp = '';
+                    } else {
+                      timeStamp = messages[index]['timeStamp'];
+                    }
+                  }
+                  return MessageBubble(
+                    text: messageText,
+                    isMe: theUserId == type,
+                    timeStampFinal: timeStamp,
+                  );
+                });
           }
         },
       ),
@@ -206,8 +194,8 @@ class _ChatPageState extends State<ChatPage> {
               children: [
                 CircleAvatar(
                   radius: 20,
-                  backgroundImage: NetworkImage(
-                      chatProvider.ourUsersAndBuyers[widget.chatIndex].image),
+                  backgroundImage: NetworkImage(chatProvider
+                      .ourUsersAndBuyers[chatProvider.theIndexValue].image),
                 ),
                 SizedBox(
                   width: 16,
@@ -216,7 +204,8 @@ class _ChatPageState extends State<ChatPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      chatProvider.ourUsersAndBuyers[widget.chatIndex].name,
+                      chatProvider
+                          .ourUsersAndBuyers[chatProvider.theIndexValue].name,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
                     ),

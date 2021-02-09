@@ -1,7 +1,9 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:kabyu_feather_webs/Model/category_model.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/constants.dart';
 import 'package:kabyu_feather_webs/views/Navigation/buttomNavigationBar.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,7 +28,7 @@ class _ProductInAddState extends State<ProductInAdd> {
   bool _checkboxValue2 = false;
 
   String _selectedValuesJson = 'Nothing to show';
-  List<Category> _selectedCategorys;
+  List<CategoryModel> _selectedCategorys;
 
   String radio = "";
   String check1 = "";
@@ -35,7 +37,7 @@ class _ProductInAddState extends State<ProductInAdd> {
   TextEditingController titleController;
   TextEditingController authorController;
   TextEditingController categoryController;
-  List<Category> category = [];
+  List<CategoryModel> category = [];
   TextEditingController descriptionController;
   TextEditingController priceController;
   AddProductsProvider addProductsProvider;
@@ -249,6 +251,59 @@ class _ProductInAddState extends State<ProductInAdd> {
                           //     // category.add(lang);
                           //   },
                           // ),
+                          FlutterTagging<CategoryModel>(
+                            initialItems: _selectedCategorys,
+                            textFieldConfiguration: TextFieldConfiguration(
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(),
+                                hintText: 'Search Tags',
+                                labelText: 'Select Tags',
+                              ),
+                            ),
+                            findSuggestions: CategoryService.getCategorys,
+                            additionCallback: (value) {
+                              return CategoryModel(
+                                name: value,
+                              );
+                            },
+                            onAdded: (category) {
+                              // api calls here, triggered when add to tag button is pressed
+
+                              return CategoryModel();
+                            },
+                            configureSuggestion: (lang) {
+                              return SuggestionConfiguration(
+                                title: Text(lang.name),
+                                additionWidget: Chip(
+                                  avatar: Icon(
+                                    Icons.add_circle,
+                                    color: Colors.white,
+                                  ),
+                                  label: Text('Add New Tag'),
+                                  labelStyle: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 14.0,
+                                    fontWeight: FontWeight.w300,
+                                  ),
+                                  backgroundColor: Colors.blue,
+                                ),
+                              );
+                            },
+                            configureChip: (lang) {
+                              return ChipConfiguration(
+                                label: Text(lang.name),
+                                backgroundColor: Colors.blue,
+                                labelStyle: TextStyle(color: Colors.white),
+                                deleteIconColor: Colors.white,
+                              );
+                            },
+                            onChanged: () {
+                              print(
+                                  "this helps to submit the category*****************************************************");
+                              // List<Category> category = [];
+                              // category.add(lang);
+                            },
+                          ),
                           Container(
                             padding: EdgeInsets.symmetric(vertical: 10),
                             child: TextFormField(
@@ -519,49 +574,15 @@ class _ProductInAddState extends State<ProductInAdd> {
 }
 
 class CategoryService {
-  static Future<List<Category>> getCategorys(String query) async {
+  static Future<List<CategoryModel>> getCategorys(String query) async {
     await Future.delayed(Duration(milliseconds: 500), null);
-    return <Category>[
-      Category(
-        name: 'Science',
-      ),
-      Category(
-        name: 'Psychlog',
-      ),
-      Category(
-        name: 'Romance',
-      ),
-      Category(
-        name: 'Drama',
-      ),
-      Category(
-        name: 'Thriller',
-      ),
-      Category(
-        name: 'Genre',
-      ),
-    ]
+    print("this is the categories service part" + categories.toString());
+    print(
+        "***************this is the categories part*************************************");
+    return categories
         .where((lang) => lang.name.toLowerCase().contains(query.toLowerCase()))
         .toList();
   }
 }
 
 /// Category Class
-class Category extends Taggable {
-  ///
-  final String name;
-
-  /// Creates Category
-  Category({
-    this.name,
-  });
-
-  @override
-  List<Object> get props => [name];
-
-  /// Converts the class to json string.
-  String toJson() => '''  {
-    "name": $name,\n
-    
-  }''';
-}

@@ -44,23 +44,25 @@ class _ChatListBookStoreState extends State<ChatListBookStore> {
           ),
         ),
         backgroundColor: Color.fromRGBO(248, 248, 248, 1),
-        body: Column(
-          children: [
-            Expanded(
-              child: chatProvider.ourUsersAndBuyers.length == 0
-                  ? Center(
-                      child: Text(
-                        "Not started any conversation yet!",
-                      ),
-                    )
-                  : ListView.builder(
-                      itemCount: chatProvider.ourUsersAndBuyers.length,
-                      itemBuilder: (context, index) => BookStoreLists(
-                        theIndex: index,
-                      ),
-                    ),
-            ),
-          ],
-        ));
+        body: chatProvider.loadUserChat == false
+            ? Center(child: CircularProgressIndicator())
+            : Column(
+                children: [
+                  Expanded(
+                    child: chatProvider.ourUsersAndBuyers.length == 0
+                        ? Center(
+                            child: Text(
+                              "Not started any conversation yet!",
+                            ),
+                          )
+                        : ListView.builder(
+                            itemCount: chatProvider.ourUsersAndBuyers.length,
+                            itemBuilder: (context, index) => BookStoreLists(
+                              theIndex: index,
+                            ),
+                          ),
+                  ),
+                ],
+              ));
   }
 }

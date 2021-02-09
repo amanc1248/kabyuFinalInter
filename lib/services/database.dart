@@ -127,10 +127,40 @@ getourUsersAndBuyers() async {
       if (sellerId != null || sellerId != "") {
         String chatId = item.id;
         String buyerId = item.data()['buyer_id'];
+        String bookId = item.data()['book_id'];
         print("Our 1st buyerId:😁😁😁");
         print(buyerId);
         // print("THis is the chatId 👇");
         print(chatId);
+
+// Calculation no of new messages
+        // Calculation no of new messages
+        List similarIndex = [];
+        print(item.data()['messages'].toList());
+        var messages = await item.data()['messages'].toList();
+        print("&&&&&& this is the messages");
+        print("Type from DB====>" + messages[0]['type'].toString());
+        print("UserId==>" + userId.toString());
+        print(messages.length);
+
+        int newMessages;
+        for (int i = 0; i < messages.length; i++) {
+          print("Inside for loop type " + messages[i]['type'].toString());
+          if (messages[i]['type'] == userId) {
+            similarIndex.add(i);
+            print("I am inside here bro");
+          }
+        }
+
+        print("🥻🥻🥻");
+        print(similarIndex);
+        if (similarIndex != null) {
+          newMessages = (item.data()['messages'].length - 1) -
+              (similarIndex[similarIndex.length - 1]);
+        } else {
+          newMessages = 0;
+        }
+
         DocumentSnapshot snapshots = await FirebaseFirestore.instance
             .collection('users')
             .doc(sellerId)
@@ -138,8 +168,8 @@ getourUsersAndBuyers() async {
 
         // print("Buyer Snapshot");
         if (snapshots.data() != null) {
-          UserModel user =
-              UserModel.fromSnapshot(snapshots, chatId, buyerId, sellerId);
+          UserModel user = UserModel.fromSnapshot(
+              snapshots, chatId, buyerId, sellerId, bookId, newMessages);
           print("our if statement buyerId⭐");
           print(buyerId);
           print("our if statement sellerId⭐");
@@ -160,7 +190,34 @@ getourUsersAndBuyers() async {
       String buyerId = item.data()['buyer_id'];
       if (buyerId != null || buyerId != "") {
         String sellerId = item.data()['seller_id'];
-        print(sellerId);
+        String bookId = item.data()['book_id'];
+
+        // Calculation no of new messages
+        List similarIndex = [];
+        print(item.data()['messages'].toList());
+        var messages = await item.data()['messages'].toList();
+        print("&&&&&& this is the messages");
+        print("Type from DB====>" + messages[0]['type'].toString());
+        print("UserId==>" + userId.toString());
+        print(messages.length);
+
+        int newMessages;
+        for (int i = 0; i < messages.length; i++) {
+          print("Inside for loop type " + messages[i]['type'].toString());
+          if (messages[i]['type'] == userId) {
+            similarIndex.add(i);
+            print("I am inside here bro");
+          }
+        }
+
+        print("🥻🥻🥻");
+        print(similarIndex);
+        if (similarIndex != null) {
+          newMessages = (item.data()['messages'].length - 1) -
+              (similarIndex[similarIndex.length - 1]);
+        } else {
+          newMessages = 0;
+        }
 
         String chatId = item.id;
 
@@ -169,8 +226,8 @@ getourUsersAndBuyers() async {
             .doc(buyerId)
             .get();
         if (snapshots.data() != null) {
-          UserModel user =
-              UserModel.fromSnapshot(snapshots, chatId, buyerId, sellerId);
+          UserModel user = UserModel.fromSnapshot(
+              snapshots, chatId, buyerId, sellerId, bookId, newMessages);
           _buyersAndSellers.add(user);
         }
       }

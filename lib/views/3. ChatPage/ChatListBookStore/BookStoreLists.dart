@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Provider/ChatProvider/ChatProvider.dart';
-import 'package:kabyu_feather_webs/Provider/UserProvider.dart';
 import 'package:kabyu_feather_webs/views/3.%20ChatPage/ChatListBookStore/Chat.dart';
 import 'package:provider/provider.dart';
 
@@ -19,7 +18,6 @@ class BookStoreLists extends StatelessWidget {
         backgroundImage:
             NetworkImage(chatProvider.ourUsersAndBuyers[userIndex].image),
       );
-      ;
     }
   }
 
@@ -30,6 +28,11 @@ class BookStoreLists extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         chatProvider.theIndexValue = theIndex;
+        chatProvider.sellerId =
+            chatProvider.ourUsersAndBuyers[theIndex].sellerId;
+        chatProvider.buyerId = chatProvider.ourUsersAndBuyers[theIndex].buyerId;
+        chatProvider.chatId = chatProvider.ourUsersAndBuyers[theIndex].chatid;
+        chatProvider.bookId = chatProvider.ourUsersAndBuyers[theIndex].bookId;
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -59,13 +62,20 @@ class BookStoreLists extends StatelessWidget {
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.w500),
                       ),
-                      // Text(
-                      //   "0" + " new messages",
-                      //   style: TextStyle(
-                      //       fontSize: 14,
-                      //       fontWeight: FontWeight.w400,
-                      //       color: Color.fromRGBO(176, 0, 32, 1)),
-                      // ),
+                      chatProvider.ourUsersAndBuyers[theIndex]
+                                  .noOfNewMessages !=
+                              0
+                          ? Text(
+                              chatProvider.ourUsersAndBuyers[theIndex]
+                                      .noOfNewMessages
+                                      .toString() +
+                                  " new messages",
+                              style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromRGBO(176, 0, 32, 1)),
+                            )
+                          : SizedBox()
                     ],
                   ),
                 ],

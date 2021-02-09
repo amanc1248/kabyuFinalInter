@@ -12,18 +12,18 @@ class WishListPage extends StatefulWidget {
   _WishListPageState createState() => _WishListPageState();
 }
 
-var wishlistProvider;
+WishlistProvider wishlistProvider;
 
 class _WishListPageState extends State<WishListPage> {
   void initState() {
-    wishlistProvider =
-        Provider.of<WishlistProvider>(context, listen: false).loadwishList();
+    Provider.of<WishlistProvider>(context, listen: false).loadwishList();
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    wishlistProvider = Provider.of<WishlistProvider>(context);
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
@@ -73,8 +73,8 @@ class _WishListPageState extends State<WishListPage> {
                           SizedBox(
                             height: 16,
                           ),
-                          wishlistProvider == null
-                              ? CircularProgressIndicator()
+                          wishlistProvider.loadingWishList == false
+                              ? Center(child: CircularProgressIndicator())
                               : BookOverview()
                         ],
                       ),

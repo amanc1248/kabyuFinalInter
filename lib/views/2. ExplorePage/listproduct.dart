@@ -10,8 +10,6 @@ class ListProducts extends StatelessWidget {
   ListProducts({this.myList, this.title});
   @override
   Widget build(BuildContext context) {
-    ProductProvider productProvider = Provider.of<ProductProvider>(context);
-
     return Scaffold(
       appBar: AppBar(
         title: Text(title),

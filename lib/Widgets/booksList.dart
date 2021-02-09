@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:kabyu_feather_webs/Provider/ChatProvider/ChatProvider.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/views/Product%20Individual/product_individual.dart';
 import 'package:provider/provider.dart';
@@ -13,11 +14,10 @@ class BooksList extends StatefulWidget {
 }
 
 ProductProvider productProvider;
+ChatProvider chatProvider;
 
 class _BooksListState extends State<BooksList> {
   checkBookImage() {
-    print("👇👇👇");
-    print(productProvider.productList);
     if (productProvider.productList[widget.book].image == null) {
       return Container(
           decoration: BoxDecoration(color: Colors.grey),
@@ -45,6 +45,7 @@ class _BooksListState extends State<BooksList> {
   @override
   Widget build(BuildContext context) {
     productProvider = Provider.of<ProductProvider>(context);
+    chatProvider = Provider.of<ChatProvider>(context);
     // ChatProvider chatProvider = Provider.of<Chat>(context);
     print(productProvider.productList[widget.book].image);
     return GestureDetector(
@@ -52,7 +53,6 @@ class _BooksListState extends State<BooksList> {
         productProvider.bookIndexForChat = widget.book;
         productProvider.currentProduct =
             productProvider.productList[widget.book];
-
         Navigator.push(
             context,
             MaterialPageRoute(

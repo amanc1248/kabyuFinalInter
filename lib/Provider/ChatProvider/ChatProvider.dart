@@ -1,10 +1,9 @@
 import 'dart:collection';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Model/UserModel.dart';
-import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/services/database.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -26,9 +25,9 @@ class ChatProvider extends ChangeNotifier {
   checkBuyer() {
     print("Userid===>" + userId);
     print("Buyerid===>" + buyerId);
-    if (buyerId == '') {
-      return userId;
-    }
+    // if (buyerId == '') {
+    //   return userId;
+    // }
     if (buyerId == userId) {
       return userId;
     }
@@ -39,9 +38,9 @@ class ChatProvider extends ChangeNotifier {
 
 //Checking Seller👇
   checkSeller() {
-    if (sellerId == '') {
-      return _sellerIdFromBook;
-    }
+    // if (sellerId == '') {
+    //   return sellerIdFromBook;
+    // }
     if (sellerId == userId) {
       return userId;
     }
@@ -54,7 +53,7 @@ class ChatProvider extends ChangeNotifier {
   checkChatId() {
     // chatId = "Tt9Pl5u7iMNJzpOrTXv1ZByouF12";
     if (chatId == '') {
-      String theCombinedChatId = sellerIdFromBook + userId;
+      String theCombinedChatId = sellerId + userId;
       return theCombinedChatId;
     } else {
       return chatId;
@@ -63,57 +62,80 @@ class ChatProvider extends ChangeNotifier {
 //checkTimeStamp
 
   storeDataToChat() async {
-    ProductProvider productProvider =
-        Provider.of<ProductProvider>(context, listen: false);
     await getUserId();
-    // await loadourUsersAndBuyers();
     int valueIs;
+    var key = new DateTime.now().toIso8601String();
+    if (theIndexValue == -1) {
+      print("THEINDEXVALUE===>" + theIndexValue.toString());
+      await firestoreSave.collection('chat').doc(checkChatId()).set({
+        'buyer_id': checkBuyer(), //aman() //ranjit(seller)
+        'seller_id': checkSeller(),
+        "messages": FieldValue.arrayUnion(
+          [
+            {
+              'key': key,
+              "message": chatMessage,
+              "timeStamp": DateFormat.yMMMd().format(new DateTime.now()),
+              "type": userId
+            },
+          ],
+        )
+      }, SetOptions(merge: true)).catchError((onError) {
+        print(
+            "you have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a error");
+      });
 
-    print("RightNow the ourUsersAndBuyers lenght is===💋💋💋" +
-        ourUsersAndBuyers.length.toString());
-    print("UserId==⏭⏭" + userId.toString());
-    print("SellerIdFromBook==⏭⏭" + sellerIdFromBook.toString());
-    if (ourUsersAndBuyers.length != 0) {
-      for (var i = 0; i < ourUsersAndBuyers.length; i++) {
-        if (ourUsersAndBuyers[i].buyerId == userId &&
-            ourUsersAndBuyers[i].sellerId == sellerIdFromBook) {
-          print("ourIndex======>" + i.toString());
-          valueIs = i;
-          break;
-        } else {
-          // chatId = '';
-          valueIs = -1;
+      await loadourUsersAndBuyers();
+
+      print("Our chaterrs lenght===>" + ourUsersAndBuyers.length.toString());
+      if (ourUsersAndBuyers.length != 0) {
+        for (var i = 0; i < ourUsersAndBuyers.length; i++) {
+          if (ourUsersAndBuyers[i].buyerId == userId &&
+              ourUsersAndBuyers[i].sellerId == sellerId) {
+            valueIs = i;
+            print("1st valueIs value===>" + valueIs.toString());
+            break;
+          } else {
+            valueIs = -1;
+            print("2nd valueIs value===>" + valueIs.toString());
+          }
         }
+      } else {
+        valueIs = -1;
+        print("3rd valueIs value===>" + valueIs.toString());
       }
+      theIndexValue = valueIs;
+      print("THE INDEX VALUE IS::::=>>>" + theIndexValue.toString());
     } else {
-      valueIs = -1;
+      print("This is chat Id===>" + chatId);
+      print("SellerId==>" + sellerId);
+      print(checkSeller());
+      print("THe book id is==>" + bookId.toString());
+      var key = new DateTime.now().toIso8601String();
+      await firestoreSave.collection('chat').doc(checkChatId()).set({
+        'buyer_id': checkBuyer(), //aman() //ranjit(seller)
+        'seller_id': checkSeller(),
+        "messages": FieldValue.arrayUnion(
+          [
+            {
+              "key": key,
+              "message": chatMessage,
+              "timeStamp": DateFormat.yMMMd().format(new DateTime.now()),
+              "type": userId
+            },
+          ],
+        )
+      }, SetOptions(merge: true)).catchError((onError) {
+        print(
+            "you have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a error");
+      });
+
+      print("Our index value.👇");
+
+      print(valueIs);
+      print("🛒🛒🛒🛒");
     }
-    print("This is chat Id===>" + chatId);
-    print("SellerId==>" + sellerId);
-    print(checkSeller());
-    await firestoreSave.collection('chat').doc(checkChatId()).set({
-      'buyer_id': checkBuyer(), //aman() //ranjit(seller)
-      'book_id':
-          productProvider.productList[productProvider.bookIndexForChat].book_Id,
-      'seller_id': checkSeller(),
-      "messages": FieldValue.arrayUnion(
-        [
-          {
-            "message": chatMessage,
-            "timeStamp": DateFormat.yMMMd().format(new DateTime.now()),
-            "type": userId
-          },
-        ],
-      )
-    }, SetOptions(merge: true)).catchError((onError) {
-      print(
-          "you have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a erroryou have a error");
-    });
 
-    print("Our index value.👇");
-
-    print(valueIs);
-    print("🛒🛒🛒🛒");
     //concatinating user_id+book_id
 
     // print();
@@ -127,10 +149,18 @@ class ChatProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  bool _loadUserChat = false;
+  bool get loadUserChat => _loadUserChat;
+  set loadUserChat(bool val) {
+    _loadUserChat = val;
+    notifyListeners();
+  }
+
   loadourUsersAndBuyers() async {
     print("I am insise laodOUrUsersAndBuyers((((((");
     List<UserModel> ourUsersAndBuyers = await getourUsersAndBuyers();
     _ourUsersAndBuyers = ourUsersAndBuyers;
+    _loadUserChat = true;
     notifyListeners();
   }
 
@@ -202,6 +232,13 @@ class ChatProvider extends ChangeNotifier {
   String get previoustimeStamp => _previoustimeStamp;
   set previoustimeStamp(String val) {
     _previoustimeStamp = val;
+    notifyListeners();
+  }
+
+  String _bookId = '';
+  String get bookId => _bookId;
+  set bookId(String val) {
+    _bookId = val;
     notifyListeners();
   }
 }

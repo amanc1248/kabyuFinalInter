@@ -44,20 +44,19 @@ class _WishlistBooksListState extends State<WishlistBooksList> {
   @override
   Widget build(BuildContext context) {
     wishlistProvider = Provider.of<WishlistProvider>(context);
-    ProductProvider productProvider = Provider.of<ProductProvider>(context);
 
     // print(wishlistProvider.currentWishlist.book_Id);
     return GestureDetector(
       onTap: () {
-        productProvider.currentProduct =
-            productProvider.productList[widget.book];
+        wishlistProvider.currentWishlist =
+            wishlistProvider.wishlistproductList[widget.book];
 
         Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProductIndividual(),
-          ),
-        );
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductIndividual(
+                      myIndividualProduct: wishlistProvider.currentWishlist,
+                    )));
       },
       child: Container(
           width: MediaQuery.of(context).size.width / 2,

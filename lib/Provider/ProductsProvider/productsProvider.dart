@@ -80,9 +80,17 @@ class WishlistProvider with ChangeNotifier {
     notifyListeners();
   }
 
+  bool _loadingWishList;
+  bool get loadingWishList => _loadingWishList;
+  set loadingWishList(bool val) {
+    _loadingWishList = val;
+    notifyListeners();
+  }
+
   loadwishList() async {
     List<Product> wishlist = await getWishlist();
     _wishlistproductList = wishlist;
+    _loadingWishList = true;
     notifyListeners();
   }
 }

@@ -56,19 +56,17 @@ class _ExplorePageState extends State<ExplorePage> {
     });
   }
 
-  List<UserDetail> ourUser = [];
   void initState() {
+    Provider.of<UserProvider>(context, listen: false).loadUserDetail();
     Provider.of<ProductProvider>(context, listen: false).loadProducts();
     Provider.of<WishlistProvider>(context, listen: false).loadwishList();
     Provider.of<CategoryProvider>(context, listen: false).loadCategoryList();
     Provider.of<MyBooksProvider>(context, listen: false).loadMyBooksList();
-    Provider.of<UserProvider>(context, listen: false).loadUserDetail();
-
     super.initState();
   }
 
   theUserImageMain() {
-    if (userProvider.userDetail[0].image == '') {
+    if (userProvider.userDetail == null) {
       return CircularProgressIndicator();
     } else if (userProvider.userDetail[0].image == null) {
       return CircleAvatar(
@@ -168,7 +166,10 @@ class _ExplorePageState extends State<ExplorePage> {
                                             CrossAxisAlignment.start,
                                         children: [
                                           Text(
-                                            userProvider.userDetail[0].name,
+                                            userProvider.userDetail == null
+                                                ? "User"
+                                                : userProvider
+                                                    .userDetail[0].name,
                                             overflow: TextOverflow.ellipsis,
                                             style: TextStyle(
                                                 fontSize: 20,
@@ -330,6 +331,7 @@ class _ExplorePageState extends State<ExplorePage> {
           decoration: BoxDecoration(
             image: productProvider.productList[index].image != ''
                 ? DecorationImage(
+                    fit: BoxFit.cover,
                     image:
                         NetworkImage(productProvider.productList[index].image),
                   )
@@ -343,64 +345,60 @@ class _ExplorePageState extends State<ExplorePage> {
     }
 
     return Container(
-        height: 120,
+        // height: 120,
         child: Card(
-          clipBehavior: Clip.antiAliasWithSaveLayer,
-          child: Row(
-            children: [
-              checkExploreImage(index),
-              SingleChildScrollView(
-                child: Column(children: [
-                  Container(
-                    width: MediaQuery.of(context).size.width / 3,
-                    margin: EdgeInsets.only(
-                        left: 20.0, top: 9, right: 9, bottom: 9),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Text(
-                            (productProvider.productList[index].title != ''
-                                ? productProvider.productList[index].title
-                                : "\"" "Not Provided" "\""),
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            overflow: TextOverflow.ellipsis),
-                        Text(
-                          "Npr " +
-                              (productProvider.productList[index].price != ''
-                                  ? productProvider.productList[index].price +
-                                      "/-"
-                                  : "\"" "Not Provided" "\"" + "/-"),
-                          style: TextStyle(
-                            color: Colors.black54,
-                          ),
-                        ),
-                        SmoothStarRating(
-                          rating: productProvider.productList[index].rating,
-                          isReadOnly: true,
-                          size: 15,
-                          filledIconData: Icons.star,
-                          halfFilledIconData: Icons.star_half,
-                          defaultIconData: Icons.star_border,
-                          starCount: 5,
-                          allowHalfRating: true,
-                          spacing: 2.0,
-                          color: Colors.yellow,
-                          borderColor: Colors.yellow,
-                        ),
-                        Text("Science-Fiction",
-                            style: TextStyle(color: Color(0XFF30009C))),
-                      ],
+      clipBehavior: Clip.antiAliasWithSaveLayer,
+      child: Row(
+        children: [
+          checkExploreImage(index),
+          Column(children: [
+            Container(
+              width: MediaQuery.of(context).size.width / 3,
+              margin: EdgeInsets.only(left: 20.0, top: 9, right: 9, bottom: 9),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    (productProvider.productList[index].title != ''
+                        ? productProvider.productList[index].title
+                        : "\"" "Not Provided" "\""),
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                ]),
+                  Text(
+                    "Npr " +
+                        (productProvider.productList[index].price != ''
+                            ? productProvider.productList[index].price + "/-"
+                            : "\"" "Not Provided" "\"" + "/-"),
+                    style: TextStyle(
+                      color: Colors.black54,
+                    ),
+                  ),
+                  SmoothStarRating(
+                    rating: productProvider.productList[index].rating,
+                    isReadOnly: true,
+                    size: 15,
+                    filledIconData: Icons.star,
+                    halfFilledIconData: Icons.star_half,
+                    defaultIconData: Icons.star_border,
+                    starCount: 5,
+                    allowHalfRating: true,
+                    spacing: 2.0,
+                    color: Colors.yellow,
+                    borderColor: Colors.yellow,
+                  ),
+                  Text("Science-Fiction",
+                      style: TextStyle(color: Color(0XFF30009C))),
+                ],
               ),
-            ],
-          ),
-        ));
+            ),
+          ]),
+        ],
+      ),
+    ));
   }
 
 //THis is for view more button
