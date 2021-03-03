@@ -1,4 +1,0 @@
-#Mon Feb 08 20:37:38 NPT 2021
-base.0=F\:\\Android studio projects\\Kabyu-FeatherWebsProject\\build\\app\\intermediates\\transforms\\r8\\release\\0\\classes.dex
-path.0=classes.dex
-renamed.0=classes.dex
