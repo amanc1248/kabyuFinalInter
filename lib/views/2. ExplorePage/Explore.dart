@@ -2,9 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_progress_hud/flutter_progress_hud.dart';
 import 'package:kabyu_feather_webs/Model/Hamburger%20Model/HamburgerOptionsClass.dart';
-import 'package:kabyu_feather_webs/Model/UserDetail.dart';
 import 'package:kabyu_feather_webs/Model/product.dart';
-import 'package:kabyu_feather_webs/Model/product_individual_carousel.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/Provider/UserProvider.dart';
 import 'package:kabyu_feather_webs/Widgets/category.dart';
@@ -83,6 +81,7 @@ class _ExplorePageState extends State<ExplorePage> {
   @override
   Widget build(BuildContext context) {
     ProductProvider productProvider = Provider.of<ProductProvider>(context);
+
     WishlistProvider wishlistProvider = Provider.of<WishlistProvider>(context);
     MyBooksProvider myBooksProvider = Provider.of<MyBooksProvider>(context);
     userProvider = Provider.of<UserProvider>(context);
@@ -344,61 +343,74 @@ class _ExplorePageState extends State<ExplorePage> {
       }
     }
 
-    return Container(
-        // height: 120,
-        child: Card(
-      clipBehavior: Clip.antiAliasWithSaveLayer,
-      child: Row(
-        children: [
-          checkExploreImage(index),
-          Column(children: [
-            Container(
-              width: MediaQuery.of(context).size.width / 3,
-              margin: EdgeInsets.only(left: 20.0, top: 9, right: 9, bottom: 9),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Text(
-                    (productProvider.productList[index].title != ''
-                        ? productProvider.productList[index].title
-                        : "\"" "Not Provided" "\""),
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
+    return GestureDetector(
+      onTap: () {
+        productProvider.currentProduct = productProvider.productList[index];
+
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => ProductIndividual(
+                      myIndividualProduct: productProvider.currentProduct,
+                    )));
+      },
+      child: Container(
+          // height: 120,
+          child: Card(
+        clipBehavior: Clip.antiAliasWithSaveLayer,
+        child: Row(
+          children: [
+            checkExploreImage(index),
+            Column(children: [
+              Container(
+                width: MediaQuery.of(context).size.width / 3,
+                margin:
+                    EdgeInsets.only(left: 20.0, top: 9, right: 9, bottom: 9),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Text(
+                      (productProvider.productList[index].title != ''
+                          ? productProvider.productList[index].title
+                          : "\"" "Not Provided" "\""),
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                  ),
-                  Text(
-                    "Npr " +
-                        (productProvider.productList[index].price != ''
-                            ? productProvider.productList[index].price + "/-"
-                            : "\"" "Not Provided" "\"" + "/-"),
-                    style: TextStyle(
-                      color: Colors.black54,
+                    Text(
+                      "Npr " +
+                          (productProvider.productList[index].price != ''
+                              ? productProvider.productList[index].price + "/-"
+                              : "\"" "Not Provided" "\"" + "/-"),
+                      style: TextStyle(
+                        color: Colors.black54,
+                      ),
                     ),
-                  ),
-                  SmoothStarRating(
-                    rating: productProvider.productList[index].rating,
-                    isReadOnly: true,
-                    size: 15,
-                    filledIconData: Icons.star,
-                    halfFilledIconData: Icons.star_half,
-                    defaultIconData: Icons.star_border,
-                    starCount: 5,
-                    allowHalfRating: true,
-                    spacing: 2.0,
-                    color: Colors.yellow,
-                    borderColor: Colors.yellow,
-                  ),
-                  Text("Science-Fiction",
-                      style: TextStyle(color: Color(0XFF30009C))),
-                ],
+                    SmoothStarRating(
+                      rating: productProvider.productList[index].rating,
+                      isReadOnly: true,
+                      size: 15,
+                      filledIconData: Icons.star,
+                      halfFilledIconData: Icons.star_half,
+                      defaultIconData: Icons.star_border,
+                      starCount: 5,
+                      allowHalfRating: true,
+                      spacing: 2.0,
+                      color: Colors.yellow,
+                      borderColor: Colors.yellow,
+                    ),
+                    Text("Science-Fiction",
+                        style: TextStyle(color: Color(0XFF30009C))),
+                  ],
+                ),
               ),
-            ),
-          ]),
-        ],
-      ),
-    ));
+            ]),
+          ],
+        ),
+      )),
+    );
   }
 
 //THis is for view more button

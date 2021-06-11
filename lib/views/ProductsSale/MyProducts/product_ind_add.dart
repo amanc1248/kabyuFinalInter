@@ -1,10 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_tagging/flutter_tagging.dart';
 import 'package:kabyu_feather_webs/Model/category_model.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/constants.dart';
-import 'package:kabyu_feather_webs/views/Navigation/buttomNavigationBar.dart';
 
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,7 +11,6 @@ import 'package:kabyu_feather_webs/Widgets/image_pick.dart';
 import 'package:kabyu_feather_webs/Widgets/text_field.dart';
 import 'package:kabyu_feather_webs/services/database.dart';
 import 'package:kabyu_feather_webs/views/Navigation/topnavigation.dart';
-import 'package:provider/provider.dart';
 import 'package:get/get.dart';
 
 class ProductInAdd extends StatefulWidget {
@@ -150,6 +147,9 @@ class _ProductInAddState extends State<ProductInAdd> {
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.w500),
                           ),
+                          SizedBox(
+                            height: 25,
+                          ),
                           TextFieldProperty(
                             textFieldController: titleController,
                             title: "Title",
@@ -174,83 +174,6 @@ class _ProductInAddState extends State<ProductInAdd> {
                               return null;
                             },
                           ),
-                          // TextFieldProperty(
-                          //   textFieldController: categoryController,
-                          //   title: "Categories",
-                          // ),
-                          // TextFieldTags(
-                          //     tagsStyler: TagsStyler(
-                          //         tagTextStyle:
-                          //             TextStyle(fontWeight: FontWeight.bold),
-                          //         tagDecoration: BoxDecoration(
-                          //           color: Colors.blue[300],
-                          //           borderRadius: BorderRadius.circular(18.0),
-                          //         ),
-                          //         tagCancelIcon: Icon(Icons.cancel,
-                          //             size: 18.0, color: Colors.blue[900]),
-                          //         tagPadding: const EdgeInsets.all(6.0)),
-                          //     textFieldStyler: TextFieldStyler(
-                          //       hintText: "Categories",
-                          //       helperText: "Search and select the categories",
-                          //     ),
-                          //     onTag: (tag) {
-
-                          //       addProductsProvider.category = tag;
-                          //     },
-                          //     onDelete: (tag) {}),
-                          // FlutterTagging<Category>(
-                          //   initialItems: _selectedCategorys,
-                          //   textFieldConfiguration: TextFieldConfiguration(
-                          //     decoration: InputDecoration(
-                          //       border: OutlineInputBorder(),
-                          //       hintText: 'Search Tags',
-                          //       labelText: 'Select Tags',
-                          //     ),
-                          //   ),
-                          //   findSuggestions: CategoryService.getCategorys,
-                          //   additionCallback: (value) {
-                          //     return Category(
-                          //       name: value,
-                          //     );
-                          //   },
-                          //   onAdded: (category) {
-                          //     // api calls here, triggered when add to tag button is pressed
-
-                          //     return Category();
-                          //   },
-                          //   configureSuggestion: (lang) {
-                          //     return SuggestionConfiguration(
-                          //       title: Text(lang.name),
-                          //       additionWidget: Chip(
-                          //         avatar: Icon(
-                          //           Icons.add_circle,
-                          //           color: Colors.white,
-                          //         ),
-                          //         label: Text('Add New Tag'),
-                          //         labelStyle: TextStyle(
-                          //           color: Colors.white,
-                          //           fontSize: 14.0,
-                          //           fontWeight: FontWeight.w300,
-                          //         ),
-                          //         backgroundColor: Colors.blue,
-                          //       ),
-                          //     );
-                          //   },
-                          //   configureChip: (lang) {
-                          //     return ChipConfiguration(
-                          //       label: Text(lang.name),
-                          //       backgroundColor: Colors.blue,
-                          //       labelStyle: TextStyle(color: Colors.white),
-                          //       deleteIconColor: Colors.white,
-                          //     );
-                          //   },
-                          //   onChanged: () {
-                          //     print(
-                          //         "this helps to submit the category*****************************************************");
-                          //     // List<Category> category = [];
-                          //     // category.add(lang);
-                          //   },
-                          // ),
                           FlutterTagging<CategoryModel>(
                             initialItems: _selectedCategorys,
                             textFieldConfiguration: TextFieldConfiguration(

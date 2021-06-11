@@ -120,10 +120,13 @@ class MyBooksProvider with ChangeNotifier {
 
 class CategoryProvider with ChangeNotifier {
   List<CategoryModel> _categoryList = [];
+  List<Product> _productList = [];
   CategoryModel _currentCategoryList;
 
   UnmodifiableListView<CategoryModel> get categoryList =>
       UnmodifiableListView(_categoryList);
+  UnmodifiableListView<Product> get productList =>
+      UnmodifiableListView(_productList);
 
   CategoryModel get currentCategory => _currentCategoryList;
   set categoryList(List<CategoryModel> categoryList) {
@@ -139,6 +142,12 @@ class CategoryProvider with ChangeNotifier {
   loadCategoryList() async {
     List<CategoryModel> category = await getCategory();
     _categoryList = category;
+    notifyListeners();
+  }
+
+  loadBooksBasedCategory(String categoryname) async {
+    List<Product> category = await getCategoryList(categoryname);
+    _productList = category;
     notifyListeners();
   }
 }

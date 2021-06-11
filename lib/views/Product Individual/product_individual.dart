@@ -7,6 +7,7 @@ import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInPro
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/Widgets/Rating_Bar.dart';
 import 'package:kabyu_feather_webs/Widgets/products_grid.dart';
+import 'package:kabyu_feather_webs/Widgets/wishlistbooks.dart';
 import 'package:kabyu_feather_webs/services/database.dart';
 import 'package:kabyu_feather_webs/views/3.%20ChatPage/ChatListBookStore/Chat.dart';
 import 'package:kabyu_feather_webs/views/AppBar/AppBar.dart';
@@ -38,6 +39,8 @@ class _ProductIndividualState extends State<ProductIndividual> {
         Provider.of<AddProductsProvider>(context);
     GoogleSignInProvider googleSignInProvider =
         Provider.of<GoogleSignInProvider>(context);
+    bool wish = false;
+
     return Consumer<ChatProvider>(
       builder: (context, value, child) => SafeArea(
         child: Scaffold(
@@ -183,8 +186,22 @@ class _ProductIndividualState extends State<ProductIndividual> {
                                         color: Colors.white,
                                         textColor: Color(0xFF6200EE),
                                         onPressed: () {
-                                          addWishlist(productProvider
-                                              .currentProduct.book_Id);
+                                          wishlistProvider.wishlistproductList
+                                              .forEach(
+                                            (element) {
+                                              wish = element.book_Id ==
+                                                  productProvider
+                                                      .currentProduct.book_Id;
+                                            },
+                                          );
+                                          // if(productProvider
+                                          //     .currentProduct.book_Id == wishlistProvider.){
+
+                                          // }
+                                          if (wish == false) {
+                                            addWishlist(productProvider
+                                                .currentProduct.book_Id);
+                                          }
                                         },
                                         child: Row(
                                           mainAxisAlignment:

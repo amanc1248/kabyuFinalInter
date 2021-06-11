@@ -31,6 +31,21 @@ getCategory() async {
   return _category;
 }
 
+//explorepage
+getCategoryList(String categoryname) async {
+  QuerySnapshot snapshot = await FirebaseFirestore.instance
+      .collection('book')
+      .where('category', arrayContainsAny: [categoryname]).get();
+  // print(snapshot.docs.first.data());
+  print('===========================This is the getCategorylist');
+  List<Product> _productList = [];
+  for (DocumentSnapshot item in snapshot.docs) {
+    Product product = Product.fromSnapshot(item);
+    _productList.add(product);
+  }
+  return _productList;
+}
+
 getProduct() async {
   QuerySnapshot snapshot =
       await FirebaseFirestore.instance.collection('book').get();

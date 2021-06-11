@@ -38,7 +38,6 @@ class _EmailTabState extends State<EmailTab> {
               padding: kSignUpFormTextFieldPadding,
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-
                 maxLength: 30,
                 keyboardType: TextInputType.name,
                 inputFormatters: [
@@ -65,7 +64,6 @@ class _EmailTabState extends State<EmailTab> {
               padding: kSignUpFormTextFieldPadding,
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[0-9+]')),
                 ],
@@ -91,7 +89,6 @@ class _EmailTabState extends State<EmailTab> {
               padding: kSignUpFormTextFieldPadding,
               child: TextFormField(
                 autovalidateMode: AutovalidateMode.onUserInteraction,
-
                 keyboardType: TextInputType.streetAddress,
                 inputFormatters: [
                   FilteringTextInputFormatter.allow(RegExp('[a-zA-Z0-9 ,]')),

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
+import 'package:kabyu_feather_webs/services/database.dart';
+import 'package:kabyu_feather_webs/views/2.%20ExplorePage/Category/booksbasedon_category.dart';
 import 'package:provider/provider.dart';
 
 class BuildCategory extends StatefulWidget {
@@ -57,7 +59,19 @@ class _BuildCategoryState extends State<BuildCategory> {
                   return new Container(
                     margin: EdgeInsets.all(5),
                     child: RaisedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        print('this is the category list');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BooksBasedOnCategory(
+                              mydata: categoryProvider.categoryList[index].name,
+                            ),
+                          ),
+                        );
+                        getCategoryList(
+                            categoryProvider.categoryList[index].name);
+                      },
                       child: Text(categoryProvider.categoryList[index].name),
                       color: Color(0xffF2E7FE),
                     ),

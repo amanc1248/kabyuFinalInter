@@ -6,6 +6,7 @@ import 'package:kabyu_feather_webs/Provider/ChangePassword/ChangePasswordProvide
 import 'package:kabyu_feather_webs/Provider/ChatProvider/ChatProvider.dart';
 import 'package:kabyu_feather_webs/Provider/GoogleSignInProvider/GoogleSignInProvider.dart';
 
+import 'package:flutter/services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:kabyu_feather_webs/Provider/ProductsProvider/productsProvider.dart';
 import 'package:kabyu_feather_webs/Provider/UserProvider.dart';
@@ -68,6 +69,10 @@ class _MyAppState extends State<MyApp> {
     if (!_initialized) {
       print("Initializing the flutter fire");
     }
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown,
+    ]);
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<GoogleSignInProvider>(
